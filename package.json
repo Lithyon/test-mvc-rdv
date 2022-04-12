@@ -11,7 +11,6 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "macif-components": "^2.0.0",
-    "maciffr-services-js": "^1.16.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -19,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=8080 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

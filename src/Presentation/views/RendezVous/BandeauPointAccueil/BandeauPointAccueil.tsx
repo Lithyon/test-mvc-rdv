@@ -1,16 +1,12 @@
 import { Card, Col } from "macif-components";
-import { useEffect } from "react";
+import { PointAccueil } from "../../../../Domain/Model/PointAccueil";
 import Image from "../../../components/Image";
-import useViewModel from "./ViewModel";
 
-export default function BandeauAgence() {
-  const cdBuro = "7901";
-  const { agence, getAgence } = useViewModel();
+interface BandeauPointAccueilProps {
+  readonly pointAccueil: PointAccueil;
+}
 
-  useEffect(() => {
-    getAgence(cdBuro);
-  }, [cdBuro]);
-
+export default function BandeauPointAccueil({ pointAccueil }: BandeauPointAccueilProps) {
   return (
     <Card bg="gris-sable" className="mcf-d--none mcf-d-md--flex mcf-flex--row">
       <Card.Body className="mcf-d--flex mcf-align-items--center">
@@ -19,25 +15,25 @@ export default function BandeauAgence() {
           <Card.Text className="mcf-h4 mcf-mt--5">Agence choisie</Card.Text>
         </div>
         <address className="mcf-d--flex mcf-flex--column mcf-w--50">
-          <span>{agence.nomAgence}</span>
+          <span>{pointAccueil.nomPointAccueil}</span>
           <p>
-            {agence.adresseAgence.noVoie} {agence.adresseAgence.typeVoie}{" "}
-            {agence.adresseAgence.nomVoie}{" "}
+            {pointAccueil.adressePointAccueil.noVoie} {pointAccueil.adressePointAccueil.typeVoie}{" "}
+            {pointAccueil.adressePointAccueil.nomVoie}{" "}
           </p>
           <p>
-            {agence.adresseAgence.codePostal} {agence.adresseAgence.commune}
+            {pointAccueil.adressePointAccueil.codePostal} {pointAccueil.adressePointAccueil.commune}
           </p>
           <a
-            href={`tel:${agence.telAgence}`}
+            href={`tel:${pointAccueil.telPointAccueil}`}
             className="mcf-text--big-3 mcf-font-weight--bold mcf-text--body"
           >
-            {agence.telAgence}
+            {pointAccueil.telPointAccueil}
           </a>
-          <a href={agence.urlAgence}>En savoir plus</a>
+          <a href={pointAccueil.urlPointAccueil}>En savoir plus</a>
         </address>
       </Card.Body>
       <Col md={4} className="mcf-px--0">
-        <Image srcImage={agence.srcImgAgence} />
+        <Image srcImage={pointAccueil.srcImgPointAccueil} />
       </Col>
     </Card>
   );
