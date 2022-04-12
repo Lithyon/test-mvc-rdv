@@ -1,4 +1,4 @@
-import DefaultPointAccueil, { PointAccueil } from "../../Domain/Model/PointAccueil";
+import { PointAccueil } from "../../Domain/Model/PointAccueil";
 import { PointAccueilRepository } from "../../Domain/Repository/PointAccueilRepository";
 import { PointAccueilAPIEntity } from "../DataSource/API/Entity/PointAccueilAPIEntity";
 import PointAccueilDataSource from "../DataSource/PointAccueilDataSource";
@@ -8,10 +8,6 @@ export class PointAccueilRepositoryImpl implements PointAccueilRepository {
 
   constructor(datasource: PointAccueilDataSource) {
     this._dataSource = datasource;
-  }
-
-  getDefaultPointAccueil(): PointAccueil {
-    return DefaultPointAccueil;
   }
 
   async getPointAccueil(cdBuro: string): Promise<PointAccueil> {

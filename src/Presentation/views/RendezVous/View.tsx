@@ -17,7 +17,7 @@ export default function RendezVous() {
       <Row>
         <Col>
           <Card body>
-            <BandeauPointAccueil pointAccueil={pointAccueil} />
+            {pointAccueil && <BandeauPointAccueil pointAccueil={pointAccueil} />}
           </Card>
         </Col>
       </Row>
