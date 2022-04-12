@@ -4,7 +4,7 @@ import BandeauPointAccueil from "./BandeauPointAccueil";
 import useViewModel from "./ViewModel";
 
 export default function RendezVous() {
-  const cdBuro = "7901";
+  const cdBuro = "7902";
   const { pointAccueil, getPointAccueil } = useViewModel();
 
   useEffect(() => {

@@ -1,5 +1,5 @@
-import { PointAccueil } from "../../Domain/Model/PointAccueil";
+import { PointAccueilAPIEntity } from "./API/Entity/PointAccueilAPIEntity";
 
 export default interface PointAccueilDataSource {
-  getPointAccueil(cdBuro: string): Promise<PointAccueil>;
+  getPointAccueil(cdBuro: string): Promise<PointAccueilAPIEntity>;
 }

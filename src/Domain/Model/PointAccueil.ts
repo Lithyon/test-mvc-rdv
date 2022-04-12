@@ -22,3 +22,21 @@ export interface HorairesOuvertureFermeture {
   hrOuvSoir: string;
   liJj: string;
 }
+
+const DefaultPointAccueil: PointAccueil = {
+  cdBuro: "",
+  nomPointAccueil: "",
+  telPointAccueil: "",
+  adressePointAccueil: {
+    noVoie: "",
+    typeVoie: "",
+    nomVoie: "",
+    codePostal: "",
+    commune: "",
+  },
+  srcImgPointAccueil: "",
+  urlPointAccueil: "",
+  horairesOuvertureFermetures: [],
+};
+
+export default DefaultPointAccueil;
