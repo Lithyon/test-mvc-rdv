@@ -1,23 +1,20 @@
 import { Card, Col, Container, Row } from "macif-components";
-import { useEffect } from "react";
 import BandeauPointAccueil from "./BandeauPointAccueil";
-import useViewModel from "./ViewModel";
+import { RendezVousViewModel } from "./ViewModel";
 
-export default function RendezVous() {
-  const cdBuro = "7902";
-  const { pointAccueil, getPointAccueil } = useViewModel();
+interface RendezVousProps {
+  dataContext: RendezVousViewModel;
+}
 
-  useEffect(() => {
-    getPointAccueil(cdBuro);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cdBuro]);
-
+export default function RendezVous({ dataContext }: RendezVousProps) {
   return (
     <Container>
       <Row>
         <Col>
           <Card body>
-            {pointAccueil && <BandeauPointAccueil pointAccueil={pointAccueil} />}
+            <BandeauPointAccueil
+              dataContext={dataContext.bandeauPointAccueilViewModel}
+            />
           </Card>
         </Col>
       </Row>

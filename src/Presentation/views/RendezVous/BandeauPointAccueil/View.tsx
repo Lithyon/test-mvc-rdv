@@ -1,13 +1,27 @@
 import { Card, Col } from "macif-components";
 import { PointAccueil } from "../../../../Domain/Model/PointAccueil";
 import Image from "../../../components/Image";
+import { useOneWayBinding } from "../../../hooks/useBinding";
+import useInit from "../../../hooks/useInit";
+import BandeauPointAcceuilViewModel from "./ViewModel";
 
-interface BandeauPointAccueilProps {
-  readonly pointAccueil: PointAccueil;
+interface BandeauPointAcceuilProps {
+  readonly dataContext: BandeauPointAcceuilViewModel;
 }
 
-export default function BandeauPointAccueil({ pointAccueil }: BandeauPointAccueilProps) {
-  return (
+export default function BandeauPointAccueil({
+  dataContext,
+}: BandeauPointAcceuilProps) {
+  useInit(dataContext);
+
+  const pointAccueil = useOneWayBinding<PointAccueil>({
+    dataContext,
+    propertyName: "pointAccueil",
+  });
+
+  console.log(pointAccueil);
+
+  return pointAccueil ? (
     <Card bg="gris-sable" className="mcf-d--none mcf-d-md--flex mcf-flex--row">
       <Card.Body className="mcf-d--flex mcf-align-items--center">
         <div className="mcf-text--center mcf-w--50">
@@ -17,11 +31,13 @@ export default function BandeauPointAccueil({ pointAccueil }: BandeauPointAccuei
         <address className="mcf-d--flex mcf-flex--column mcf-w--50">
           <span>{pointAccueil.nomPointAccueil}</span>
           <p>
-            {pointAccueil.adressePointAccueil.noVoie} {pointAccueil.adressePointAccueil.typeVoie}{" "}
+            {pointAccueil.adressePointAccueil.noVoie}{" "}
+            {pointAccueil.adressePointAccueil.typeVoie}{" "}
             {pointAccueil.adressePointAccueil.nomVoie}{" "}
           </p>
           <p>
-            {pointAccueil.adressePointAccueil.codePostal} {pointAccueil.adressePointAccueil.commune}
+            {pointAccueil.adressePointAccueil.codePostal}{" "}
+            {pointAccueil.adressePointAccueil.commune}
           </p>
           <a
             href={`tel:${pointAccueil.telPointAccueil}`}
@@ -36,5 +52,7 @@ export default function BandeauPointAccueil({ pointAccueil }: BandeauPointAccuei
         <Image srcImage={pointAccueil.srcImgPointAccueil} />
       </Col>
     </Card>
+  ) : (
+    <div>Coucou</div>
   );
 }

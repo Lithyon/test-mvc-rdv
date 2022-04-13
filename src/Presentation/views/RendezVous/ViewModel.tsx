@@ -1,22 +1,22 @@
-import { useState } from "react";
-import PointAccueilAPIDataSourceImpl from "../../../Data/DataSource/API/PointAccueilAPIDataSourceImpl";
-import { PointAccueilRepositoryImpl } from "../../../Data/Repository/PointAccueilRepositoryImpl";
-import { PointAccueil } from "../../../Domain/Model/PointAccueil";
 import { GetPointAccueilUseCase } from "../../../Domain/UseCase/GetPointAccueil";
+import ObservableViewModel from "../../commons/ObservableViewModel";
+import BandeauPointAcceuilViewModel from "./BandeauPointAccueil/ViewModel";
 
-export default function RendezVousViewModel() {
-  const [pointAccueil, setPointAccueil] = useState<PointAccueil>();
+interface RendezVousViewModelDependencies {
+  readonly useCase: GetPointAccueilUseCase;
+}
 
-  const UseCase = new GetPointAccueilUseCase(
-    new PointAccueilRepositoryImpl(new PointAccueilAPIDataSourceImpl())
-  );
+export class RendezVousViewModel extends ObservableViewModel {
+  private _bandeauPointAccueilViewModel: BandeauPointAcceuilViewModel;
 
-  async function getPointAccueil(cdBuro: string) {
-    setPointAccueil(await UseCase.invoke(cdBuro));
+  constructor(readonly dependencies: RendezVousViewModelDependencies) {
+    super();
+    this._bandeauPointAccueilViewModel = new BandeauPointAcceuilViewModel(
+      dependencies
+    );
   }
 
-  return {
-    getPointAccueil,
-    pointAccueil,
-  };
+  get bandeauPointAccueilViewModel(): BandeauPointAcceuilViewModel {
+    return this._bandeauPointAccueilViewModel;
+  }
 }
