@@ -1,2 +1,2 @@
-export { default } from './View';
-export { default as BandeauPointAccueilViewModel } from './ViewModel';
+export { default } from './BandeauPointAccueil';
+export { default as BandeauPointAccueilViewModel } from './BandeauPointAccueilViewModel';

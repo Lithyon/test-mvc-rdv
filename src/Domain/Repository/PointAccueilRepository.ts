@@ -1,5 +1,5 @@
-import { PointAccueil } from "../Model/PointAccueil";
+import PointAccueilViewModel from "../Model/PointAccueil";
 
 export interface PointAccueilRepository {
-  getPointAccueil(cdBuro: string): Promise<PointAccueil>;
+  getPointAccueil(cdBuro: string): Promise<PointAccueilViewModel>;
 }

@@ -1,6 +1,6 @@
 import { Card, Col, Container, Row } from "macif-components";
 import BandeauPointAccueil from "./BandeauPointAccueil";
-import { RendezVousViewModel } from "./ViewModel";
+import { RendezVousViewModel } from "./RendezVousViewModel";
 
 interface RendezVousProps {
   dataContext: RendezVousViewModel;

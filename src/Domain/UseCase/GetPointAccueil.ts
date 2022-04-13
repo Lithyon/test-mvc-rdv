@@ -1,8 +1,8 @@
-import { PointAccueil } from "../Model/PointAccueil";
+import PointAccueilViewModel from "../Model/PointAccueil";
 import { PointAccueilRepository } from "../Repository/PointAccueilRepository";
 
 export interface GetPointAccueil {
-  invoke(cdBuro: string): Promise<PointAccueil>;
+  invoke(cdBuro: string): Promise<PointAccueilViewModel>;
 }
 
 export class GetPointAccueilUseCase implements GetPointAccueil {
@@ -11,7 +11,7 @@ export class GetPointAccueilUseCase implements GetPointAccueil {
   constructor(_pointAccueilRepo: PointAccueilRepository) {
     this.pointAccueilRepo = _pointAccueilRepo;
   }
-  async invoke(cdBuro: string): Promise<PointAccueil> {
+  async invoke(cdBuro: string): Promise<PointAccueilViewModel> {
     return this.pointAccueilRepo.getPointAccueil(cdBuro);
   }
 }
