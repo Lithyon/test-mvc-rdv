@@ -1,5 +1,4 @@
 import { Card, Col } from "macif-components";
-import PointAccueilViewModel from "../../../../Domain/Model/PointAccueil";
 import Image from "../../../components/Image";
 import { useOneWayBinding } from "../../../hooks/useBinding";
 import useInit from "../../../hooks/useInit";
@@ -14,15 +13,49 @@ export default function BandeauPointAccueil({
 }: BandeauPointAccueilProps) {
   useInit(dataContext);
 
-  const {
-    nomPointAccueil,
-    adressePointAccueil,
-    telPointAccueil,
-    urlPointAccueil,
-    srcImgPointAccueil,
-  } = useOneWayBinding<PointAccueilViewModel>({
+  const nomPointAccueil = useOneWayBinding<string>({
     dataContext,
-    propertyName: "pointAccueil",
+    propertyName: "nomPointAccueil",
+  });
+
+  const noVoie = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "noVoie",
+  });
+
+  const typeVoie = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "typeVoie",
+  });
+
+  const nomVoie = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "nomVoie",
+  });
+
+  const codePostal = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "codePostal",
+  });
+
+  const commune = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "commune",
+  });
+
+  const telPointAccueil = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "telPointAccueil",
+  });
+
+  const urlPointAccueil = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "urlPointAccueil",
+  });
+
+  const srcImgPointAccueil = useOneWayBinding<string>({
+    dataContext,
+    propertyName: "srcImgPointAccueil",
   });
 
   return (
@@ -35,11 +68,10 @@ export default function BandeauPointAccueil({
         <address className="mcf-d--flex mcf-flex--column mcf-w--50">
           <span>{nomPointAccueil}</span>
           <p>
-            {adressePointAccueil.noVoie} {adressePointAccueil.typeVoie}{" "}
-            {adressePointAccueil.nomVoie}{" "}
+            {noVoie} {typeVoie} {nomVoie}{" "}
           </p>
           <p>
-            {adressePointAccueil.codePostal} {adressePointAccueil.commune}
+            {codePostal} {commune}
           </p>
           <a
             href={`tel:${telPointAccueil}`}

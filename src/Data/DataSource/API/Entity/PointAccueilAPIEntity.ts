@@ -1,8 +1,4 @@
-export interface PointAccueilAPIEntity {
-  data: PointAccueil;
-}
-
-export interface PointAccueil {
+export interface PointAccueilEntity {
   cdBuro: string;
   cdNatuVoie: string;
   cdNoVoie: string;

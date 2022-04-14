@@ -1,4 +1,4 @@
-import PointAccueilViewModel from "../../Domain/Model/PointAccueil";
+import PointAccueil from "../../Domain/Model/PointAccueil";
 import { PointAccueilRepository } from "../../Domain/Repository/PointAccueilRepository";
 import PointAccueilDataSource from "../DataSource/PointAccueilDataSource";
 
@@ -9,8 +9,7 @@ export class PointAccueilRepositoryImpl implements PointAccueilRepository {
     this._dataSource = datasource;
   }
 
-  async getPointAccueil(cdBuro: string): Promise<PointAccueilViewModel> {
-    const { data } = await this._dataSource.getPointAccueil(cdBuro);
-    return new PointAccueilViewModel(data);
+  async getPointAccueil(cdBuro: string) {
+    return new PointAccueil(await this._dataSource.getPointAccueil(cdBuro));
   }
 }

@@ -1,5 +1,3 @@
-import { PointAccueil } from "../../Data/DataSource/API/Entity/PointAccueilAPIEntity";
-
 export interface AdressePointAccueil {
   noVoie: string;
   typeVoie: string;
@@ -17,48 +15,40 @@ export interface HorairesOuvertureFermeture {
   liJj: string;
 }
 
-export default class PointAccueilViewModel {
-  readonly _urlImg?: string;
-  readonly _urlPointAccueil?: string;
+export interface TypeEquipementAccessibilite {
+  cdTyHandi: string;
+  equipementAccessibilites: EquipementAccessibilite[];
+  liTyHandi: string;
+}
 
-  constructor(readonly pointAccueil?: PointAccueil) {
-    if (this.pointAccueil?.cdBuro) {
-      this._urlImg = `https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_${this.pointAccueil?.cdBuro}.jpg`;
-      this._urlPointAccueil = `https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_${this.pointAccueil?.cdBuro}.jpg`;
-    }
-  }
+export interface EquipementAccessibilite {
+  cdEqpHandi: string;
+  liEqpHandi: string;
+}
 
-  get cdBuro(): string {
-    return this.pointAccueil?.cdBuro || "";
-  }
+export interface PointAccueilEtat {
+  readonly cdBuro: string;
+  readonly cdNatuVoie: string;
+  readonly cdNoVoie: string;
+  readonly cdPost: string;
+  readonly cdRegio: string;
+  readonly horairesOuvertureFermetures: HorairesOuvertureFermeture[];
+  readonly liBuro: string;
+  readonly liNatuVoie: string;
+  readonly liNoVoie: string;
+  readonly nmCommu: string;
+  readonly nmLieuDit: string;
+  readonly nmVoie: string;
+  readonly noAppart: string;
+  readonly noBat: string;
+  readonly noEntree: string;
+  readonly noEsca: string;
+  readonly noTeleLigne: string;
+  readonly noVoie: string;
+  readonly typeEquipementAccessibilites: TypeEquipementAccessibilite[];
+  readonly znLocalisSite: string;
+}
 
-  get nomPointAccueil(): string {
-    return this.pointAccueil?.liBuro || "";
-  }
-
-  get telPointAccueil(): string {
-    return this.pointAccueil?.noTeleLigne || "";
-  }
-
-  get adressePointAccueil(): AdressePointAccueil {
-    return {
-      noVoie: this.pointAccueil?.noVoie || "",
-      typeVoie: this.pointAccueil?.liNatuVoie || "",
-      nomVoie: this.pointAccueil?.nmVoie || "",
-      codePostal: this.pointAccueil?.cdPost || "",
-      commune: this.pointAccueil?.nmCommu || "",
-    };
-  }
-
-  get srcImgPointAccueil(): string {
-    return this._urlImg || "";
-  }
-
-  get urlPointAccueil(): string {
-    return this._urlPointAccueil || "";
-  }
-
-  get horairesOuvertureFermetures(): Array<HorairesOuvertureFermeture> {
-    return this.pointAccueil?.horairesOuvertureFermetures || [];
-  }
+export default class PointAccueil {
+  constructor(readonly etat?: PointAccueilEtat) {}
 }

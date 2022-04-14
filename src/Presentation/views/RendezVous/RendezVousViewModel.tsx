@@ -1,9 +1,9 @@
-import { GetPointAccueilUseCase } from "../../../Domain/UseCase/GetPointAccueil";
+import { PointAccueilService } from "../../../Domain/Services/PointAccueil";
 import ObservableViewModel from "../../commons/ObservableViewModel";
 import BandeauPointAccueilViewModel from "./BandeauPointAccueil/BandeauPointAccueilViewModel";
 
 interface RendezVousViewModelDependencies {
-  readonly useCase: GetPointAccueilUseCase;
+  readonly pointAccueilService: PointAccueilService;
 }
 
 export class RendezVousViewModel extends ObservableViewModel {
