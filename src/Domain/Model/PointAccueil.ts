@@ -50,5 +50,5 @@ export interface PointAccueilEtat {
 }
 
 export default class PointAccueil {
-  constructor(readonly etat?: PointAccueilEtat) {}
+  constructor(readonly etat: PointAccueilEtat) {}
 }
