@@ -1,8 +1,4 @@
-export type StateChangedHandler = () => void;
+import { HasState } from "./HasState";
+import { StateObservable } from "./StateChangedHandler";
 
-export default interface Controller<T> {
-    onLoad():void;
-    get state():T;
-    subscribeStateChanged(onStateChanged:StateChangedHandler):void;
-    unsubscribeStateChanged(onStateChanged:StateChangedHandler):void;
-}
+export interface Controller<T> extends StateObservable, HasState<T> {}

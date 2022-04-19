@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import Controller from "../commons/Controller";
+import { Controller } from "../commons/Controller";
 
-export default function useAttachController<T>(controller:Controller<T>) {
+export default function useAttachController<T>(controller: Controller<T>) {
     const [state, setState] = useState(controller.state);
 
     useEffect(() => {

@@ -11,7 +11,17 @@ interface BandeauPointAccueilProps {
 export default function BandeauPointAccueil({
   controller,
 }: BandeauPointAccueilProps) {
-  const state = useAttachController(controller);
+  const {
+    nomPointAccueil,
+    noVoie,
+    typeVoie,
+    nomVoie,
+    codePostal,
+    commune,
+    telPointAccueil,
+    urlPointAccueil,
+    srcImgPointAccueil,
+  } = useAttachController(controller);
 
   useInitContexte(controller);
 
@@ -23,24 +33,24 @@ export default function BandeauPointAccueil({
           <Card.Text className="mcf-h4 mcf-mt--5">Agence choisie</Card.Text>
         </div>
         <address className="mcf-d--flex mcf-flex--column mcf-w--50">
-          <span>{state.nomPointAccueil}</span>
+          <span>{nomPointAccueil}</span>
           <p>
-            {state.noVoie} {state.typeVoie} {state.nomVoie}{" "}
+            {noVoie} {typeVoie} {nomVoie}{" "}
           </p>
           <p>
-            {state.codePostal} {state.commune}
+            {codePostal} {commune}
           </p>
           <a
-            href={`tel:${state.telPointAccueil}`}
+            href={`tel:${telPointAccueil}`}
             className="mcf-text--big-3 mcf-font-weight--bold mcf-text--body"
           >
-            {state.telPointAccueil}
+            {telPointAccueil}
           </a>
-          <a href={state.urlPointAccueil}>En savoir plus</a>
+          <a href={urlPointAccueil}>En savoir plus</a>
         </address>
       </Card.Body>
       <Col md={4} className="mcf-px--0">
-        <Image srcImage={state.srcImgPointAccueil} />
+        <Image srcImage={srcImgPointAccueil} />
       </Col>
     </Card>
   );
