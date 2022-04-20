@@ -1,26 +1,34 @@
 import { Form } from "macif-components";
-import useAttachController from "../../../../hooks/useAttachController";
-import useInitContexte from "../../../../hooks/useInitContexte";
-import DomaineController from "./DomaineController";
+import DomaineModelView from "./ModelView/DomaineModelView";
 
-interface DomaineProps {
-  readonly controller: DomaineController;
+export interface DomaineProps {
+  readonly onChoiceSelected: Function;
+  readonly choiceSelected: string;
+  readonly dataSource: Array<DomaineModelView>;
 }
 
-export default function Domaine({ controller }: DomaineProps) {
-  const { codification } = useAttachController(controller);
-
-  useInitContexte(controller);
-
+export default function Domaine({
+  dataSource,
+  onChoiceSelected,
+  choiceSelected,
+}: DomaineProps) {
   return (
     <Form.Group controlId="assurer">
       <Form.Label required>Votre rendez-vous concerne ?</Form.Label>
-      <Form.SwitcherGroup type="radio" nbSwitchers={3} name="assurer" onChange={controller.onChoiceSelected}>
-        {codification.map((value, index) => (
-          <Form.Switcher key={index} value={value}>
-            {value.libelle}
-          </Form.Switcher>
-        ))}
+      <Form.SwitcherGroup
+        type="radio"
+        nbSwitchers={3}
+        name="assurer"
+        defaultValue={choiceSelected}
+        onChange={onChoiceSelected}
+      >
+        {dataSource.map((value, index) => {
+          return (
+            <Form.Switcher key={index} value={value.code}>
+              {value.libelle}
+            </Form.Switcher>
+          );
+        })}
       </Form.SwitcherGroup>
     </Form.Group>
   );

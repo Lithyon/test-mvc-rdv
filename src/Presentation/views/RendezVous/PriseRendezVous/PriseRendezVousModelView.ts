@@ -1,6 +1,9 @@
-import CodificationModelView from "../../../commons/Codfication/CodificationModelView";
+import DemandeModelView from "./Demande/ModelView/DemandeModelView";
+import DomaineModelView from "./Domaine/ModelView/DomaineModelView";
 
 export default interface PriseRendezVousModelView {
-    domaineSelected: CodificationModelView,
-    demandeSelected: CodificationModelView
+  readonly domaine: Array<DomaineModelView>;
+  readonly domaineSelected: string;
+  readonly demande: Array<DemandeModelView>;
+  readonly demandeSelected: string;
 }

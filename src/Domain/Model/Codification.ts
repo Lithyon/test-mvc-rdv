@@ -1,10 +1,8 @@
-export interface CodificationEtat extends Code {}
-
-export interface Code {
-  code: string;
-  libelle: string;
+export interface CodificationEtat {
+  readonly code: string;
+  readonly libelle: string;
 }
 
-export default class Codification {
-  constructor(readonly etat: CodificationEtat[]) {}
+export default class Codification<T> {
+  constructor(readonly etat: Array<T>) {}
 }

@@ -1,5 +1,5 @@
 import PointAccueilAPIDataSourceImpl from '../../../../Data/DataSource/API/PointAccueilAPIDataSourceImpl';
-import { PointAccueilRepositoryImpl } from '../../../../Data/Repository/PointAccueilRepositoryImpl';
+import { PointAccueilRepositoryImpl } from '../../../../Domain/Repository/PointAccueilRepositoryImpl';
 import { PointAccueilService } from '../../../../Domain/Services/PointAccueil';
 import { default as BandeauPointAccueilView } from './BandeauPointAccueil';
 import { default as BandeauPointAccueilController } from './BandeauPointAccueilController';

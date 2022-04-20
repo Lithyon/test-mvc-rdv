@@ -1,22 +1,29 @@
 import { Form } from "macif-components";
-import useAttachController from "../../../../hooks/useAttachController";
-import useInitContexte from "../../../../hooks/useInitContexte";
-import DemandeController from "./DemandeController";
+import DemandeModelView from "./ModelView/DemandeModelView";
 
-interface DemandeProps {
-  readonly controller: DemandeController;
+export interface DemandeProps {
+  readonly onChoiceSelected: Function;
+  readonly choiceSelected: string;
+  readonly dataSource: Array<DemandeModelView>;
 }
 
-export default function Demande({ controller }: DemandeProps) {
-  const { codification } = useAttachController(controller);
-
-  useInitContexte(controller);
-
+export default function Demande({
+  onChoiceSelected,
+  choiceSelected,
+  dataSource,
+}: DemandeProps) {
+  console.log(choiceSelected)
   return (
     <Form.Group controlId="assurer">
       <Form.Label required>Votre demande concerne ?</Form.Label>
-      <Form.SwitcherGroup type="radio" nbSwitchers={3} name="assurer">
-        {codification.map((value, index) => (
+      <Form.SwitcherGroup
+        type="radio"
+        nbSwitchers={3}
+        name="assurer"
+        value={choiceSelected}
+        onChange={onChoiceSelected}
+      >
+        {dataSource.map((value, index) => (
           <Form.Switcher key={index} value={value.code}>
             {value.libelle}
           </Form.Switcher>
