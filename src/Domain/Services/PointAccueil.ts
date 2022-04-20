@@ -12,7 +12,7 @@ export class PointAccueilService implements PointAccueilService {
     this.pointAccueilRepo = _pointAccueilRepo;
   }
 
-  async getPointAccueil(cdBuro: string) {
+  getPointAccueil(cdBuro: string) {
     return this.pointAccueilRepo.getPointAccueil(cdBuro);
   }
 }

@@ -1,15 +1,8 @@
 import PointAccueilDataSource from "../PointAccueilDataSource";
 import { PointAccueilEntity } from "./Entity/PointAccueilAPIEntity";
+import { myFetch } from "./Commons/TypedResponse";
 
 const BASE_URL = "/internet-espaceclient-rest";
-
-interface TypedResponse<T = any> extends Response {
-  json<P = T>(): Promise<P>;
-}
-
-function myFetch<T>(...args: any): Promise<TypedResponse<T>> {
-  return fetch.apply(window, args);
-}
 
 export default class PointAccueilAPIDataSourceImpl
   implements PointAccueilDataSource
