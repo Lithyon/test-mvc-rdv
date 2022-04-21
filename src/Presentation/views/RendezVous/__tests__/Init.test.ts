@@ -1,4 +1,4 @@
-import PointAccueilAPIDataSourceImpl from "../../../../Data/DataSource/API/PointAccueilAPIDataSourceImpl";
+import PointAccueilAPIDataSourceImpl from "../../../../Domain/Repository/Data/API/PointAccueilAPIDataSourceImpl";
 import { PointAccueilRepositoryImpl } from "../../../../Data/Repository/PointAccueilRepositoryImpl";
 import { PointAccueilService } from "../../../../Domain/Services/PointAccueil";
 import { RendezVousViewModel } from "../RendezVousViewModel";

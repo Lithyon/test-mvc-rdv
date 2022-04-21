@@ -1,7 +1,7 @@
 import Domaine, { DomaineEtat } from "../../Domain/Model/Domaine";
 import { DomaineRepository } from "../../Domain/Repository/DomaineRepository";
-import DomaineDataSource from "../../Data/DataSource/DomaineDataSource";
-import { DOMAINES } from "../../Data/DataSource/Enum/Domaine";
+import DomaineDataSource from "./Data/DomaineDataSource";
+import { DOMAINES } from "./Data/Enum/Domaine";
 
 export class DomaineRepositoryImpl implements DomaineRepository {
   private _dataSource: DomaineDataSource;

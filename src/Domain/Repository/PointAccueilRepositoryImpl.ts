@@ -1,6 +1,6 @@
 import PointAccueil from "../../Domain/Model/PointAccueil";
 import { PointAccueilRepository } from "../../Domain/Repository/PointAccueilRepository";
-import PointAccueilDataSource from "../../Data/DataSource/PointAccueilDataSource";
+import PointAccueilDataSource from "./Data/PointAccueilDataSource";
 
 export class PointAccueilRepositoryImpl implements PointAccueilRepository {
   private _dataSource: PointAccueilDataSource;

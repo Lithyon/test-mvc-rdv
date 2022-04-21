@@ -1,8 +1,8 @@
 import Demande, { DemandeEtat } from "../Model/Demande";
 import { DemandeRepository } from "./DemandeRepository";
-import DemandeDataSource from "../../Data/DataSource/DemandeDataSource";
-import { DEMANDES_HORS_SINISTRE } from "../../Data/DataSource/Enum/Demande";
-import { TypeDomaine } from "../../Data/DataSource/Enum/Domaine";
+import DemandeDataSource from "./Data/DemandeDataSource";
+import { DEMANDES_HORS_SINISTRE } from "./Data/Enum/Demande";
+import { TypeDomaine } from "./Data/Enum/Domaine";
 
 export class DemandeRepositoryImpl implements DemandeRepository {
   private _dataSource: DemandeDataSource;
