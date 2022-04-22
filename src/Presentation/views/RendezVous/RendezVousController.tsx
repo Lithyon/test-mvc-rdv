@@ -3,20 +3,19 @@ import {DemandeService} from "../../../Domain/Services/Demande";
 import {DomaineService} from "../../../Domain/Services/Domaine";
 import BaseController from "../../commons/BaseController";
 import {Loadable} from "../../commons/Loadable";
-import DemandeModelViewBuilder from "./PriseRendezVous/Demande/ModelView/DemandeModelViewBuilder";
-import DomaineModelViewBuilder from "./PriseRendezVous/Domaine/ModelView/DomaineModelViewBuilder";
 import RendezVousModelView from "./ModelView/RendezVousModelView";
 import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
 import PointAccueil from "../../../Domain/Model/PointAccueil";
 import {PointAccueilService} from "../../../Domain/Services/PointAccueil";
+import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
     implements Loadable {
     private _state: RendezVousModelView;
-    private _domaine?: Domaine;
-    private _demande?: Domaine;
+    private _domaines?: Domaine;
+    private _demandes?: Domaine;
     private _pointAccueil?: PointAccueil;
 
     constructor(
@@ -28,8 +27,8 @@ export default class RendezVousController
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this._state = {
-            domaine: [],
-            demande: [],
+            domaines: [],
+            demandes: [],
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
@@ -38,10 +37,10 @@ export default class RendezVousController
     async onLoad() {
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
         this._pointAccueil = await this.pointAccueilService.getPointAccueil(cdBuro);
-        this._domaine = await this.domaineService.getDomaines();
+        this._domaines = await this.domaineService.getDomaines();
         this._state = {
             ...this._state,
-            domaine: this._domaine.etat.map(DomaineModelViewBuilder.buildFromDomaine),
+            domaines: this._domaines.etat.map(CodificationModelViewBuilder.buildFromCodification),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
                 this._pointAccueil.etat
             ),
@@ -56,10 +55,10 @@ export default class RendezVousController
     }
 
     async onDomaineSelected(domaineSelected: string) {
-        this._demande = await this.demandeService.getDemandes(domaineSelected);
+        this._demandes = await this.demandeService.getDemandes(domaineSelected);
         this._state = {
             ...this._state,
-            demande: this._demande.etat.map(DemandeModelViewBuilder.buildFromDemande),
+            demandes: this._demandes.etat.map(CodificationModelViewBuilder.buildFromCodification),
             rendezVous: {
                 ...this._state.rendezVous,
                 demandeSelected: "",

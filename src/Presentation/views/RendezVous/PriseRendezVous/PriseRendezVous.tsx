@@ -1,31 +1,27 @@
 import {Form} from "macif-components";
-import Demande from "./Demande";
-import Domaine from "./Domaine";
-import DomaineModelView from "./Domaine/ModelView/DomaineModelView";
-import DemandeModelView from "./Demande/ModelView/DemandeModelView";
 import RendezVousSelectionModelView from "../ModelView/RendezVousSelectionModelView";
+import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
+import CodificationModelView from "../../../commons/Codification/CodificationModelView";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
     readonly onDomaineSelected: Function;
-    readonly domaines: Array<DomaineModelView>;
+    readonly domaines: Array<CodificationModelView>;
     readonly onDemandeSelected: Function;
-    readonly demandes: Array<DemandeModelView>;
+    readonly demandes: Array<CodificationModelView>;
 }
 
 export default function PriseRendezVous({dataSource, onDomaineSelected, domaines, onDemandeSelected, demandes}: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
-            <Domaine
-                onChoiceSelected={onDomaineSelected}
-                choiceSelected={dataSource.domaineSelected}
-                dataSource={domaines}
-            />
-            <Demande
-                onChoiceSelected={onDemandeSelected}
-                choiceSelected={dataSource.demandeSelected}
-                dataSource={demandes}
-            />
+            <ChoiceSwitcher onChoiceSelected={onDomaineSelected}
+                            choiceSelected={dataSource.domaineSelected}
+                            dataSource={domaines}
+                            label="Votre rendez-vous concerne ?"/>
+            <ChoiceSwitcher onChoiceSelected={onDemandeSelected}
+                            choiceSelected={dataSource.demandeSelected}
+                            dataSource={demandes}
+                            label="Votre demande concerne ?"/>
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );

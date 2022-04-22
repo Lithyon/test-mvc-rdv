@@ -1,11 +1,10 @@
-import DemandeModelView from "../PriseRendezVous/Demande/ModelView/DemandeModelView";
-import DomaineModelView from "../PriseRendezVous/Domaine/ModelView/DomaineModelView";
 import RendezVousSelectionModelView from "./RendezVousSelectionModelView";
 import BandeauPointAccueilModelView from "../BandeauPointAccueil/ModelView/BandeauPointAccueilModelView";
+import CodificationModelView from "../../../commons/Codification/CodificationModelView";
 
 export default interface RendezVousModelView {
-    readonly domaine: Array<DomaineModelView>;
-    readonly demande: Array<DemandeModelView>;
+    readonly domaines: Array<CodificationModelView>;
+    readonly demandes: Array<CodificationModelView>;
     readonly rendezVous: RendezVousSelectionModelView;
     readonly pointAccueil: BandeauPointAccueilModelView;
 }

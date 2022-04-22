@@ -20,8 +20,8 @@ export default function RendezVous({controller}: RendezVousProps) {
                     <Card body>
                         <BandeauPointAccueil dataSource={state.pointAccueil}/>
                         <PriseRendezVous dataSource={state.rendezVous}
-                                         demandes={state.demande}
-                                         domaines={state.domaine}
+                                         demandes={state.demandes}
+                                         domaines={state.domaines}
                                          onDemandeSelected={controller.onDemandeSelected}
                                          onDomaineSelected={controller.onDomaineSelected}/>
                     </Card>
