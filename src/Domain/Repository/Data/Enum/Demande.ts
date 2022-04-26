@@ -6,7 +6,7 @@ export const TypeDemande = {
     SINISTRE: "04",
 }
 
-export const DEMANDES_HORS_SNISTRE = [
+export const DEMANDES_HORS_SINISTRE = [
     TypeDemande.AUTRE,
     TypeDemande.DEVIS,
     TypeDemande.SOUSCRIPTION,
@@ -14,6 +14,6 @@ export const DEMANDES_HORS_SNISTRE = [
 ];
 
 export const DEMANDES_DEFAULT = [
-    ...DEMANDES_HORS_SNISTRE,
+    ...DEMANDES_HORS_SINISTRE,
     TypeDemande.SINISTRE,
 ];

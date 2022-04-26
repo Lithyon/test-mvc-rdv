@@ -1,7 +1,7 @@
 import Demande from "../Model/Demande";
 import {DemandeRepository} from "./DemandeRepository";
 import DemandeDataSource from "./Data/DemandeDataSource";
-import {DEMANDES_DEFAULT, DEMANDES_HORS_SNISTRE} from "./Data/Enum/Demande";
+import {DEMANDES_DEFAULT, DEMANDES_HORS_SINISTRE} from "./Data/Enum/Demande";
 import {TypeDomaine} from "./Data/Enum/Domaine";
 import {DemandeEntity} from "./Data/API/Entity/DemandeAPIEntity";
 
@@ -17,7 +17,7 @@ export class DemandeRepositoryImpl implements DemandeRepository {
             case TypeDomaine.PRO:
                 return new Demande([]);
             case TypeDomaine.SANTE:
-                return new Demande(this._codificationsFilter(await this._dataSource.getDemandes(), DEMANDES_HORS_SNISTRE));
+                return new Demande(this._codificationsFilter(await this._dataSource.getDemandes(), DEMANDES_HORS_SINISTRE));
             default:
                 return new Demande(this._codificationsFilter(await this._dataSource.getDemandes(), DEMANDES_DEFAULT));
         }
