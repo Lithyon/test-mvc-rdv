@@ -32,6 +32,7 @@ export default class RendezVousController
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
+        this.onPrecisionChanged = this.onPrecisionChanged.bind(this);
         this._state = {
             domaines: [],
             demandes: [],
@@ -65,7 +66,7 @@ export default class RendezVousController
         this._state = {
             ...this._state,
             demandes: this._demandes.etat.map(CodificationModelViewBuilder.buildFromCodification),
-            canal:[],
+            canal: [],
             rendezVous: {
                 ...this._state.rendezVous,
                 demandeSelected: "",
@@ -98,6 +99,17 @@ export default class RendezVousController
                 canalSelected,
             },
         };
+        this.raiseStateChanged();
+    }
+
+    onPrecisionChanged(precision: string) {
+        this._state = {
+            ...this._state,
+            rendezVous: {
+                ...this._state.rendezVous,
+                precision,
+            }
+        }
         this.raiseStateChanged();
     }
 

@@ -25,7 +25,8 @@ export default function RendezVous({controller}: RendezVousProps) {
                                          canal={state.canal}
                                          onDomaineSelected={controller.onDomaineSelected}
                                          onDemandeSelected={controller.onDemandeSelected}
-                                         onCanalSelected={controller.onCanalSelected}/>
+                                         onCanalSelected={controller.onCanalSelected}
+                                         onPrecisionChanged={controller.onPrecisionChanged}/>
                     </Card>
                 </Col>
             </Row>

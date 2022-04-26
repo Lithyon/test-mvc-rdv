@@ -3,6 +3,7 @@ import RendezVousSelectionModelView from "../ModelView/RendezVousSelectionModelV
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import CodificationModelView from "../../../commons/Codification/CodificationModelView";
 import {TypeDomaine} from "../../../../Domain/Repository/Data/Enum/Domaine";
+import Textarea from "../../../components/Textarea";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -12,6 +13,7 @@ export interface PriseRendezVousProps {
     readonly demandes: Array<CodificationModelView>;
     readonly onCanalSelected: Function;
     readonly canal: Array<CodificationModelView>;
+    readonly onPrecisionChanged: Function;
 }
 
 export default function PriseRendezVous({
@@ -21,7 +23,8 @@ export default function PriseRendezVous({
                                             onDemandeSelected,
                                             demandes,
                                             onCanalSelected,
-                                            canal
+                                            canal,
+                                            onPrecisionChanged
                                         }: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
@@ -51,6 +54,12 @@ export default function PriseRendezVous({
                             id="canal"
                             label="Vous souhaitez un rendez-vous"
                             labelInfo="Si vous choisissez par téléphone, un conseiller vous rappellera pour fixer un rendez-vous."/>
+            {dataSource.canalSelected &&
+                <Textarea label="Apporter une précision, si nécessaire :"
+                          id="precision"
+                          maxLenght={234}
+                          onChange={onPrecisionChanged}
+                          value={dataSource.precision}/>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );
