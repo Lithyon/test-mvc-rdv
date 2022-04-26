@@ -9,6 +9,9 @@ import RendezVousController from "./RendezVousController";
 import PointAccueilAPIDataSourceImpl from "../../../Domain/Repository/Data/API/PointAccueilAPIDataSourceImpl";
 import {PointAccueilRepositoryImpl} from "../../../Domain/Repository/PointAccueilRepositoryImpl";
 import {PointAccueilService} from "../../../Domain/Services/PointAccueil";
+import {CanalRepositoryImpl} from "../../../Domain/Repository/CanalRepository";
+import {CanalService} from "../../../Domain/Services/Canal";
+import DefaultCanal from "../../../Domain/Repository/Data/Enum/Canal";
 
 export default function RendezVous() {
   const domaineDataSource = new DomaineAPIDataSourceImpl();
@@ -19,11 +22,14 @@ export default function RendezVous() {
   const demandeRepo = new DemandeRepositoryImpl(demandeDataSource);
   const demandeService = new DemandeService(demandeRepo);
 
+  const canalRepo = new CanalRepositoryImpl({defaultCanalDataSource: DefaultCanal});
+  const canalService = new CanalService(canalRepo);
+
   const pointAccueilDataSource = new PointAccueilAPIDataSourceImpl();
   const pointAccueilRepo = new PointAccueilRepositoryImpl(pointAccueilDataSource);
   const pointAccueilService = new PointAccueilService(pointAccueilRepo);
 
-  const controller = new RendezVousController(domaineService, demandeService, pointAccueilService);
+  const controller = new RendezVousController(domaineService, demandeService, pointAccueilService, canalService);
 
   return <RendezVousView controller={controller} />;
 }

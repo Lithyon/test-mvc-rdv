@@ -9,26 +9,33 @@ import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView
 import PointAccueil from "../../../Domain/Model/PointAccueil";
 import {PointAccueilService} from "../../../Domain/Services/PointAccueil";
 import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
+import {CanalService} from "../../../Domain/Services/Canal";
+import Demande from "../../../Domain/Model/Demande";
+import {Canal} from "../../../Domain/Repository/CanalRepository";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
     implements Loadable {
     private _state: RendezVousModelView;
     private _domaines?: Domaine;
-    private _demandes?: Domaine;
+    private _demandes?: Demande;
+    private _canal?: Array<Canal>;
     private _pointAccueil?: PointAccueil;
 
     constructor(
         readonly domaineService: DomaineService,
         readonly demandeService: DemandeService,
-        readonly pointAccueilService: PointAccueilService
+        readonly pointAccueilService: PointAccueilService,
+        readonly canalService: CanalService
     ) {
         super();
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
+        this.onCanalSelected = this.onCanalSelected.bind(this);
         this._state = {
             domaines: [],
             demandes: [],
+            canal: [],
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
@@ -47,7 +54,6 @@ export default class RendezVousController
             rendezVous: {
                 ...this._state.rendezVous,
                 cdBuro,
-                noTel: this._pointAccueil.etat.noTeleLigne,
                 nmCommu: this._pointAccueil.etat.nmCommu,
             }
         };
@@ -59,9 +65,11 @@ export default class RendezVousController
         this._state = {
             ...this._state,
             demandes: this._demandes.etat.map(CodificationModelViewBuilder.buildFromCodification),
+            canal:[],
             rendezVous: {
                 ...this._state.rendezVous,
                 demandeSelected: "",
+                canalSelected: "",
                 domaineSelected,
             }
         };
@@ -69,11 +77,25 @@ export default class RendezVousController
     }
 
     onDemandeSelected(demandeSelected: string) {
+        this._canal = this.canalService.getDefaultCanal();
+        this._state = {
+            ...this._state,
+            canal: this._canal,
+            rendezVous: {
+                ...this._state.rendezVous,
+                canalSelected: "",
+                demandeSelected,
+            },
+        };
+        this.raiseStateChanged();
+    }
+
+    onCanalSelected(canalSelected: string) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                demandeSelected,
+                canalSelected,
             },
         };
         this.raiseStateChanged();

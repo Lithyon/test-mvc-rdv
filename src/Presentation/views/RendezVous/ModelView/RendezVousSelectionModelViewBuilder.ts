@@ -6,6 +6,7 @@ export default class RendezVousSelectionModelViewBuilder {
             cdBuro: "",
             demandeSelected: "",
             domaineSelected: "",
+            canalSelected: "",
             estFilleul: false,
             heure: 0,
             jour: 0,

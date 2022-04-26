@@ -1,6 +1,7 @@
 export default interface RendezVousSelectionModelView {
     readonly domaineSelected: string;
     readonly demandeSelected: string;
+    readonly canalSelected: string;
     readonly cdBuro: string;
     readonly nmCommu: string;
     readonly noSocietaireParrain: string;

@@ -5,6 +5,7 @@ import CodificationModelView from "../../../commons/Codification/CodificationMod
 export default interface RendezVousModelView {
     readonly domaines: Array<CodificationModelView>;
     readonly demandes: Array<CodificationModelView>;
+    readonly canal: Array<CodificationModelView>;
     readonly rendezVous: RendezVousSelectionModelView;
     readonly pointAccueil: BandeauPointAccueilModelView;
 }

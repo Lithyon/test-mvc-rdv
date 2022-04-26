@@ -22,8 +22,10 @@ export default function RendezVous({controller}: RendezVousProps) {
                         <PriseRendezVous dataSource={state.rendezVous}
                                          demandes={state.demandes}
                                          domaines={state.domaines}
+                                         canal={state.canal}
+                                         onDomaineSelected={controller.onDomaineSelected}
                                          onDemandeSelected={controller.onDemandeSelected}
-                                         onDomaineSelected={controller.onDomaineSelected}/>
+                                         onCanalSelected={controller.onCanalSelected}/>
                     </Card>
                 </Col>
             </Row>
