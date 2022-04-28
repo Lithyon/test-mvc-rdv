@@ -12,6 +12,9 @@ import CodificationModelViewBuilder from "../../commons/Codification/Codificatio
 import {CanalService} from "../../../Domain/Services/Canal";
 import Demande from "../../../Domain/Model/Demande";
 import {Canal} from "../../../Domain/Repository/CanalRepository";
+import {RendezVousDisponibilites, RendezVousDisponibilitesResponse} from "../../../Domain/Model/RendezVous";
+import RendezVousDisponibilitesModelViewBuilder from "./ModelView/RendezVousDisponibilitesModelViewBuilder";
+import {RendezVousService} from "../../../Domain/Services/RendezVous";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
@@ -20,13 +23,15 @@ export default class RendezVousController
     private _domaines?: Domaine;
     private _demandes?: Demande;
     private _canal?: Array<Canal>;
+    private _disponibilites?: RendezVousDisponibilitesResponse;
     private _pointAccueil?: PointAccueil;
 
     constructor(
         readonly domaineService: DomaineService,
         readonly demandeService: DemandeService,
         readonly pointAccueilService: PointAccueilService,
-        readonly canalService: CanalService
+        readonly canalService: CanalService,
+        readonly rendezVousService: RendezVousService
     ) {
         super();
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
@@ -37,6 +42,7 @@ export default class RendezVousController
             domaines: [],
             demandes: [],
             canal: [],
+            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildEmpty(),
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
@@ -71,6 +77,7 @@ export default class RendezVousController
                 ...this._state.rendezVous,
                 demandeSelected: "",
                 canalSelected: "",
+                precision: "",
                 domaineSelected,
             }
         };
@@ -85,20 +92,39 @@ export default class RendezVousController
             rendezVous: {
                 ...this._state.rendezVous,
                 canalSelected: "",
+                precision: "",
                 demandeSelected,
             },
         };
         this.raiseStateChanged();
     }
 
-    onCanalSelected(canalSelected: string) {
+    async onCanalSelected(canalSelected: string) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
+                precision: "",
                 canalSelected,
             },
         };
+        this.raiseStateChanged();
+        await this.loadDisponibilites()
+    }
+
+    async loadDisponibilites(dtDebut = new Date()) {
+        this._disponibilites = await this.rendezVousService.getDisponibilites(new RendezVousDisponibilites({
+            cdBuro: this._state.rendezVous.cdBuro,
+            dtDebut,
+            motifs: [{
+                cdDemande: this._state.rendezVous.demandeSelected,
+                cdDomaine: this._state.rendezVous.domaineSelected
+            }]
+        }));
+        this._state = {
+            ...this._state,
+            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites.etat),
+        }
         this.raiseStateChanged();
     }
 

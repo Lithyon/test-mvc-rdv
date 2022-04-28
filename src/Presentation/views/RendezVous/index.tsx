@@ -12,24 +12,31 @@ import {PointAccueilService} from "../../../Domain/Services/PointAccueil";
 import {CanalRepositoryImpl} from "../../../Domain/Repository/CanalRepository";
 import {CanalService} from "../../../Domain/Services/Canal";
 import DefaultCanal from "../../../Domain/Repository/Data/Enum/Canal";
+import RendezVousAPIDataSourceImpl from "../../../Domain/Repository/Data/API/RendezVousAPIDataSourceImpl";
+import {RendezVousRepositoryImpl} from "../../../Domain/Repository/RendezVousRepositoryImpl";
+import {RendezVousService} from "../../../Domain/Services/RendezVous";
 
 export default function RendezVous() {
-  const domaineDataSource = new DomaineAPIDataSourceImpl();
-  const domaineRepo = new DomaineRepositoryImpl(domaineDataSource);
-  const domaineService = new DomaineService(domaineRepo);
+    const domaineDataSource = new DomaineAPIDataSourceImpl();
+    const domaineRepo = new DomaineRepositoryImpl(domaineDataSource);
+    const domaineService = new DomaineService(domaineRepo);
 
-  const demandeDataSource = new DemandeAPIDataSourceImpl();
-  const demandeRepo = new DemandeRepositoryImpl(demandeDataSource);
-  const demandeService = new DemandeService(demandeRepo);
+    const demandeDataSource = new DemandeAPIDataSourceImpl();
+    const demandeRepo = new DemandeRepositoryImpl(demandeDataSource);
+    const demandeService = new DemandeService(demandeRepo);
 
-  const canalRepo = new CanalRepositoryImpl({defaultCanalDataSource: DefaultCanal});
-  const canalService = new CanalService(canalRepo);
+    const canalRepo = new CanalRepositoryImpl({defaultCanalDataSource: DefaultCanal});
+    const canalService = new CanalService(canalRepo);
 
-  const pointAccueilDataSource = new PointAccueilAPIDataSourceImpl();
-  const pointAccueilRepo = new PointAccueilRepositoryImpl(pointAccueilDataSource);
-  const pointAccueilService = new PointAccueilService(pointAccueilRepo);
+    const pointAccueilDataSource = new PointAccueilAPIDataSourceImpl();
+    const pointAccueilRepo = new PointAccueilRepositoryImpl(pointAccueilDataSource);
+    const pointAccueilService = new PointAccueilService(pointAccueilRepo);
 
-  const controller = new RendezVousController(domaineService, demandeService, pointAccueilService, canalService);
+    const rendezVousDataSource = new RendezVousAPIDataSourceImpl();
+    const rendezVousRepo = new RendezVousRepositoryImpl(rendezVousDataSource);
+    const rendezVousService = new RendezVousService(rendezVousRepo);
 
-  return <RendezVousView controller={controller} />;
+    const controller = new RendezVousController(domaineService, demandeService, pointAccueilService, canalService, rendezVousService);
+
+    return <RendezVousView controller={controller}/>;
 }
