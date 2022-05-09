@@ -1,10 +1,8 @@
 import RendezVousDataSource from "../RendezVousDataSource";
 import {myFetch} from "./Commons/TypedResponse";
-import {
-    RendezVousDisponibilitesRequestEntity,
-    RendezVousDisponibilitesResponseEntity,
-    RendezVousRequestEntity
-} from "./Entity/RendezVousAPIEntity";
+import DisponibilitesEntity from "./Entity/DisponibilitesEntity";
+import DisponibilitesRequestEntity from "./Entity/DisponibilitesRequestEntity";
+import {RendezVousRequestEntity} from "./Entity/RendezVousRequestEntity";
 
 const BASE_URL = "/internet-rendezvous-rest";
 
@@ -27,7 +25,7 @@ export default class RendezVousAPIDataSourceImpl
         return data;
     }
 
-    async getDisponibilites(request: RendezVousDisponibilitesRequestEntity): Promise<RendezVousDisponibilitesResponseEntity> {
+    async getDisponibilites(request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
         const response = await myFetch<any>(
             new Request(`${BASE_URL}/unprotected/v2/rendezvous/agence/disponibilites`, {
                 method: "POST",

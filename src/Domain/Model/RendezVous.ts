@@ -1,9 +1,7 @@
-import {
-    RendezVousDisponibilitesRequestEntity,
-    RendezVousDisponibilitesResponseEntity,
-    RendezVousRequestEntity,
-    RendezVousResponseEntity
-} from "../Repository/Data/API/Entity/RendezVousAPIEntity";
+import RendezVousEntity from "../Repository/Data/API/Entity/RendezVousEntity";
+import DisponibilitesEntity from "../Repository/Data/API/Entity/DisponibilitesEntity";
+import DisponibilitesRequestEntity from "../Repository/Data/API/Entity/DisponibilitesRequestEntity";
+import RendezVousRequestEntity from "../Repository/Data/API/Entity/RendezVousRequestEntity";
 
 export interface RendezVousEtat extends RendezVousRequestEntity {
 }
@@ -13,7 +11,7 @@ export default class RendezVous {
     }
 }
 
-export interface RendezVousResponseEtat extends RendezVousResponseEntity {
+export interface RendezVousResponseEtat extends RendezVousEntity {
 }
 
 export class RendezVousResponse {
@@ -21,7 +19,7 @@ export class RendezVousResponse {
     }
 }
 
-export interface RendezVousDisponibilitesEtat extends RendezVousDisponibilitesRequestEntity {
+export interface RendezVousDisponibilitesEtat extends DisponibilitesRequestEntity {
 }
 
 export class RendezVousDisponibilites {
@@ -29,7 +27,7 @@ export class RendezVousDisponibilites {
     }
 }
 
-export interface RendezVousDisponibilitesResponseEtat extends RendezVousDisponibilitesResponseEntity {
+export interface RendezVousDisponibilitesResponseEtat extends DisponibilitesEntity {
 }
 
 export class RendezVousDisponibilitesResponse {

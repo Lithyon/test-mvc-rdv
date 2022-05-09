@@ -1,5 +1,5 @@
-import { DemandeEntity } from "./API/Entity/DemandeAPIEntity";
+import DemandeEntity from "./API/Entity/DemandeEntity";
 
 export default interface DemandeDataSource {
-  getDemandes(): Promise<DemandeEntity>;
+    getDemandes(): Promise<DemandeEntity>;
 }

@@ -1,6 +1,6 @@
-import {Disponibilite} from "../../../../Domain/Repository/Data/API/Entity/RendezVousAPIEntity";
+import JourDisponibleEntity from "../../../../Domain/Repository/Data/API/Entity/JourDisponibleEntity";
 
 export interface RendezVousDisponibilitesModelView {
     aucuneDisponibilite: boolean;
-    disponibilites: Disponibilite[];
+    disponibilites: JourDisponibleEntity[];
 }

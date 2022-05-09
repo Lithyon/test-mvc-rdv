@@ -1,5 +1,5 @@
-import { DomaineEntity } from "./API/Entity/DomaineAPIEntity";
+import DomaineEntity from "./API/Entity/DomaineEntity";
 
 export default interface DomaineDataSource {
-  getDomaines(): Promise<DomaineEntity>;
+    getDomaines(): Promise<DomaineEntity>;
 }
