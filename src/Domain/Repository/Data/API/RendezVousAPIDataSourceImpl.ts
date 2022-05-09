@@ -1,8 +1,8 @@
 import RendezVousDataSource from "../RendezVousDataSource";
-import {myFetch} from "./Commons/TypedResponse";
 import DisponibilitesEntity from "./Entity/DisponibilitesEntity";
 import DisponibilitesRequestEntity from "./Entity/DisponibilitesRequestEntity";
-import {RendezVousRequestEntity} from "./Entity/RendezVousRequestEntity";
+import RendezVousRequestEntity from "./Entity/RendezVousRequestEntity";
+import {myFetch} from "./Commons/MyFetch";
 
 const BASE_URL = "/internet-rendezvous-rest";
 

@@ -1,6 +1,6 @@
 import PointAccueilDataSource from "../PointAccueilDataSource";
 import PointAccueilEntity from "./Entity/PointAccueilEntity";
-import {myFetch} from "./Commons/TypedResponse";
+import {myFetch} from "./Commons/MyFetch";
 
 const BASE_URL = "/internet-espaceclient-rest";
 

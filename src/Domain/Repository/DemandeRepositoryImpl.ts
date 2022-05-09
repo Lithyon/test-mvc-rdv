@@ -3,7 +3,7 @@ import {DemandeRepository} from "./DemandeRepository";
 import DemandeDataSource from "./Data/DemandeDataSource";
 import {DEMANDES_DEFAULT, DEMANDES_HORS_SINISTRE} from "./Data/Enum/Demande";
 import {TypeDomaine} from "./Data/Enum/Domaine";
-import {DemandeEntity} from "./Data/API/Entity/DemandeAPIEntity";
+import DemandeEntity from "./Data/API/Entity/DemandeEntity";
 
 export class DemandeRepositoryImpl implements DemandeRepository {
     private _dataSource: DemandeDataSource;

@@ -1,6 +1,6 @@
 import DomaineDataSource from "../DomaineDataSource";
-import {myFetch} from "./Commons/TypedResponse";
 import DomaineEntity from "./Entity/DomaineEntity";
+import {myFetch} from "./Commons/MyFetch";
 
 const BASE_URL = "/fwk-codification-rest";
 

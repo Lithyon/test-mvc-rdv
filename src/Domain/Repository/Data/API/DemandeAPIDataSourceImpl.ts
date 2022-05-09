@@ -1,6 +1,6 @@
 import DemandeDataSource from "../DemandeDataSource";
-import {myFetch} from "./Commons/TypedResponse";
 import DemandeEntity from "./Entity/DemandeEntity";
+import {myFetch} from "./Commons/MyFetch";
 
 const BASE_URL = "/fwk-codification-rest";
 
