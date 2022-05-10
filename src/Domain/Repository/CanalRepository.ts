@@ -1,9 +1,4 @@
-import {CanalCode} from "../Data/Enum/Canal";
-
-export interface Canal {
-    readonly libelle: string,
-    readonly code: CanalCode
-}
+import {Canal} from "./Data/Enum/Canal";
 
 export interface CanalRepositoryDependencies {
     readonly defaultCanalDataSource: Array<Canal>;

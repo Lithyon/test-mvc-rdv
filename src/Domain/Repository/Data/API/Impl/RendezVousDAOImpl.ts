@@ -1,13 +1,13 @@
-import RendezVousDataSource from "../RendezVousDataSource";
-import DisponibilitesEntity from "./Entity/DisponibilitesEntity";
-import DisponibilitesRequestEntity from "./Entity/DisponibilitesRequestEntity";
-import RendezVousRequestEntity from "./Entity/RendezVousRequestEntity";
-import {myFetch} from "./Commons/MyFetch";
+import RendezVousDAO from "../../RendezVousDAO";
+import DisponibilitesEntity from "../Entity/DisponibilitesEntity";
+import DisponibilitesRequestEntity from "../Entity/DisponibilitesRequestEntity";
+import RendezVousRequestEntity from "../Entity/RendezVousRequestEntity";
+import {myFetch} from "../Commons/MyFetch";
 
 const BASE_URL = "/internet-rendezvous-rest";
 
-export default class RendezVousAPIDataSourceImpl
-    implements RendezVousDataSource {
+export default class RendezVousDAOImpl
+    implements RendezVousDAO {
     async creerRendezVous(request: RendezVousRequestEntity) {
         const response = await myFetch<any>(
             new Request(`${BASE_URL}/v2/rendezvous/agence/creer`, {

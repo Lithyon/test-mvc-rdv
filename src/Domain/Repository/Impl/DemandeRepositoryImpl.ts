@@ -1,14 +1,14 @@
-import Demande from "../Model/Demande";
-import {DemandeRepository} from "./DemandeRepository";
-import DemandeDataSource from "./Data/DemandeDataSource";
-import {DEMANDES_DEFAULT, DEMANDES_HORS_SINISTRE} from "./Data/Enum/Demande";
-import {TypeDomaine} from "./Data/Enum/Domaine";
-import DemandeEntity from "./Data/API/Entity/DemandeEntity";
+import Demande from "../../Model/Demande";
+import DemandeRepository from "../DemandeRepository";
+import DemandeDAO from "../Data/DemandeDAO";
+import {DEMANDES_DEFAULT, DEMANDES_HORS_SINISTRE} from "../Data/Enum/Demande";
+import {TypeDomaine} from "../Data/Enum/Domaine";
+import DemandeEntity from "../Data/API/Entity/DemandeEntity";
 
 export class DemandeRepositoryImpl implements DemandeRepository {
-    private _dataSource: DemandeDataSource;
+    private _dataSource: DemandeDAO;
 
-    constructor(datasource: DemandeDataSource) {
+    constructor(datasource: DemandeDAO) {
         this._dataSource = datasource;
     }
 

@@ -1,10 +1,10 @@
-import DemandeDataSource from "../DemandeDataSource";
-import DemandeEntity from "./Entity/DemandeEntity";
-import {myFetch} from "./Commons/MyFetch";
+import DemandeDAO from "../../DemandeDAO";
+import DemandeEntity from "../Entity/DemandeEntity";
+import {myFetch} from "../Commons/MyFetch";
 
 const BASE_URL = "/fwk-codification-rest";
 
-export default class DemandeAPIDataSourceImpl implements DemandeDataSource {
+export default class DemandeDAOImpl implements DemandeDAO {
     async getDemandes(): Promise<DemandeEntity> {
         const response = await myFetch<any>(
             `${BASE_URL}/codifications/nom/CD_TY_DEMAND_CLIENT?code_cible=5&numero_structures=324&code_langue=fra&code_application=1880`

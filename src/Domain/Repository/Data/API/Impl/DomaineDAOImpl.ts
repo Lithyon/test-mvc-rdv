@@ -1,10 +1,10 @@
-import DomaineDataSource from "../DomaineDataSource";
-import DomaineEntity from "./Entity/DomaineEntity";
-import {myFetch} from "./Commons/MyFetch";
+import DomaineDAO from "../../DomaineDAO";
+import DomaineEntity from "../Entity/DomaineEntity";
+import {myFetch} from "../Commons/MyFetch";
 
 const BASE_URL = "/fwk-codification-rest";
 
-export default class DomaineAPIDataSourceImpl implements DomaineDataSource {
+export default class DomaineDAOImpl implements DomaineDAO {
     async getDomaines(): Promise<DomaineEntity> {
         const response = await myFetch<any>(
             `${BASE_URL}/codifications/nom/CD_DOMAINE_DEMAND?code_cible=5&numero_structures=324&code_langue=fra&code_application=1880`

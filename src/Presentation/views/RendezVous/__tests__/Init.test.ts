@@ -1,7 +1,7 @@
-import PointAccueilAPIDataSourceImpl from "../../../../Domain/Repository/Data/API/PointAccueilAPIDataSourceImpl";
+import PointAccueilDAOImpl from "../../../../Domain/Repository/Data/API/Impl/PointAccueilDAOImpl";
 import { PointAccueilRepositoryImpl } from "../../../../Data/Repository/PointAccueilRepositoryImpl";
-import { PointAccueilService } from "../../../../Domain/Services/PointAccueil";
 import { RendezVousViewModel } from "../RendezVousViewModel";
+import PointAccueilServiceImpl from "../../../../Domain/Services/Impl/PointAccueilServiceImpl";
 
 describe("Section RendezVous: PointAccueil", () => {
   describe("initialisation", () => {
@@ -26,11 +26,11 @@ describe("Section RendezVous: PointAccueil", () => {
 });
 
 function _initContext() {
-  const pointAccueilAPIDataSource = new PointAccueilAPIDataSourceImpl();
+  const pointAccueilAPIDataSource = new PointAccueilDAOImpl();
   const pointAccueilRepository = new PointAccueilRepositoryImpl(
     pointAccueilAPIDataSource
   );
-  const pointAccueilService = new PointAccueilService(pointAccueilRepository);
+  const pointAccueilService = new PointAccueilServiceImpl(pointAccueilRepository);
 
   return new RendezVousViewModel({
     pointAccueilService,

@@ -1,20 +1,20 @@
 import Domaine from "../../../Domain/Model/Domaine";
-import {DemandeService} from "../../../Domain/Services/Demande";
-import {DomaineService} from "../../../Domain/Services/Domaine";
 import BaseController from "../../commons/BaseController";
 import {Loadable} from "../../commons/Loadable";
 import RendezVousModelView from "./ModelView/RendezVousModelView";
 import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
 import PointAccueil from "../../../Domain/Model/PointAccueil";
-import {PointAccueilService} from "../../../Domain/Services/PointAccueil";
 import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
-import {CanalService} from "../../../Domain/Services/Canal";
 import Demande from "../../../Domain/Model/Demande";
-import {Canal} from "../../../Domain/Repository/CanalRepository";
 import {RendezVousDisponibilites, RendezVousDisponibilitesResponse} from "../../../Domain/Model/RendezVous";
 import RendezVousDisponibilitesModelViewBuilder from "./ModelView/RendezVousDisponibilitesModelViewBuilder";
-import {RendezVousService} from "../../../Domain/Services/RendezVous";
+import CanalServiceImpl from "../../../Domain/Services/Impl/CanalServiceImpl";
+import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl";
+import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl";
+import PointAccueilServiceImpl from "../../../Domain/Services/Impl/PointAccueilServiceImpl";
+import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServiceImpl";
+import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
@@ -27,11 +27,11 @@ export default class RendezVousController
     private _pointAccueil?: PointAccueil;
 
     constructor(
-        readonly domaineService: DomaineService,
-        readonly demandeService: DemandeService,
-        readonly pointAccueilService: PointAccueilService,
-        readonly canalService: CanalService,
-        readonly rendezVousService: RendezVousService
+        readonly domaineService: DomaineServiceImpl,
+        readonly demandeService: DemandeServiceImpl,
+        readonly pointAccueilService: PointAccueilServiceImpl,
+        readonly canalService: CanalServiceImpl,
+        readonly rendezVousService: RendezVousServiceImpl
     ) {
         super();
         this.onDomaineSelected = this.onDomaineSelected.bind(this);

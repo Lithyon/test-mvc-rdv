@@ -1,5 +1,5 @@
 import Demande from "../Model/Demande";
 
-export interface DemandeRepository {
+export default interface DemandeRepository {
     getDemandes(domaineSelected: string): Promise<Demande>;
 }

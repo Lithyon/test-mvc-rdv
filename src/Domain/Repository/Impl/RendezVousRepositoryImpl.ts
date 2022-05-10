@@ -1,11 +1,11 @@
-import RendezVousDataSource from "./Data/RendezVousDataSource";
-import RendezVous, {RendezVousDisponibilites, RendezVousDisponibilitesResponse, RendezVousResponse} from "../Model/RendezVous";
-import {RendezVousRepository} from "./RendezVousRepository";
+import RendezVousDAO from "../Data/RendezVousDAO";
+import RendezVous, {RendezVousDisponibilites, RendezVousDisponibilitesResponse, RendezVousResponse} from "../../Model/RendezVous";
+import RendezVousRepository from "../RendezVousRepository";
 
 export class RendezVousRepositoryImpl implements RendezVousRepository {
-    private _dataSource: RendezVousDataSource;
+    private _dataSource: RendezVousDAO;
 
-    constructor(datasource: RendezVousDataSource) {
+    constructor(datasource: RendezVousDAO) {
         this._dataSource = datasource;
     }
 
