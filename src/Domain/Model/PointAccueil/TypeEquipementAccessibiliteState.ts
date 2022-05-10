@@ -1,4 +1,4 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 import EquipementAccessibiliteState from "./EquipementAccessibiliteState";
 
 export default class TypeEquipementAccessibiliteState implements Cloneable<TypeEquipementAccessibiliteState> {

@@ -1,4 +1,4 @@
-import Domaine from "../Model/Domaine";
+import Domaine from "../Model/Domaine/Domaine";
 
 export default interface DomaineRepository {
     getDomaines(): Promise<Domaine>;

@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 import DomaineState from "./DomaineState";
 
 export default class Domaine extends BaseModel<DomaineState> {

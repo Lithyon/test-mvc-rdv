@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 import PointAccueilState from "./PointAccueilState";
 
 export default class PointAccueil extends BaseModel<PointAccueilState> {

@@ -1,5 +1,5 @@
 import HeureDisponibleState from "./HeureDisponibleState";
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class JourDisponibleState implements Cloneable<JourDisponibleState> {
     disponibilitesApresMidi: Array<HeureDisponibleState>;

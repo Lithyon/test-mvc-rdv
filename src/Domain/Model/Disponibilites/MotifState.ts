@@ -1,4 +1,4 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class MotifState implements Cloneable<MotifState> {
     cdDemande: string;

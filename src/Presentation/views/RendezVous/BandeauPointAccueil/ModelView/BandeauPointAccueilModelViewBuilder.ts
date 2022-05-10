@@ -1,4 +1,4 @@
-import { IPointAccueil } from "../../../../../Domain/Model/PointAccueil";
+import { IPointAccueil } from "../../../../../Domain/Model/PointAccueil/PointAccueil";
 import BandeauPointAccueilModelView from "./BandeauPointAccueilModelView";
 
 export default class BandeauPointAccueilModelViewBuilder {

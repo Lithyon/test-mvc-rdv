@@ -1,4 +1,4 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class HeureDisponibleState implements Cloneable<HeureDisponibleState> {
     libelle: string;

@@ -1,4 +1,4 @@
-import PointAccueil from "../../Model/PointAccueil";
+import PointAccueil from "../../Model/PointAccueil/PointAccueil";
 import PointAccueilRepository from "../PointAccueilRepository";
 import PointAccueilDAO from "../Data/PointAccueilDAO";
 

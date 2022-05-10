@@ -1,4 +1,4 @@
-import Demande from "../../Model/Demande";
+import Demande from "../../Model/Demande/Demande";
 import DemandeRepository from "../DemandeRepository";
 import DemandeDAO from "../Data/DemandeDAO";
 import {DEMANDES_DEFAULT, DEMANDES_HORS_SINISTRE} from "../Data/Enum/Demande";

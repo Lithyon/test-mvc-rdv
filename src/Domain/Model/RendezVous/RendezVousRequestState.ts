@@ -1,4 +1,4 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export class RendezVousRequestState implements Cloneable<RendezVousRequestState> {
     cdBuro: string;

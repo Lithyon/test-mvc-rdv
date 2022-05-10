@@ -1,4 +1,4 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class HorairesOuvertutreFermetureState implements Cloneable<HorairesOuvertutreFermetureState> {
     cdJj: string;

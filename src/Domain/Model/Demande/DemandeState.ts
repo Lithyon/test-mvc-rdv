@@ -1,6 +1,6 @@
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
-export default class DomaineState implements Cloneable<DomaineState> {
+export default class DemandeState implements Cloneable<DemandeState> {
     code: string;
     libelle: string;
 
@@ -9,8 +9,8 @@ export default class DomaineState implements Cloneable<DomaineState> {
         this.libelle = libelle;
     }
 
-    clone(): DomaineState {
-        return new DomaineState(
+    clone(): DemandeState {
+        return new DemandeState(
             this.code,
             this.libelle
         );

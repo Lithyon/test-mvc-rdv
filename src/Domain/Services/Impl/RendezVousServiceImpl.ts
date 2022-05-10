@@ -1,8 +1,8 @@
 import RendezVousRepository from "../../Repository/RendezVousRepository";
 import RendezVousService from "../RendezVous";
-import RendezVousRequest from "../../Model/RendezVous";
-import DisponibilitesRequest from "../../Model/DisponibilitesRequest";
-import Disponibilites from "../../Model/Disponibilites";
+import RendezVousRequest from "../../Model/RendezVous/RendezVous";
+import DisponibilitesRequest from "../../Model/Disponibilites/DisponibilitesRequest";
+import Disponibilites from "../../Model/Disponibilites/Disponibilites";
 
 export default class RendezVousServiceImpl implements RendezVousService {
     private rendezVousRepo: RendezVousRepository;

@@ -1,5 +1,5 @@
 import MotifState from "./MotifState";
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class DisponibilitesRequestState implements Cloneable<DisponibilitesRequestState> {
     cdBuro: string;

@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 import {RendezVousRequestState} from "./RendezVousRequestState";
 
 export default class RendezVousRequest extends BaseModel<RendezVousRequestState> {

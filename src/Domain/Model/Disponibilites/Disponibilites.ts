@@ -1,5 +1,5 @@
 import DisponibilitesState from "./DisponibilitesState";
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 
 export default class Disponibilites extends BaseModel<DisponibilitesState> {
     private readonly _state: DisponibilitesState;

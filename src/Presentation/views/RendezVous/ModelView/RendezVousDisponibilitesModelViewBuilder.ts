@@ -1,5 +1,5 @@
 import {RendezVousDisponibilitesModelView} from "./RendezVousDisponibilitesModelView";
-import {IDisponibilites} from "../../../../Domain/Model/Disponibilites";
+import {IDisponibilites} from "../../../../Domain/Model/Disponibilites/Disponibilites";
 
 export default class RendezVousDisponibilitesModelViewBuilder {
     static buildFromDisponibilites(disponibilites: IDisponibilites) {

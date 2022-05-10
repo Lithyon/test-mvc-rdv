@@ -1,5 +1,5 @@
 import JourDisponibleState from "./JourDisponibleState";
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class DisponibilitesState implements Cloneable<DisponibilitesState> {
     aucuneDisponibilite: boolean;

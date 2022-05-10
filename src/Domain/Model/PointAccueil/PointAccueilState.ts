@@ -1,6 +1,6 @@
 import HorairesOuvertutreFermetureState from "./HorairesOuvertutreFermetureState";
 import TypeEquipementAccessibiliteState from "./TypeEquipementAccessibiliteState";
-import Cloneable from "./Clonable";
+import Cloneable from "../Commun/Clonable";
 
 export default class PointAccueilState implements Cloneable<PointAccueilState> {
     cdBuro: string;

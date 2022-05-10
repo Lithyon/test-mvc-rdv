@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 import DisponibilitesRequestState from "./DisponibilitesRequestState";
 
 export default class DisponibilitesRequest extends BaseModel<DisponibilitesRequestState> {

@@ -1,4 +1,4 @@
-import { HorairesOuvertureFermeture } from "../../../../../Domain/Model/PointAccueil";
+import { HorairesOuvertureFermeture } from "../../../../../Domain/Model/PointAccueil/PointAccueil";
 
 export default interface BandeauPointAccueilModelView {
   readonly cdBuro: string;

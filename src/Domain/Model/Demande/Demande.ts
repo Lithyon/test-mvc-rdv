@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import BaseModel from "../Commun/BaseModel";
 import DemandeState from "./DemandeState";
 
 export default class Demande extends BaseModel<DemandeState> {

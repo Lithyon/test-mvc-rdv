@@ -1,9 +1,9 @@
 import RendezVousDAO from "../Data/RendezVousDAO";
 import RendezVousRepository from "../RendezVousRepository";
-import RendezVousRequest from "../../Model/RendezVous";
-import RendezVous from "../../Model/RendezVous";
-import DisponibilitesRequest from "../../Model/DisponibilitesRequest";
-import Disponibilites from "../../Model/Disponibilites";
+import RendezVousRequest from "../../Model/RendezVous/RendezVous";
+import RendezVous from "../../Model/RendezVous/RendezVous";
+import DisponibilitesRequest from "../../Model/Disponibilites/DisponibilitesRequest";
+import Disponibilites from "../../Model/Disponibilites/Disponibilites";
 
 export class RendezVousRepositoryImpl implements RendezVousRepository {
     private _dataSource: RendezVousDAO;

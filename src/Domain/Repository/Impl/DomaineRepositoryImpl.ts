@@ -1,4 +1,4 @@
-import Domaine, {IDomaine} from "../../Model/Domaine";
+import Domaine, {IDomaine} from "../../Model/Domaine/Domaine";
 import DomaineRepository from "../DomaineRepository";
 import DomaineDAO from "../Data/DomaineDAO";
 import {DOMAINES} from "../Data/Enum/Domaine";

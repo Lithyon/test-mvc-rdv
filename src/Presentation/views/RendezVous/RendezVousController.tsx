@@ -1,12 +1,12 @@
-import Domaine from "../../../Domain/Model/Domaine";
+import Domaine from "../../../Domain/Model/Domaine/Domaine";
 import BaseController from "../../commons/BaseController";
 import {Loadable} from "../../commons/Loadable";
 import RendezVousModelView from "./ModelView/RendezVousModelView";
 import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
-import PointAccueil from "../../../Domain/Model/PointAccueil";
+import PointAccueil from "../../../Domain/Model/PointAccueil/PointAccueil";
 import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
-import Demande from "../../../Domain/Model/Demande";
+import Demande from "../../../Domain/Model/Demande/Demande";
 import RendezVousDisponibilitesModelViewBuilder from "./ModelView/RendezVousDisponibilitesModelViewBuilder";
 import CanalServiceImpl from "../../../Domain/Services/Impl/CanalServiceImpl";
 import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl";
@@ -14,8 +14,8 @@ import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl
 import PointAccueilServiceImpl from "../../../Domain/Services/Impl/PointAccueilServiceImpl";
 import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServiceImpl";
 import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
-import DisponibilitesRequest from "../../../Domain/Model/DisponibilitesRequest";
-import Disponibilites from "../../../Domain/Model/Disponibilites";
+import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
+import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
