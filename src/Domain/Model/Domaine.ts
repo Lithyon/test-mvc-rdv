@@ -1,5 +1,11 @@
-import Codification, { CodificationEtat } from "./Codification";
+import BaseModel from "./BaseModel";
+import DomaineState from "./DomaineState";
 
-export interface DomaineEtat extends CodificationEtat {}
+export default class Domaine extends BaseModel<DomaineState> {
+    private readonly _state: DomaineState;
 
-export default class Domaine extends Codification<DomaineEtat> {}
+    constructor(state: DomaineState) {
+        super(state);
+        this._state = state;
+    }
+}

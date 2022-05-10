@@ -1,8 +1,8 @@
 import {RendezVousDisponibilitesModelView} from "./RendezVousDisponibilitesModelView";
-import {RendezVousDisponibilitesResponseEtat} from "../../../../Domain/Model/RendezVous";
+import {IDisponibilites} from "../../../../Domain/Model/Disponibilites";
 
 export default class RendezVousDisponibilitesModelViewBuilder {
-    static buildFromDisponibilites(disponibilites: RendezVousDisponibilitesResponseEtat) {
+    static buildFromDisponibilites(disponibilites: IDisponibilites) {
         return {
             aucuneDisponibilite: disponibilites.aucuneDisponibilite,
             disponibilites: disponibilites.disponibilites

@@ -1,7 +1,10 @@
-import RendezVous, {RendezVousDisponibilites, RendezVousDisponibilitesResponse, RendezVousResponse} from "../Model/RendezVous";
+import RendezVousRequest from "../Model/RendezVous";
+import RendezVous from "../Model/RendezVous";
+import DisponibilitesRequest from "../Model/DisponibilitesRequest";
+import Disponibilites from "../Model/Disponibilites";
 
 export default interface RendezVousRepository {
-    creerRendezVous(rendezvous: RendezVous): Promise<RendezVousResponse>;
+    creerRendezVous(rendezvous: RendezVousRequest): Promise<RendezVous>;
 
-    getDisponibilites(disponibilites: RendezVousDisponibilites): Promise<RendezVousDisponibilitesResponse>
+    getDisponibilites(disponibilites: DisponibilitesRequest): Promise<Disponibilites>
 }

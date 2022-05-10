@@ -1,6 +1,8 @@
 import RendezVousRepository from "../../Repository/RendezVousRepository";
-import RendezVous, {RendezVousDisponibilites, RendezVousDisponibilitesResponse} from "../../Model/RendezVous";
 import RendezVousService from "../RendezVous";
+import RendezVousRequest from "../../Model/RendezVous";
+import DisponibilitesRequest from "../../Model/DisponibilitesRequest";
+import Disponibilites from "../../Model/Disponibilites";
 
 export default class RendezVousServiceImpl implements RendezVousService {
     private rendezVousRepo: RendezVousRepository;
@@ -9,11 +11,11 @@ export default class RendezVousServiceImpl implements RendezVousService {
         this.rendezVousRepo = _rendezVousRepo;
     }
 
-    creerRendezVous(rendezvous: RendezVous) {
+    creerRendezVous(rendezvous: RendezVousRequest) {
         return this.rendezVousRepo.creerRendezVous(rendezvous);
     }
 
-    getDisponibilites(disponibilites: RendezVousDisponibilites): Promise<RendezVousDisponibilitesResponse> {
+    getDisponibilites(disponibilites: DisponibilitesRequest): Promise<Disponibilites> {
         return this.rendezVousRepo.getDisponibilites(disponibilites);
     }
 }

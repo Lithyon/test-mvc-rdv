@@ -1,8 +1,8 @@
-import {CodificationEtat} from "../../../Domain/Model/Codification";
+import {ICodification} from "../../../Domain/Model/Codification";
 import CodificationModelView from "./CodificationModelView";
 
 export default class CodificationModelViewBuilder {
-    static buildFromCodification(codification: CodificationEtat): CodificationModelView {
+    static buildFromCodification(codification: ICodification): CodificationModelView {
         return {
             code: codification.code,
             libelle: codification.libelle,

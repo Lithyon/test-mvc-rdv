@@ -7,7 +7,6 @@ import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView
 import PointAccueil from "../../../Domain/Model/PointAccueil";
 import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
 import Demande from "../../../Domain/Model/Demande";
-import {RendezVousDisponibilites, RendezVousDisponibilitesResponse} from "../../../Domain/Model/RendezVous";
 import RendezVousDisponibilitesModelViewBuilder from "./ModelView/RendezVousDisponibilitesModelViewBuilder";
 import CanalServiceImpl from "../../../Domain/Services/Impl/CanalServiceImpl";
 import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl";
@@ -15,6 +14,8 @@ import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl
 import PointAccueilServiceImpl from "../../../Domain/Services/Impl/PointAccueilServiceImpl";
 import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServiceImpl";
 import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
+import DisponibilitesRequest from "../../../Domain/Model/DisponibilitesRequest";
+import Disponibilites from "../../../Domain/Model/Disponibilites";
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
@@ -23,7 +24,7 @@ export default class RendezVousController
     private _domaines?: Domaine;
     private _demandes?: Demande;
     private _canal?: Array<Canal>;
-    private _disponibilites?: RendezVousDisponibilitesResponse;
+    private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
 
     constructor(
@@ -113,7 +114,7 @@ export default class RendezVousController
     }
 
     async loadDisponibilites(dtDebut = new Date()) {
-        this._disponibilites = await this.rendezVousService.getDisponibilites(new RendezVousDisponibilites({
+        this._disponibilites = await this.rendezVousService.getDisponibilites(new DisponibilitesRequest({
             cdBuro: this._state.rendezVous.cdBuro,
             dtDebut,
             motifs: [{
@@ -123,7 +124,7 @@ export default class RendezVousController
         }));
         this._state = {
             ...this._state,
-            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites.etat),
+            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites.stateClonable),
         }
         this.raiseStateChanged();
     }

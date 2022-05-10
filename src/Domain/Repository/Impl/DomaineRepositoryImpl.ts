@@ -1,4 +1,4 @@
-import Domaine, {DomaineEtat} from "../../Model/Domaine";
+import Domaine, {IDomaine} from "../../Model/Domaine";
 import DomaineRepository from "../DomaineRepository";
 import DomaineDAO from "../Data/DomaineDAO";
 import {DOMAINES} from "../Data/Enum/Domaine";
@@ -15,7 +15,7 @@ export class DomaineRepositoryImpl implements DomaineRepository {
         return new Domaine(this._codificationsFilter(codificationDS.codes));
     }
 
-    private _codificationsFilter(codes: Array<DomaineEtat>) {
+    private _codificationsFilter(codes: Array<IDomaine>) {
         return codes.filter((item) => DOMAINES.includes(item.code));
     }
 }

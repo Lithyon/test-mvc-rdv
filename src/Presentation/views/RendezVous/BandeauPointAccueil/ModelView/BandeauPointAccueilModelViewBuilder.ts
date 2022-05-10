@@ -1,9 +1,9 @@
-import { PointAccueilEtat } from "../../../../../Domain/Model/PointAccueil";
+import { IPointAccueil } from "../../../../../Domain/Model/PointAccueil";
 import BandeauPointAccueilModelView from "./BandeauPointAccueilModelView";
 
 export default class BandeauPointAccueilModelViewBuilder {
   static buildFromPointAccueil(
-    pointAccueil: PointAccueilEtat
+    pointAccueil: IPointAccueil
   ): BandeauPointAccueilModelView {
     return {
       cdBuro: pointAccueil.cdBuro,

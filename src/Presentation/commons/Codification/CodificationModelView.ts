@@ -1,4 +1,4 @@
-import {CodificationEtat} from "../../../Domain/Model/Codification";
+import {ICodification} from "../../../Domain/Model/Codification";
 
-export default interface CodificationModelView extends CodificationEtat {
+export default interface CodificationModelView extends ICodification {
 }
