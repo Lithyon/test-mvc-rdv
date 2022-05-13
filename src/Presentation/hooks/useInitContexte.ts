@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Loadable } from "../commons/Loadable";
+import { IsLoadable } from "../commons/IsLoadable";
 
-export default function useInitContexte(controller: Loadable) {
+export default function useInitContexte(controller: IsLoadable) {
   useEffect(() => controller.onLoad(), [controller]);
 }

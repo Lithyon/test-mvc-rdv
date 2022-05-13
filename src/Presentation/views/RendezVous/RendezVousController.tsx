@@ -1,6 +1,6 @@
 import Domaine from "../../../Domain/Model/Domaine/Domaine";
 import BaseController from "../../commons/BaseController";
-import {Loadable} from "../../commons/Loadable";
+import {IsLoadable} from "../../commons/IsLoadable";
 import RendezVousModelView from "./ModelView/RendezVous/RendezVousModelView";
 import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
@@ -28,7 +28,7 @@ interface RendezVousControllerDependencies {
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
-    implements Loadable {
+    implements IsLoadable {
     private _state: RendezVousModelView;
     private _domaines?: Array<Domaine>;
     private _demandes?: Array<Demande>;
