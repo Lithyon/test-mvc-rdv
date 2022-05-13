@@ -1,9 +1,9 @@
-import Cloneable from "./Clonable";
+import Prototype from "./Prototype";
 
-export default abstract class BaseModel<T extends Cloneable<T>> {
+export default abstract class BaseModel<T extends Prototype<T>> {
     private readonly _stateClonable: T
 
-    constructor(stateClonable: T) {
+    protected constructor(stateClonable: T) {
         this._stateClonable = stateClonable;
     }
 

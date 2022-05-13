@@ -1,11 +1,18 @@
-import BaseModel from "../Commun/BaseModel";
 import DemandeState from "./DemandeState";
+import {CloneDemandeStateExtension} from "./CloneDemandeStateExtension";
+import Prototype from "../Commun/Prototype";
 
-export default class Demande extends BaseModel<DemandeState> {
-    private readonly _state: DemandeState;
+interface InternalDemandeState extends DemandeState, Prototype<DemandeState> {
+}
+
+export default class Demande {
+    private readonly _state: InternalDemandeState;
 
     constructor(state: DemandeState) {
-        super(state);
-        this._state = state;
+        this._state = CloneDemandeStateExtension(state) as InternalDemandeState;
+    }
+
+    get state() {
+        return this._state.clone();
     }
 }

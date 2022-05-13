@@ -1,6 +1,6 @@
 import RendezVousRepository from "../../Repository/RendezVousRepository";
 import RendezVousService from "../RendezVous";
-import RendezVousRequest from "../../Model/RendezVous/RendezVous";
+import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 import DisponibilitesRequest from "../../Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../Model/Disponibilites/Disponibilites";
 

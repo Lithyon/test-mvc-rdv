@@ -36,7 +36,13 @@ export default function RendezVous() {
     const rendezVousRepo = new RendezVousRepositoryImpl(rendezVousDataSource);
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepo);
 
-    const controller = new RendezVousController(domaineService, demandeService, pointAccueilService, canalService, rendezVousService);
+    const controller = new RendezVousController({
+        domaineService,
+        demandeService,
+        pointAccueilService,
+        canalService,
+        rendezVousService
+    });
 
     return <RendezVousView controller={controller}/>;
 }

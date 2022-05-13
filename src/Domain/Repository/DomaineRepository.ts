@@ -1,5 +1,5 @@
 import Domaine from "../Model/Domaine/Domaine";
 
 export default interface DomaineRepository {
-    getDomaines(): Promise<Domaine>;
+    getDomaines(): Promise<Array<Domaine>>;
 }

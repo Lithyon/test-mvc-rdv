@@ -1,11 +1,18 @@
-import BaseModel from "../Commun/BaseModel";
 import PointAccueilState from "./PointAccueilState";
+import Prototype from "../Commun/Prototype";
+import {ClonePointAccueilStateExtension} from "./ClonePointAccueilStateExtension";
 
-export default class PointAccueil extends BaseModel<PointAccueilState> {
-    private readonly _state: PointAccueilState;
+interface InternalPointAccueilState extends PointAccueilState, Prototype<PointAccueilState> {
+}
+
+export default class PointAccueil {
+    private readonly _state: InternalPointAccueilState;
 
     constructor(state: PointAccueilState) {
-        super(state);
-        this._state = state;
+        this._state = ClonePointAccueilStateExtension(state) as InternalPointAccueilState;
+    }
+
+    get state() {
+        return this._state.clone();
     }
 }

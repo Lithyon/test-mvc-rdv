@@ -1,13 +1,15 @@
 import RendezVousSelectionModelView from "./RendezVousSelectionModelView";
 import BandeauPointAccueilModelView from "../BandeauPointAccueil/ModelView/BandeauPointAccueilModelView";
-import CodificationModelView from "../../../commons/Codification/CodificationModelView";
-import {RendezVousDisponibilitesModelView} from "./RendezVousDisponibilitesModelView";
+import {DisponibilitesModelView} from "./Disponibilites/DisponibilitesModelView";
+import DomaineModelView from "./DomaineModelView";
+import DemandeModelView from "./DemandeModelView";
+import CanalModelView from "./CanalModelView";
 
 export default interface RendezVousModelView {
-    readonly domaines: Array<CodificationModelView>;
-    readonly demandes: Array<CodificationModelView>;
-    readonly canal: Array<CodificationModelView>;
-    readonly disponibilites: RendezVousDisponibilitesModelView;
+    readonly domaines: Array<DomaineModelView>;
+    readonly demandes: Array<DemandeModelView>;
+    readonly canal: Array<CanalModelView>;
+    readonly disponibilites: DisponibilitesModelView;
     readonly rendezVous: RendezVousSelectionModelView;
     readonly pointAccueil: BandeauPointAccueilModelView;
 }

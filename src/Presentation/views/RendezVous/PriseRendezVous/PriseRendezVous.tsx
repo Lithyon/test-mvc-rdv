@@ -1,21 +1,23 @@
 import {Alert, Button, Form} from "macif-components";
 import RendezVousSelectionModelView from "../ModelView/RendezVousSelectionModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
-import CodificationModelView from "../../../commons/Codification/CodificationModelView";
 import {TypeDomaine} from "../../../../Domain/Repository/Data/Enum/Domaine";
 import Textarea from "../../../components/Textarea";
-import {RendezVousDisponibilitesModelView} from "../ModelView/RendezVousDisponibilitesModelView";
+import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
+import DomaineModelView from "../ModelView/DomaineModelView";
+import DemandeModelView from "../ModelView/DemandeModelView";
+import CanalModelView from "../ModelView/CanalModelView";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
     readonly onDomaineSelected: Function;
-    readonly domaines: Array<CodificationModelView>;
+    readonly domaines: Array<DomaineModelView>;
     readonly onDemandeSelected: Function;
-    readonly demandes: Array<CodificationModelView>;
+    readonly demandes: Array<DemandeModelView>;
     readonly onCanalSelected: Function;
-    readonly canal: Array<CodificationModelView>;
+    readonly canal: Array<CanalModelView>;
     readonly onPrecisionChanged: Function;
-    readonly disponibilites: RendezVousDisponibilitesModelView;
+    readonly disponibilites: DisponibilitesModelView;
 }
 
 export default function PriseRendezVous({
@@ -45,8 +47,10 @@ export default function PriseRendezVous({
             {dataSource.domaineSelected === TypeDomaine.PRO && <Alert variant="primary">
                 <span className="icon icon-macif-mobile-info-plein mcf-icon--3 mcf-float--left"></span>
                 <p>
-                    Ce cas nécessite une prise en charge particulière. Aussi, nous vous invitons à remplir un nouveau formulaire. Un chargé
-                    de clientèle spécialisé se déplacera sur votre lieu de travail afin d’évaluer avec vous les meilleures solutions d’assurance
+                    Ce cas nécessite une prise en charge particulière. Aussi, nous vous invitons à remplir un nouveau
+                    formulaire. Un chargé
+                    de clientèle spécialisé se déplacera sur votre lieu de travail afin d’évaluer avec vous les
+                    meilleures solutions d’assurance
                     pour votre activité.
                 </p>
                 <Button variant="light">Demander mon rendez-vous Pro</Button>

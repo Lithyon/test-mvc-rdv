@@ -1,7 +1,8 @@
-import Domaine, {IDomaine} from "../../Model/Domaine/Domaine";
+import Domaine from "../../Model/Domaine/Domaine";
 import DomaineRepository from "../DomaineRepository";
 import DomaineDAO from "../Data/DomaineDAO";
 import {DOMAINES} from "../Data/Enum/Domaine";
+import DomaineEntity from "../Data/API/Entity/DomaineEntity";
 
 export class DomaineRepositoryImpl implements DomaineRepository {
     private _dataSource: DomaineDAO;
@@ -12,10 +13,16 @@ export class DomaineRepositoryImpl implements DomaineRepository {
 
     async getDomaines() {
         const codificationDS = await this._dataSource.getDomaines();
-        return new Domaine(this._codificationsFilter(codificationDS.codes));
+        return this._codificationsFilter(codificationDS);
     }
 
-    private _codificationsFilter(codes: Array<IDomaine>) {
-        return codes.filter((item) => DOMAINES.includes(item.code));
+    private _codificationsFilter(domaines: DomaineEntity) {
+        const {codes} = domaines
+        return codes.reduce((prev, curr) => {
+            if (DOMAINES.includes(curr.code)) {
+                prev.push(new Domaine(curr))
+            }
+            return prev;
+        }, new Array<Domaine>());
     }
 }

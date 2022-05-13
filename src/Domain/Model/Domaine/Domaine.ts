@@ -1,11 +1,18 @@
-import BaseModel from "../Commun/BaseModel";
 import DomaineState from "./DomaineState";
+import Prototype from "../Commun/Prototype";
+import {CloneDomaineStateExtension} from "./CloneDomaineStateExtension";
 
-export default class Domaine extends BaseModel<DomaineState> {
-    private readonly _state: DomaineState;
+interface InternalDomaineState extends DomaineState, Prototype<DomaineState> {
+}
+
+export default class Domaine {
+    private readonly _state: InternalDomaineState;
 
     constructor(state: DomaineState) {
-        super(state);
-        this._state = state;
+        this._state = CloneDomaineStateExtension(state) as InternalDomaineState;
+    }
+
+    get state() {
+        return this._state.clone();
     }
 }

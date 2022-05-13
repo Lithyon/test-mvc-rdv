@@ -1,4 +1,4 @@
-import RendezVousRequest from "../Model/RendezVous/RendezVous";
+import RendezVousRequest from "../Model/RendezVous/RendezVousRequest";
 import RendezVous from "../Model/RendezVous/RendezVous";
 import DisponibilitesRequest from "../Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../Model/Disponibilites/Disponibilites";

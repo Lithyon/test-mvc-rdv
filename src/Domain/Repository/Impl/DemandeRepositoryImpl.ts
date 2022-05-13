@@ -13,18 +13,23 @@ export class DemandeRepositoryImpl implements DemandeRepository {
     }
 
     async getDemandes(domaineSelected: string) {
-        switch (domaineSelected) {
-            case TypeDomaine.PRO:
-                return new Demande([]);
-            case TypeDomaine.SANTE:
-                return new Demande(this._codificationsFilter(await this._dataSource.getDemandes(), DEMANDES_HORS_SINISTRE));
-            default:
-                return new Demande(this._codificationsFilter(await this._dataSource.getDemandes(), DEMANDES_DEFAULT));
+        if (domaineSelected === TypeDomaine.PRO) {
+            return [];
         }
+
+        const demandes = await this._dataSource.getDemandes();
+        const filters = domaineSelected === TypeDomaine.SANTE ? DEMANDES_HORS_SINISTRE : DEMANDES_DEFAULT;
+
+        return this._codificationsFilter(demandes, filters);
     }
 
     private _codificationsFilter(demandes: DemandeEntity, filters: Array<string>) {
         const {codes} = demandes;
-        return codes.filter((item) => filters.includes(item.code));
+        return codes.reduce((prev, curr) => {
+            if (filters.includes(curr.code)) {
+                prev.push(new Demande(curr));
+            }
+            return prev;
+        }, new Array<Demande>());
     }
 }

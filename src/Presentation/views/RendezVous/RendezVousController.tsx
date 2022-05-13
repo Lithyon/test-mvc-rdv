@@ -5,9 +5,8 @@ import RendezVousModelView from "./ModelView/RendezVousModelView";
 import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
 import PointAccueil from "../../../Domain/Model/PointAccueil/PointAccueil";
-import CodificationModelViewBuilder from "../../commons/Codification/CodificationModelViewBuilder";
 import Demande from "../../../Domain/Model/Demande/Demande";
-import RendezVousDisponibilitesModelViewBuilder from "./ModelView/RendezVousDisponibilitesModelViewBuilder";
+import DisponibilitesModelViewBuilder from "./ModelView/Disponibilites/DisponibilitesModelViewBuilder";
 import CanalServiceImpl from "../../../Domain/Services/Impl/CanalServiceImpl";
 import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl";
 import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl";
@@ -16,23 +15,29 @@ import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServi
 import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
 import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
+import DemandeModelViewBuilder from "./Builder/DemandeModelViewBuilder";
+import DomaineModelViewBuilder from "./Builder/DomaineModelViewBuilder";
+
+interface RendezVousControllerDependencies {
+    readonly domaineService: DomaineServiceImpl,
+    readonly demandeService: DemandeServiceImpl,
+    readonly pointAccueilService: PointAccueilServiceImpl,
+    readonly canalService: CanalServiceImpl,
+    readonly rendezVousService: RendezVousServiceImpl
+}
 
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
     implements Loadable {
     private _state: RendezVousModelView;
-    private _domaines?: Domaine;
-    private _demandes?: Demande;
+    private _domaines?: Array<Domaine>;
+    private _demandes?: Array<Demande>;
     private _canal?: Array<Canal>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
 
     constructor(
-        readonly domaineService: DomaineServiceImpl,
-        readonly demandeService: DemandeServiceImpl,
-        readonly pointAccueilService: PointAccueilServiceImpl,
-        readonly canalService: CanalServiceImpl,
-        readonly rendezVousService: RendezVousServiceImpl
+        readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
@@ -43,7 +48,7 @@ export default class RendezVousController
             domaines: [],
             demandes: [],
             canal: [],
-            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildEmpty(),
+            disponibilites: DisponibilitesModelViewBuilder.buildEmpty(),
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
@@ -51,28 +56,28 @@ export default class RendezVousController
 
     async onLoad() {
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
-        this._pointAccueil = await this.pointAccueilService.getPointAccueil(cdBuro);
-        this._domaines = await this.domaineService.getDomaines();
+        this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
+        this._domaines = await this.dependencies.domaineService.getDomaines();
         this._state = {
             ...this._state,
-            domaines: this._domaines.etat.map(CodificationModelViewBuilder.buildFromCodification),
+            domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
-                this._pointAccueil.etat
+                this._pointAccueil
             ),
             rendezVous: {
                 ...this._state.rendezVous,
                 cdBuro,
-                nmCommu: this._pointAccueil.etat.nmCommu,
+                nmCommu: this._pointAccueil.state.nmCommu,
             }
         };
         this.raiseStateChanged();
     }
 
     async onDomaineSelected(domaineSelected: string) {
-        this._demandes = await this.demandeService.getDemandes(domaineSelected);
+        this._demandes = await this.dependencies.demandeService.getDemandes(domaineSelected);
         this._state = {
             ...this._state,
-            demandes: this._demandes.etat.map(CodificationModelViewBuilder.buildFromCodification),
+            demandes: this._demandes.map(DemandeModelViewBuilder.buildFromDemande),
             canal: [],
             rendezVous: {
                 ...this._state.rendezVous,
@@ -86,7 +91,7 @@ export default class RendezVousController
     }
 
     onDemandeSelected(demandeSelected: string) {
-        this._canal = this.canalService.getDefaultCanal();
+        this._canal = this.dependencies.canalService.getDefaultCanal();
         this._state = {
             ...this._state,
             canal: this._canal,
@@ -114,7 +119,7 @@ export default class RendezVousController
     }
 
     async loadDisponibilites(dtDebut = new Date()) {
-        this._disponibilites = await this.rendezVousService.getDisponibilites(new DisponibilitesRequest({
+        this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
             cdBuro: this._state.rendezVous.cdBuro,
             dtDebut,
             motifs: [{
@@ -124,7 +129,7 @@ export default class RendezVousController
         }));
         this._state = {
             ...this._state,
-            disponibilites: RendezVousDisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites.stateClonable),
+            disponibilites: DisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites),
         }
         this.raiseStateChanged();
     }

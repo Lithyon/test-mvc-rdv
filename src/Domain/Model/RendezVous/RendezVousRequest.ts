@@ -1,11 +1,18 @@
-import BaseModel from "../Commun/BaseModel";
-import {RendezVousRequestState} from "./RendezVousRequestState";
+import RendezVousRequestState from "./RendezVousRequestState";
+import Prototype from "../Commun/Prototype";
+import {CloneRendezVouRequestStateExtension} from "./CloneRendezVousRequestStateExtension";
 
-export default class RendezVousRequest extends BaseModel<RendezVousRequestState> {
-    private readonly _state: RendezVousRequestState;
+interface InternalRendezVousRequestState extends RendezVousRequestState, Prototype<RendezVousRequestState> {
+}
+
+export default class RendezVousRequest {
+    private readonly _state: InternalRendezVousRequestState;
 
     constructor(state: RendezVousRequestState) {
-        super(state);
-        this._state = state;
+        this._state = CloneRendezVouRequestStateExtension(state) as InternalRendezVousRequestState;
+    }
+
+    get state() {
+        return this._state.clone();
     }
 }

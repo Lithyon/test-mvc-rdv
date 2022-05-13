@@ -1,17 +1,3 @@
-import Cloneable from "../Commun/Clonable";
-
-export default class RendezVousState implements Cloneable<RendezVousState> {
+export default interface RendezVousState {
     listeRejets: Array<String>
-
-    constructor(
-        listeRejets: Array<String>
-    ) {
-        this.listeRejets = listeRejets;
-    }
-
-    clone(): RendezVousState {
-        return new RendezVousState(
-            this.listeRejets
-        );
-    }
 }

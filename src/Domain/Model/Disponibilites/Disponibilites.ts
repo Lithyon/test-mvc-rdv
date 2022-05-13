@@ -1,11 +1,18 @@
 import DisponibilitesState from "./DisponibilitesState";
-import BaseModel from "../Commun/BaseModel";
+import Prototype from "../Commun/Prototype";
+import {CloneDisponibilitesStateExtension} from "./CloneDisponibilitesStateExtension";
 
-export default class Disponibilites extends BaseModel<DisponibilitesState> {
-    private readonly _state: DisponibilitesState;
+interface InternalDisponibilitesState extends DisponibilitesState, Prototype<DisponibilitesState> {
+}
+
+export default class Disponibilites {
+    private readonly _state: InternalDisponibilitesState;
 
     constructor(state: DisponibilitesState) {
-        super(state);
-        this._state = state;
+        this._state = CloneDisponibilitesStateExtension(state) as InternalDisponibilitesState;
+    }
+
+    get state() {
+        return this._state.clone();
     }
 }

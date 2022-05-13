@@ -1,4 +1,4 @@
-export default interface HorairesOuvertutreFermetureState {
+export default interface HorairesOuvertureFermetureModelView {
     cdJj: string;
     hrFermMatin: string;
     hrFermSoir: string;

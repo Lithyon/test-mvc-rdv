@@ -1,38 +1,38 @@
-import { IPointAccueil } from "../../../../../Domain/Model/PointAccueil/PointAccueil";
+import PointAccueil from "../../../../../Domain/Model/PointAccueil/PointAccueil";
 import BandeauPointAccueilModelView from "./BandeauPointAccueilModelView";
 
 export default class BandeauPointAccueilModelViewBuilder {
-  static buildFromPointAccueil(
-    pointAccueil: IPointAccueil
-  ): BandeauPointAccueilModelView {
-    return {
-      cdBuro: pointAccueil.cdBuro,
-      nomPointAccueil: pointAccueil.liBuro,
-      telPointAccueil: pointAccueil.noTeleLigne,
-      noVoie: pointAccueil.noVoie,
-      typeVoie: pointAccueil.liNatuVoie,
-      nomVoie: pointAccueil.nmVoie,
-      codePostal: pointAccueil.cdPost,
-      commune: pointAccueil.nmCommu,
-      srcImgPointAccueil: `https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_${pointAccueil.cdBuro}.jpg`,
-      urlPointAccueil: `https://agence.macif.fr/assurance/proxy.asp?agenceid=${pointAccueil.cdBuro}`,
-      horairesOuvertureFermetures: pointAccueil.horairesOuvertureFermetures,
-    };
-  }
+    static buildFromPointAccueil(
+        pointAccueil: PointAccueil
+    ): BandeauPointAccueilModelView {
+        return {
+            cdBuro: pointAccueil.state.cdBuro,
+            nomPointAccueil: pointAccueil.state.liBuro,
+            telPointAccueil: pointAccueil.state.noTeleLigne,
+            noVoie: pointAccueil.state.noVoie,
+            typeVoie: pointAccueil.state.liNatuVoie,
+            nomVoie: pointAccueil.state.nmVoie,
+            codePostal: pointAccueil.state.cdPost,
+            commune: pointAccueil.state.nmCommu,
+            srcImgPointAccueil: `https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_${pointAccueil.state.cdBuro}.jpg`,
+            urlPointAccueil: `https://agence.macif.fr/assurance/proxy.asp?agenceid=${pointAccueil.state.cdBuro}`,
+            horairesOuvertureFermetures: pointAccueil.state.horairesOuvertureFermetures,
+        };
+    }
 
-  static buildEmpty(): BandeauPointAccueilModelView {
-    return {
-      cdBuro: "",
-      nomPointAccueil: "",
-      telPointAccueil: "",
-      noVoie: "",
-      typeVoie: "",
-      nomVoie: "",
-      codePostal: "",
-      commune: "",
-      srcImgPointAccueil: "",
-      urlPointAccueil: "",
-      horairesOuvertureFermetures: [],
-    };
-  }
+    static buildEmpty(): BandeauPointAccueilModelView {
+        return {
+            cdBuro: "",
+            nomPointAccueil: "",
+            telPointAccueil: "",
+            noVoie: "",
+            typeVoie: "",
+            nomVoie: "",
+            codePostal: "",
+            commune: "",
+            srcImgPointAccueil: "",
+            urlPointAccueil: "",
+            horairesOuvertureFermetures: [],
+        };
+    }
 }
