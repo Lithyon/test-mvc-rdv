@@ -1,26 +1,26 @@
 import PointAccueilEntity from "../src/Domain/Repository/Data/API/Entity/PointAccueilEntity";
 
 const pointAccueilMock: PointAccueilEntity = {
-    cdBuro: "",
-    cdNatuVoie: "",
-    cdNoVoie: "",
-    cdPost: "",
-    cdRegio: "",
-    horairesOuvertureFermetures: [],
-    liBuro: "",
-    liNatuVoie: "",
-    liNoVoie: "",
-    nmCommu: "",
-    nmLieuDit: "",
-    nmVoie: "",
-    noAppart: "",
-    noBat: "",
     noEntree: "",
     noEsca: "",
-    noTeleLigne: "",
-    noVoie: "",
-    typeEquipementAccessibilites: [],
+    noAppart: "",
+    noBat: "",
+    noVoie: "226",
+    cdNatuVoie: "AV",
+    liNatuVoie: "Avenue",
+    nmVoie: "DE LA ROCHELLE",
+    nmLieuDit: "",
+    cdPost: "79000",
+    nmCommu: "NIORT",
     znLocalisSite: "",
+    noTeleLigne: "0969394949",
+    cdBuro: "7901",
+    liBuro: "NIORT",
+    cdRegio: "X",
+    typeEquipementAccessibilites: [],
+    horairesOuvertureFermetures: [],
+    cdNoVoie: "",
+    liNoVoie: ""
 };
 
 export default pointAccueilMock;

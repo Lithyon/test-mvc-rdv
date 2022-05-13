@@ -66,7 +66,7 @@ export default class RendezVousController
             ),
             rendezVous: {
                 ...this._state.rendezVous,
-                cdBuro,
+                cdBuro: this._pointAccueil.state.cdBuro,
                 nmCommu: this._pointAccueil.state.nmCommu,
             }
         };

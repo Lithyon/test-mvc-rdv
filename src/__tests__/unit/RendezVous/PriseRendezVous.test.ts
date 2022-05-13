@@ -24,7 +24,7 @@ import disponibilitesMock from "../../../../mocks/DisponibilitesMock";
 import rendezVousMock from "../../../../mocks/RendezVousMock";
 
 describe('Prise de rendez vous', function () {
-    it("Doit selectionner un rendez vous quand disponibilité", (done) => {
+    it("doit proposer une disponibilité", (done) => {
         const controller = init(demandeMock, domaineMock, pointAccueilMock, disponibilitesMock, rendezVousMock);
 
         controller.subscribeStateChanged(() => {
@@ -34,6 +34,32 @@ describe('Prise de rendez vous', function () {
                 libelle: "ffe",
                 code: "01"
             });
+            expect(state.pointAccueil).toStrictEqual({
+                cdBuro: "7901",
+                codePostal: "79000",
+                commune: "NIORT",
+                horairesOuvertureFermetures: [],
+                noVoie: "226",
+                nomPointAccueil: "NIORT",
+                nomVoie: "DE LA ROCHELLE",
+                srcImgPointAccueil: "https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_7901.jpg",
+                telPointAccueil: "0969394949",
+                typeVoie: "Avenue",
+                urlPointAccueil: "https://agence.macif.fr/assurance/proxy.asp?agenceid=7901"
+            });
+            expect(state.rendezVous).toStrictEqual({
+                cdBuro: "7901",
+                canalSelected: "",
+                demandeSelected: "",
+                domaineSelected: "",
+                estFilleul: false,
+                heure: 0,
+                jour: 0,
+                nmCommu: "NIORT",
+                noSocietaireParrain: "",
+                noTel: "",
+                precision: ""
+            })
             done();
         })
     });
