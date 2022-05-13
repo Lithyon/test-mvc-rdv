@@ -1,8 +1,8 @@
 import Domaine from "../../../Domain/Model/Domaine/Domaine";
 import BaseController from "../../commons/BaseController";
 import {Loadable} from "../../commons/Loadable";
-import RendezVousModelView from "./ModelView/RendezVousModelView";
-import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVousSelectionModelViewBuilder";
+import RendezVousModelView from "./ModelView/RendezVous/RendezVousModelView";
+import RendezVousSelectionModelViewBuilder from "./ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
 import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView/BandeauPointAccueilModelViewBuilder";
 import PointAccueil from "../../../Domain/Model/PointAccueil/PointAccueil";
 import Demande from "../../../Domain/Model/Demande/Demande";
@@ -15,8 +15,8 @@ import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServi
 import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
 import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
-import DemandeModelViewBuilder from "./Builder/DemandeModelViewBuilder";
-import DomaineModelViewBuilder from "./Builder/DomaineModelViewBuilder";
+import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder";
+import DomaineModelViewBuilder from "./ModelView/Domaine/DomaineModelViewBuilder";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,

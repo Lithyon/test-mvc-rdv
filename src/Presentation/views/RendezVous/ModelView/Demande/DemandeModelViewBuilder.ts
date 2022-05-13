@@ -1,5 +1,5 @@
-import Demande from "../../../../Domain/Model/Demande/Demande";
-import DemandeModelView from "../ModelView/DemandeModelView";
+import Demande from "../../../../../Domain/Model/Demande/Demande";
+import DemandeModelView from "./DemandeModelView";
 
 export default class DemandeModelViewBuilder {
     static buildFromDemande(demande: Demande): DemandeModelView {

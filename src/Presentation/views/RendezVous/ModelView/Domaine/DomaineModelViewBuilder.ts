@@ -1,5 +1,5 @@
-import Domaine from "../../../../Domain/Model/Domaine/Domaine";
-import DomaineModelView from "../ModelView/DomaineModelView";
+import Domaine from "../../../../../Domain/Model/Domaine/Domaine";
+import DomaineModelView from "./DomaineModelView";
 
 export default class DomaineModelViewBuilder {
     static buildFromDomaine(domaine: Domaine): DomaineModelView {

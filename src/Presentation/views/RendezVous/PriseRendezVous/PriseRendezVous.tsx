@@ -1,11 +1,11 @@
 import {Alert, Button, Form} from "macif-components";
-import RendezVousSelectionModelView from "../ModelView/RendezVousSelectionModelView";
+import RendezVousSelectionModelView from "../ModelView/RendezVous/RendezVousSelectionModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {TypeDomaine} from "../../../../Domain/Repository/Data/Enum/Domaine";
 import Textarea from "../../../components/Textarea";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
-import DomaineModelView from "../ModelView/DomaineModelView";
-import DemandeModelView from "../ModelView/DemandeModelView";
+import DomaineModelView from "../ModelView/Domaine/DomaineModelView";
+import DemandeModelView from "../ModelView/Demande/DemandeModelView";
 import CanalModelView from "../ModelView/CanalModelView";
 
 export interface PriseRendezVousProps {
