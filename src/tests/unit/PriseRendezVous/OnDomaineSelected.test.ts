@@ -2,6 +2,7 @@ import {init} from "./common/Init";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 import demandeStub from "../../../../mocks/DemandeStub";
 import {TypeDomaine} from "../../../Domain/Repository/Data/Enum/Domaine";
+import {TypeDemande} from "../../../Domain/Repository/Data/Enum/Demande";
 
 describe('Prise de rendez vous - OnDomaineSelected', function () {
 
@@ -35,6 +36,22 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
         });
 
         controller.onDomaineSelected(TypeDomaine.PRO);
+    });
+
+    it("ne doit pas fournir une liste de choix de demandes avec un sinistre si le domaine santé est sélectionné", (done) => {
+        const expected = undefined;
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.demandes.find(i => i.code === TypeDemande.SINISTRE)).toBe(expected);
+
+            done();
+        });
+
+        controller.onDomaineSelected(TypeDomaine.SANTE);
     });
 
     it("doit fournir un code quand un choix de domaines est récupéré", (done) => {

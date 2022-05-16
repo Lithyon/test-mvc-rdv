@@ -6,7 +6,7 @@ const demandeStub: DemandeEntity = {
         code: "01"
     }, {
         libelle: "ffee",
-        code: "02"
+        code: "04"
     }],
     nomCodification: "fefe"
 };
