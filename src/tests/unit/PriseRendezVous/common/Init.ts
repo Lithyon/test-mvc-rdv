@@ -25,7 +25,7 @@ import RendezVousController from "../../../../Presentation/views/RendezVous/Rend
 
 export function init(
     demande: DemandeEntity = demandeStub,
-    domaine: DomaineEntity = domaineStub,
+    domaine:DomaineEntity = domaineStub,
     pointAccueil: PointAccueilEntity = pointAccueilStub,
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub) {

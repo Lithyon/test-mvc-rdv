@@ -13,7 +13,16 @@ const disponibilitesStub: DisponibilitesEntity = {
                     libelle: "14h15"
                 }
             ],
-            disponibilitesMatin: [],
+            disponibilitesMatin: [
+                {
+                    valeur: 840,
+                    libelle: "8h"
+                },
+                {
+                    valeur: 855,
+                    libelle: "8h15"
+                }
+            ],
             ferie: false,
             jour: new Date("2022-05-16")
         }
