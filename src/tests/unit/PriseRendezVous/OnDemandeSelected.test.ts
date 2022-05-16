@@ -1,5 +1,7 @@
 import {init} from "./common/Init";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
+import {TypeDemande} from "../../../Domain/Repository/Data/Enum/Demande";
+import {TypeDomaine} from "../../../Domain/Repository/Data/Enum/Domaine";
 
 describe('Prise de rendez vous - OnDomaineSelected', function () {
 
@@ -8,18 +10,20 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
 
         const controller = init();
 
-        controller.onDomaineSelected("01");
-
         controller.subscribeStateChanged(() => {
             controller.unsubscribeStateChanged();
+
             controller.subscribeStateChanged(() => {
                 const actual = controller.state;
-
                 expect(actual.rendezVous.demandeSelected).toBe(expected);
+
                 done();
             });
-            controller.onDemandeSelected("01");
+
+            controller.onDemandeSelected(TypeDemande.DEVIS);
         });
+
+        controller.onDomaineSelected(TypeDomaine.AUTO);
     });
 
 });

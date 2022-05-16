@@ -10,7 +10,7 @@ const rendezVousRequestStub: RendezVousRequestEntity = {
     nmCommu: "NIORT",
     noSocietaireParrain: "",
     noTel: "",
-    precision: ""
+    precision: "test"
 };
 
 export default rendezVousRequestStub;
