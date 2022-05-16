@@ -10,7 +10,7 @@ export default abstract class BaseController<T> implements Controller<T> {
     this._onStateChanged = onStateChanged;
   }
 
-  unsubscribeStateChanged(onStateChanged: StateChangedHandler): void {
+  unsubscribeStateChanged(onStateChanged?: StateChangedHandler): void {
     this._onStateChanged = undefined;
   }
 

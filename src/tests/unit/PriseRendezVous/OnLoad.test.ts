@@ -1,7 +1,10 @@
 import pointAccueilStub from "../../../../mocks/PointAccueilStub";
 import {init} from "./common/Init";
+import domaineStub from "../../../../mocks/DomaineStub";
+import rendezVousStub from "../../../../mocks/RendezVousStub";
+import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 
-describe('Prise de rendez vous - OnLoad - PointAccueil', function () {
+describe('Prise de rendez vous - OnLoad', function () {
 
     it("doit fournir le bon code d'agence quand le point d'accueil est récupéré", (done) => {
         const expected = pointAccueilStub.cdBuro;
@@ -167,4 +170,80 @@ describe('Prise de rendez vous - OnLoad - PointAccueil', function () {
             done();
         })
     });
+
+    it("doit fournir une liste de choix de domaines", (done) => {
+        const expected = domaineStub.codes;
+
+        const controller = init();
+
+        controller.onLoad();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.domaines.length).toBe(expected.length);
+            done();
+        });
+    });
+
+    it("doit fournir un code quand un choix de domaines est récupéré", (done) => {
+        const expected = domaineStub.codes[0].code;
+
+        const controller = init();
+
+        controller.onLoad();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.domaines[0].code).toBe(expected);
+            done();
+        });
+    });
+
+    it("doit fournir un libelle quand un choix de domaines est récupéré", (done) => {
+        const expected = domaineStub.codes[0].libelle;
+
+        const controller = init();
+
+        controller.onLoad();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.domaines[0].libelle).toBe(expected);
+            done();
+        });
+    });
+
+    it("doit renseigner le code bureau pour la prise de rendez vous", function (done) {
+        const expected = rendezVousRequestStub.cdBuro;
+
+        const controller = init();
+
+        controller.onLoad();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.rendezVous.cdBuro).toBe(expected);
+            done();
+        });
+    });
+    
+    it("doit renseigner le nom de la commune de l'agence pour la prise de rendez vous", function (done) {
+        const expected = rendezVousRequestStub.nmCommu;
+
+        const controller = init();
+
+        controller.onLoad();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.rendezVous.nmCommu).toBe(expected);
+            done();
+        });
+    });
+
 });
