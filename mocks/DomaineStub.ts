@@ -1,6 +1,6 @@
 import DomaineEntity from "../src/Domain/Repository/Data/API/Entity/DomaineEntity";
 
-const domaineMock: DomaineEntity = {
+const domaineStub: DomaineEntity = {
     codes: [{
         libelle: "ffe",
         code: "01"
@@ -11,4 +11,4 @@ const domaineMock: DomaineEntity = {
     nomCodification: "fefe"
 };
 
-export default domaineMock;
+export default domaineStub;

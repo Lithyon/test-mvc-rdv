@@ -1,6 +1,6 @@
 import PointAccueilEntity from "../src/Domain/Repository/Data/API/Entity/PointAccueilEntity";
 
-const pointAccueilMock: PointAccueilEntity = {
+const pointAccueilStub: PointAccueilEntity = {
     noEntree: "",
     noEsca: "",
     noAppart: "",
@@ -23,4 +23,4 @@ const pointAccueilMock: PointAccueilEntity = {
     liNoVoie: ""
 };
 
-export default pointAccueilMock;
+export default pointAccueilStub;

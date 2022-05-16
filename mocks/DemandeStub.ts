@@ -1,6 +1,6 @@
 import DemandeEntity from "../src/Domain/Repository/Data/API/Entity/DemandeEntity";
 
-const demandeMock: DemandeEntity = {
+const demandeStub: DemandeEntity = {
     codes: [{
         libelle: "ffe",
         code: "01"
@@ -8,4 +8,4 @@ const demandeMock: DemandeEntity = {
     nomCodification: "fefe"
 };
 
-export default demandeMock;
+export default demandeStub;

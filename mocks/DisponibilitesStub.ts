@@ -1,8 +1,8 @@
 import DisponibilitesEntity from "../src/Domain/Repository/Data/API/Entity/DisponibilitesEntity";
 
-const disponibilitesMock: DisponibilitesEntity = {
+const disponibilitesStub: DisponibilitesEntity = {
     disponibilites: [],
     aucuneDisponibilite: true
 };
 
-export default disponibilitesMock;
+export default disponibilitesStub;
