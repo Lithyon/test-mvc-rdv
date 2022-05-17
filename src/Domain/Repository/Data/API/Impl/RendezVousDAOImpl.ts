@@ -27,7 +27,7 @@ export default class RendezVousDAOImpl
 
     async getDisponibilites(request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
         const response = await myFetch<any>(
-            new Request(`${BASE_URL}/unprotected/v2/rendezvous/agence/disponibilites`, {
+            new Request(`${BASE_URL}/unprotected/v3/rendezvous/disponibilites`, {
                 method: "POST",
                 headers: new Headers({
                     "Content-Type": "application/JSON",

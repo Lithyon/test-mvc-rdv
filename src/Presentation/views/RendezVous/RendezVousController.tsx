@@ -128,12 +128,11 @@ export default class RendezVousController
         }
 
         this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
+            canalRendezVous: this._state.rendezVous.canalSelected,
             cdBuro: this._state.rendezVous.cdBuro,
+            cdDemande: this._state.rendezVous.demandeSelected,
+            cdDomaine: this._state.rendezVous.domaineSelected,
             dtDebut,
-            motifs: [{
-                cdDemande: this._state.rendezVous.demandeSelected,
-                cdDomaine: this._state.rendezVous.domaineSelected
-            }]
         }));
 
         this._state = {

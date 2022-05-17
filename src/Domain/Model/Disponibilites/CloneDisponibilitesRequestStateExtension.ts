@@ -3,9 +3,11 @@ import DisponibilitesRequestState from "./DisponibilitesRequestState";
 
 function cloneDisponibilitesRequestState(): DisponibilitesRequestState {
     return {
+        canalRendezVous: this.canalRendezVous,
         cdBuro: this.cdBuro,
+        cdDemande: this.cdDemande,
+        cdDomaine: this.cdDomaine,
         dtDebut: this.dtDebut,
-        motifs: this.motifs
     };
 }
 
