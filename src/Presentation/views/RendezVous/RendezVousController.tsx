@@ -44,6 +44,7 @@ export default class RendezVousController
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
         this.onPrecisionChanged = this.onPrecisionChanged.bind(this);
+        this.onJourSelected = this.onJourSelected.bind(this);
         this._state = {
             domaines: [],
             demandes: [],
@@ -119,6 +120,12 @@ export default class RendezVousController
     }
 
     async loadDisponibilites(dtDebut = new Date()) {
+        const dtJour = new Date();
+
+        if (dtDebut.getDate() === dtJour.getDate()) {
+            dtDebut.setDate(dtJour.getDate() + 1);
+        }
+
         this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
             cdBuro: this._state.rendezVous.cdBuro,
             dtDebut,
@@ -127,10 +134,12 @@ export default class RendezVousController
                 cdDomaine: this._state.rendezVous.domaineSelected
             }]
         }));
+
         this._state = {
             ...this._state,
             disponibilites: DisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites),
         }
+
         this.raiseStateChanged();
     }
 
@@ -140,6 +149,17 @@ export default class RendezVousController
             rendezVous: {
                 ...this._state.rendezVous,
                 precision,
+            }
+        }
+        this.raiseStateChanged();
+    }
+
+    onJourSelected(jourSelected: Date) {
+        this._state = {
+            ...this._state,
+            rendezVous: {
+                ...this._state.rendezVous,
+                jour: jourSelected,
             }
         }
         this.raiseStateChanged();

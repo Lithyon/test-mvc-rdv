@@ -11,7 +11,7 @@ describe('Prise de rendez vous - LoadDisponibilites', function () {
         controller.subscribeStateChanged(() => {
 
             const actual = controller.state;
-            expect(actual.disponibilites.disponibilites[0].jour).toBe(expected);
+            expect(actual.disponibilites.disponibilites[0].jour).toStrictEqual(expected);
 
             done();
         });

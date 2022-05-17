@@ -19,7 +19,7 @@ export default class DisponibilitesModelViewBuilder {
                     disponibilitesApresMidi: value.disponibilitesApresMidi.map(DisponibilitesModelViewBuilder.buildHeureDispo),
                     disponibilitesMatin: value.disponibilitesMatin.map(DisponibilitesModelViewBuilder.buildHeureDispo),
                     ferie: value.ferie,
-                    jour: value.jour
+                    jour: new Date(value.jour)
                 }
             })
         }

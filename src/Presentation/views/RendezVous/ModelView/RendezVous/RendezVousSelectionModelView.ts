@@ -9,5 +9,5 @@ export default interface RendezVousSelectionModelView {
     readonly precision: string;
     readonly estFilleul: boolean;
     readonly heure: number;
-    readonly jour: number;
+    readonly jour: Date;
 }

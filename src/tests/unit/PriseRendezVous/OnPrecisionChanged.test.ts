@@ -1,7 +1,7 @@
 import {init} from "./common/Init";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 
-describe('Prise de rendez vous - OnPrecisionSelected', function () {
+describe('Prise de rendez vous - OnPrecisionChanged', function () {
 
     it("doit récupérer le message complémentaire que saisie l'utilisateur", function (done) {
         const expected = rendezVousRequestStub.precision;

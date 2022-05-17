@@ -9,7 +9,7 @@ export default class RendezVousSelectionModelViewBuilder {
             canalSelected: "",
             estFilleul: false,
             heure: 0,
-            jour: 0,
+            jour: new Date(),
             nmCommu: "",
             noSocietaireParrain: "",
             noTel: "",

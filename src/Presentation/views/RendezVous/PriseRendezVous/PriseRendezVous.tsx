@@ -7,6 +7,7 @@ import {DisponibilitesModelView} from "../ModelView/Disponibilites/Disponibilite
 import DomaineModelView from "../ModelView/Domaine/DomaineModelView";
 import DemandeModelView from "../ModelView/Demande/DemandeModelView";
 import CanalModelView from "../ModelView/CanalModelView";
+import Agenda from "../Agenda";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -18,6 +19,7 @@ export interface PriseRendezVousProps {
     readonly canal: Array<CanalModelView>;
     readonly onPrecisionChanged: Function;
     readonly disponibilites: DisponibilitesModelView;
+    readonly onJourSelected: Function;
 }
 
 export default function PriseRendezVous({
@@ -29,7 +31,8 @@ export default function PriseRendezVous({
                                             onCanalSelected,
                                             canal,
                                             onPrecisionChanged,
-                                            disponibilites
+                                            disponibilites,
+                                            onJourSelected
                                         }: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
@@ -68,10 +71,9 @@ export default function PriseRendezVous({
                               maxLenght={234}
                               onChange={onPrecisionChanged}
                               value={dataSource.precision}/>
-                    <Form.Group>
-                        <Form.Label>Coucou</Form.Label>
-                        <pre><code>{JSON.stringify(disponibilites, null, 4)}</code></pre>
-                    </Form.Group>
+                    <Agenda choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
+                            dataSource={disponibilites}/>
+                    <pre><code>{JSON.stringify(disponibilites, null, 4)}</code></pre>
                 </>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
