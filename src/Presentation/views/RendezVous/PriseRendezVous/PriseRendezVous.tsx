@@ -20,6 +20,7 @@ export interface PriseRendezVousProps {
     readonly onPrecisionChanged: Function;
     readonly disponibilites: DisponibilitesModelView;
     readonly onJourSelected: Function;
+    readonly loadDisponibilites: Function
 }
 
 export default function PriseRendezVous({
@@ -32,7 +33,8 @@ export default function PriseRendezVous({
                                             canal,
                                             onPrecisionChanged,
                                             disponibilites,
-                                            onJourSelected
+                                            onJourSelected,
+                                            loadDisponibilites
                                         }: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
@@ -72,7 +74,7 @@ export default function PriseRendezVous({
                               onChange={onPrecisionChanged}
                               value={dataSource.precision}/>
                     <Agenda choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
-                            dataSource={disponibilites}/>
+                            dataSource={disponibilites} onClick={loadDisponibilites}/>
                     <pre><code>{JSON.stringify(disponibilites, null, 4)}</code></pre>
                 </>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>

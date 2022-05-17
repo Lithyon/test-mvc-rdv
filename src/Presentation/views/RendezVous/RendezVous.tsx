@@ -28,7 +28,8 @@ export default function RendezVous({controller}: RendezVousProps) {
                                          onCanalSelected={controller.onCanalSelected}
                                          onPrecisionChanged={controller.onPrecisionChanged}
                                          disponibilites={state.disponibilites}
-                                         onJourSelected={controller.onJourSelected}/>
+                                         onJourSelected={controller.onJourSelected}
+                                         loadDisponibilites={controller.loadDisponibilites}/>
                     </Card>
                 </Col>
             </Row>

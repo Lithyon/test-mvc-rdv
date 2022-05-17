@@ -45,6 +45,7 @@ export default class RendezVousController
         this.onCanalSelected = this.onCanalSelected.bind(this);
         this.onPrecisionChanged = this.onPrecisionChanged.bind(this);
         this.onJourSelected = this.onJourSelected.bind(this);
+        this.loadDisponibilites = this.loadDisponibilites.bind(this);
         this._state = {
             domaines: [],
             demandes: [],
