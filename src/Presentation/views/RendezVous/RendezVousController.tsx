@@ -12,7 +12,7 @@ import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl
 import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl";
 import PointAccueilServiceImpl from "../../../Domain/Services/Impl/PointAccueilServiceImpl";
 import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServiceImpl";
-import {Canal} from "../../../Domain/Repository/Data/Enum/Canal";
+import {Canal, CanalCode} from "../../../Domain/Repository/Data/Enum/Canal";
 import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
 import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder";
@@ -107,7 +107,7 @@ export default class RendezVousController
         this.raiseStateChanged();
     }
 
-    async onCanalSelected(canalSelected: string) {
+    async onCanalSelected(canalSelected: CanalCode) {
         this._state = {
             ...this._state,
             rendezVous: {

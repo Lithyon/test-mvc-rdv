@@ -10,7 +10,7 @@ export default class RendezVousDAOImpl
     implements RendezVousDAO {
     async creerRendezVous(request: RendezVousRequestEntity) {
         const response = await myFetch<any>(
-            new Request(`${BASE_URL}/v2/rendezvous/agence/creer`, {
+            new Request(`${BASE_URL}/v3/rendezvous/agence/creer`, {
                 method: "POST",
                 headers: new Headers({
                     "Content-Type": "application/JSON",

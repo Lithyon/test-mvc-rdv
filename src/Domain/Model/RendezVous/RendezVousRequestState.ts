@@ -1,4 +1,8 @@
+import {CanalCode} from "../../Repository/Data/Enum/Canal";
+
 export default interface RendezVousRequestState {
+    adresseMail: string;
+    canalRendezVous: CanalCode;
     cdBuro: string;
     cdDemande: string;
     cdDomaine: string;

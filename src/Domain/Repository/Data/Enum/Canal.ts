@@ -1,7 +1,7 @@
 export enum CanalCode {
-    TELEPHONE = "tel",
-    AGENCE = "agence",
-    VISIO = "visio"
+    TELEPHONE = "TELEPHONE",
+    AGENCE = "PHYSIQUE",
+    VISIO = "VISIO"
 }
 
 export interface Canal {

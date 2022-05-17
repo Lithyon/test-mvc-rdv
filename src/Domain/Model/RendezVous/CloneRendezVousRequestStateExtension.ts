@@ -3,6 +3,8 @@ import RendezVousRequestState from "./RendezVousRequestState";
 
 function cloneRendezVousRequestState(): RendezVousRequestState {
     return {
+        adresseMail: this.adresseMail,
+        canalRendezVous: this.canalSelected,
         cdBuro: this.cdBuro,
         cdDemande: this.cdDemande,
         cdDomaine: this.cdDomaine,
