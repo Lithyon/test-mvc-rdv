@@ -3,6 +3,7 @@ import RendezVousSelectionModelView from "./RendezVousSelectionModelView";
 export default class RendezVousSelectionModelViewBuilder {
     static buildEmpty(): RendezVousSelectionModelView {
         return {
+            proposerChoixHoraire: false,
             adresseMail: "",
             canalSelected: "",
             cdBuro: "",

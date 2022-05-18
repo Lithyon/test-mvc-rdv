@@ -6,7 +6,7 @@ import HeureDisponibleModelView from "./HeureDisponibleModelView";
 export default class DisponibilitesModelViewBuilder {
     static buildHeureDispo(heureDispo: HeureDisponibleState): HeureDisponibleModelView {
         return {
-            code: heureDispo.valeur.toString(),
+            code: heureDispo.valeur,
             libelle: heureDispo.libelle
         }
     }

@@ -1,6 +1,7 @@
 import {CanalCode} from "../../../../../Domain/Repository/Data/Enum/Canal";
 
 export default interface RendezVousSelectionModelView {
+    readonly proposerChoixHoraire: boolean;
     readonly adresseMail: string;
     readonly canalSelected: CanalCode | string;
     readonly domaineSelected: string;

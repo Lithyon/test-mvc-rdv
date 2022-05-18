@@ -27,7 +27,7 @@ describe('Prise de rendez vous - LoadDisponibilites', function () {
         controller.subscribeStateChanged(() => {
 
             const actual = controller.state;
-            expect(actual.disponibilites.disponibilites[0].disponibilitesMatin[0].code).toBe(expected.toString());
+            expect(actual.disponibilites.disponibilites[0].disponibilitesMatin[0].code).toBe(expected);
 
             done();
         });
@@ -59,7 +59,7 @@ describe('Prise de rendez vous - LoadDisponibilites', function () {
         controller.subscribeStateChanged(() => {
 
             const actual = controller.state;
-            expect(actual.disponibilites.disponibilites[0].disponibilitesApresMidi[0].code).toBe(expected.toString());
+            expect(actual.disponibilites.disponibilites[0].disponibilitesApresMidi[0].code).toBe(expected);
 
             done();
         });

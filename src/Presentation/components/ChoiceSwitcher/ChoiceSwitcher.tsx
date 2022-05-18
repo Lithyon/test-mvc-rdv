@@ -2,17 +2,18 @@ import {Badge, Form} from "macif-components";
 
 export interface Choice {
     readonly libelle: string;
-    readonly code: string;
+    readonly code: string | number;
     readonly isNew?: boolean;
 }
 
 export interface ChoiceSwitcherProps<T extends Choice> {
     readonly onChoiceSelected: Function;
-    readonly choiceSelected: string;
+    readonly choiceSelected: string | number;
     readonly dataSource: Array<T>;
     readonly label: string;
     readonly labelInfo?: string;
     readonly id: string;
+    readonly nbSwitchers?: number;
 }
 
 export default function ChoiceSwitcher<T extends Choice>({
@@ -21,7 +22,8 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                              choiceSelected,
                                                              label,
                                                              labelInfo,
-                                                             id
+                                                             id,
+                                                             nbSwitchers = 3
                                                          }: ChoiceSwitcherProps<T>) {
     return dataSource.length > 0 ? (
         <Form.Group controlId={id}>
@@ -29,7 +31,7 @@ export default function ChoiceSwitcher<T extends Choice>({
             {labelInfo && <Form.Text muted>{labelInfo}</Form.Text>}
             <Form.SwitcherGroup
                 type="radio"
-                nbSwitchers={3}
+                nbSwitchers={nbSwitchers}
                 name={id}
                 value={choiceSelected}
                 onChange={onChoiceSelected}
@@ -37,7 +39,8 @@ export default function ChoiceSwitcher<T extends Choice>({
                 {dataSource.map((value, index) => {
                     return (
                         <Form.Switcher key={index} value={value.code}>
-                            {value.isNew && <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
+                            {value.isNew &&
+                                <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}
                         </Form.Switcher>
                     );

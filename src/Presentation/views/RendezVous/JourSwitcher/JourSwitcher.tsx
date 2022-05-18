@@ -3,14 +3,14 @@ import {DisponibilitesModelView} from "../ModelView/Disponibilites/Disponibilite
 import {useEffect, useState} from "react";
 import { add, sub, isBefore, isAfter } from 'date-fns';
 
-export interface AgendaProps {
+export interface JourSwitcherProps {
     readonly choiceSelected: Date,
     readonly onChoiceSelected: Function,
     readonly dataSource: DisponibilitesModelView,
     readonly onClick: Function
 }
 
-export default function Agenda({choiceSelected, onChoiceSelected, dataSource, onClick}: AgendaProps) {
+export default function JourSwitcher({choiceSelected, onChoiceSelected, dataSource, onClick}: JourSwitcherProps) {
     const {disponibilites, aucuneDisponibilite} = dataSource;
 
     const [datePrev, setDatePrev] = useState(new Date());

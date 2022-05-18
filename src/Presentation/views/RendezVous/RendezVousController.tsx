@@ -46,6 +46,7 @@ export default class RendezVousController
         this.onPrecisionChanged = this.onPrecisionChanged.bind(this);
         this.onJourSelected = this.onJourSelected.bind(this);
         this.loadDisponibilites = this.loadDisponibilites.bind(this);
+        this.onHeureSelected = this.onHeureSelected.bind(this);
         this._state = {
             domaines: [],
             demandes: [],
@@ -138,6 +139,10 @@ export default class RendezVousController
         this._state = {
             ...this._state,
             disponibilites: DisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites),
+            rendezVous: {
+                ...this._state.rendezVous,
+                proposerChoixHoraire: false
+            }
         }
 
         this.raiseStateChanged();
@@ -159,7 +164,20 @@ export default class RendezVousController
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
+                heure: 0,
                 jour: jourSelected,
+                proposerChoixHoraire: true
+            }
+        }
+        this.raiseStateChanged();
+    }
+
+    onHeureSelected(heureSelected: number) {
+        this._state = {
+            ...this._state,
+            rendezVous: {
+                ...this._state.rendezVous,
+                heure: heureSelected,
             }
         }
         this.raiseStateChanged();
