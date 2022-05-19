@@ -11,6 +11,7 @@ import JourSwitcher from "../JourSwitcher";
 import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
+import Connexion from "../Connexion";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -91,6 +92,7 @@ export default function PriseRendezVous({
                                    proposerChoixHoraire={dataSource.proposerChoixHoraire}
                                    onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
                 </>}
+            {dataSource.heure !== 0 && <Connexion/>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );
