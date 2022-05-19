@@ -1,16 +1,26 @@
-import {Button, Form} from "macif-components";
+import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
 import {useEffect, useState} from "react";
-import { add, sub, isBefore, isAfter } from 'date-fns';
+import {add, isAfter, isBefore, sub} from 'date-fns';
+import {LoadingObservable} from "../../../commons/LoadingObservable";
+import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
+import useLoaderObservable from "../../../hooks/useLoaderObservable";
 
 export interface JourSwitcherProps {
     readonly choiceSelected: Date,
     readonly onChoiceSelected: Function,
     readonly dataSource: DisponibilitesModelView,
-    readonly onClick: Function
+    readonly onClick: Function,
+    readonly onLoadDisponibilitesObserver: LoadingObservable
 }
 
-export default function JourSwitcher({choiceSelected, onChoiceSelected, dataSource, onClick}: JourSwitcherProps) {
+export default function JourSwitcher({
+                                         choiceSelected,
+                                         onChoiceSelected,
+                                         dataSource,
+                                         onClick,
+                                         onLoadDisponibilitesObserver
+                                     }: JourSwitcherProps) {
     const {disponibilites, aucuneDisponibilite} = dataSource;
 
     const [datePrev, setDatePrev] = useState(new Date());
@@ -18,10 +28,12 @@ export default function JourSwitcher({choiceSelected, onChoiceSelected, dataSour
     const [disabledPrev, setDisabledPrev] = useState(true);
     const [disabledNext, setDisabledNext] = useState(true);
 
+    const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
+
     useEffect(() => {
         if (disponibilites.length > 0) {
             const dtJour = new Date();
-            const dispoDebut = sub(new Date(disponibilites[0].jour), { days: 6})
+            const dispoDebut = sub(new Date(disponibilites[0].jour), {days: 6})
             const dispoFin = new Date(disponibilites[disponibilites.length - 1].jour);
             const dtMax = add(dtJour, {months: 3});
 
@@ -48,7 +60,7 @@ export default function JourSwitcher({choiceSelected, onChoiceSelected, dataSour
                     disabled={disabledPrev}>
                 <i className="icon-fleche_gauche"/>
             </Button>
-            <Form.SwitcherGroup
+            {isOver ? <Form.SwitcherGroup
                 type="radio"
                 nbSwitchers={6}
                 name="jour"
@@ -68,8 +80,9 @@ export default function JourSwitcher({choiceSelected, onChoiceSelected, dataSour
                         </Form.Switcher>
                     )
                 })}
-            </Form.SwitcherGroup>
-            <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickNext} disabled={disabledNext}>
+            </Form.SwitcherGroup> : <Loader ball className="mcf-mx--auto"/>}
+            <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickNext}
+                    disabled={disabledNext}>
                 <i className="icon-fleche-droite"/>
             </Button>
         </div>

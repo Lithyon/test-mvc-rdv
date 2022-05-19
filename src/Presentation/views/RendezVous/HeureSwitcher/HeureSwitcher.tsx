@@ -1,13 +1,17 @@
 import JourDisponibleModelView from "../ModelView/Disponibilites/JourDisponibleModelView";
 import {Alert, Card, Form} from "macif-components";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
+import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
+import useLoaderObservable from "../../../hooks/useLoaderObservable";
+import {LoadingObservable} from "../../../commons/LoadingObservable";
 
 export interface HeureSwitcherProps {
     readonly onChoiceSelected: Function;
     readonly choiceSelected: number;
     readonly jourSelected: Date;
     readonly dataSource: Array<JourDisponibleModelView>;
-    readonly proposerChoixHoraire: boolean
+    readonly proposerChoixHoraire: boolean;
+    readonly onLoadDisponibilitesObserver: LoadingObservable
 }
 
 export default function HeureSwitcher({
@@ -15,12 +19,15 @@ export default function HeureSwitcher({
                                           choiceSelected,
                                           dataSource,
                                           jourSelected,
-                                          proposerChoixHoraire
+                                          proposerChoixHoraire,
+                                          onLoadDisponibilitesObserver
                                       }: HeureSwitcherProps) {
     const disponibilitesMatin = dataSource.find(item => item.jour === jourSelected)?.disponibilitesMatin || [];
     const disponibilitesApresMidi = dataSource.find(item => item.jour === jourSelected)?.disponibilitesApresMidi || [];
 
-    return proposerChoixHoraire ? (<Card body bg="gris-lune">
+    const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
+
+    return proposerChoixHoraire && isOver ? (<Card body bg="gris-lune">
         <Form as={'div'}>
             <Form.Group>
                 <Form.Label>Puis votre horaire</Form.Label>

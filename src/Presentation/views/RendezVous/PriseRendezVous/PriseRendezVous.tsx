@@ -9,6 +9,7 @@ import DemandeModelView from "../ModelView/Demande/DemandeModelView";
 import CanalModelView from "../ModelView/CanalModelView";
 import JourSwitcher from "../JourSwitcher";
 import HeureSwitcher from "../HeureSwitcher";
+import {LoadingObservable} from "../../../commons/LoadingObservable";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -22,7 +23,8 @@ export interface PriseRendezVousProps {
     readonly disponibilites: DisponibilitesModelView;
     readonly onJourSelected: Function;
     readonly loadDisponibilites: Function;
-    readonly onHeureSelected: Function
+    readonly onHeureSelected: Function;
+    readonly onLoadDisponibilitesObserver: LoadingObservable;
 }
 
 export default function PriseRendezVous({
@@ -37,7 +39,8 @@ export default function PriseRendezVous({
                                             disponibilites,
                                             onJourSelected,
                                             loadDisponibilites,
-                                            onHeureSelected
+                                            onHeureSelected,
+                                            onLoadDisponibilitesObserver
                                         }: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
@@ -77,10 +80,12 @@ export default function PriseRendezVous({
                               onChange={onPrecisionChanged}
                               value={dataSource.precision}/>
                     <JourSwitcher choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
-                                  dataSource={disponibilites} onClick={loadDisponibilites}/>
+                                  dataSource={disponibilites} onClick={loadDisponibilites}
+                                  onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
                     <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
                                    dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
-                                   proposerChoixHoraire={dataSource.proposerChoixHoraire}/>
+                                   proposerChoixHoraire={dataSource.proposerChoixHoraire}
+                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
                 </>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>

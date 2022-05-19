@@ -17,6 +17,8 @@ import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/Disponib
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
 import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder";
 import DomaineModelViewBuilder from "./ModelView/Domaine/DomaineModelViewBuilder";
+import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
+import {LoadingObservable} from "../../commons/LoadingObservable";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -35,6 +37,7 @@ export default class RendezVousController
     private _canal?: Array<Canal>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
+    private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
 
     constructor(
         readonly dependencies: RendezVousControllerDependencies
@@ -47,6 +50,7 @@ export default class RendezVousController
         this.onJourSelected = this.onJourSelected.bind(this);
         this.loadDisponibilites = this.loadDisponibilites.bind(this);
         this.onHeureSelected = this.onHeureSelected.bind(this);
+        this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._state = {
             domaines: [],
             demandes: [],
@@ -122,6 +126,7 @@ export default class RendezVousController
     }
 
     async loadDisponibilites(dtDebut = new Date()) {
+        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: false});
         const dtJour = new Date();
 
         if (dtDebut.getDate() === dtJour.getDate()) {
@@ -145,6 +150,7 @@ export default class RendezVousController
             }
         }
 
+        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
         this.raiseStateChanged();
     }
 
@@ -185,5 +191,9 @@ export default class RendezVousController
 
     get state(): RendezVousModelView {
         return this._state;
+    }
+
+    get onLoadDisponibilitesObserver(): LoadingObservable {
+        return this._onLoadDisponibilitesObserver;
     }
 }
