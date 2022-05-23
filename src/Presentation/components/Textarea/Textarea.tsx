@@ -1,5 +1,5 @@
 import {Form} from "macif-components";
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 
 export interface TextareaProps {
     readonly label: string;
@@ -15,10 +15,11 @@ export default function Textarea({label, id, maxLenght, onChange, value}: Textar
     const infoCounter = count <= 1 ? `${count} caractère restant` : `${count} caractères restants`;
 
     const recalculateCounter = (event: ChangeEvent<HTMLInputElement>) => {
-        setCount(maxLenght - event.target.value.length);
         setInputValue(event.target.value);
-        onChange(inputValue)
+        setCount(maxLenght - event.target.value.length);
     }
+
+    useEffect(() => onChange(inputValue),[inputValue])
 
     return <Form.Group controlId={id}>
         <Form.Label>{label}</Form.Label>
