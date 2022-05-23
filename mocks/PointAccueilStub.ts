@@ -1,4 +1,4 @@
-import PointAccueilEntity from "../src/Domain/Repository/Data/API/Entity/PointAccueilEntity";
+import PointAccueilEntity from "../src/Domain/Data/API/Entity/PointAccueilEntity";
 
 const pointAccueilStub: PointAccueilEntity = {
     noEntree: "",

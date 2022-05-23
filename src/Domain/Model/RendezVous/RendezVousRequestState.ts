@@ -1,4 +1,4 @@
-import {CanalCode} from "../../Repository/Data/Enum/Canal";
+import {CanalCode} from "../../Data/Enum/Canal";
 
 export default interface RendezVousRequestState {
     adresseMail: string;

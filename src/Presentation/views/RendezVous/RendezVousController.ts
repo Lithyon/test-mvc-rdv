@@ -7,18 +7,18 @@ import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView
 import PointAccueil from "../../../Domain/Model/PointAccueil/PointAccueil";
 import Demande from "../../../Domain/Model/Demande/Demande";
 import DisponibilitesModelViewBuilder from "./ModelView/Disponibilites/DisponibilitesModelViewBuilder";
-import CanalServiceImpl from "../../../Domain/Services/Impl/CanalServiceImpl";
-import DemandeServiceImpl from "../../../Domain/Services/Impl/DemandeServiceImpl";
-import DomaineServiceImpl from "../../../Domain/Services/Impl/DomaineServiceImpl";
-import PointAccueilServiceImpl from "../../../Domain/Services/Impl/PointAccueilServiceImpl";
-import RendezVousServiceImpl from "../../../Domain/Services/Impl/RendezVousServiceImpl";
-import {Canal, CanalCode} from "../../../Domain/Repository/Data/Enum/Canal";
+import {Canal, CanalCode} from "../../../Domain/Data/Enum/Canal";
 import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
 import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder";
 import DomaineModelViewBuilder from "./ModelView/Domaine/DomaineModelViewBuilder";
 import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
 import {LoadingObservable} from "../../commons/LoadingObservable";
+import {DomaineServiceImpl} from "../../../Domain/Services/Domaine";
+import {DemandeServiceImpl} from "../../../Domain/Services/Demande";
+import {PointAccueilServiceImpl} from "../../../Domain/Services/PointAccueil";
+import {CanalServiceImpl} from "../../../Domain/Services/Canal";
+import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,

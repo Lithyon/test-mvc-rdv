@@ -1,4 +1,4 @@
-import DemandeEntity from "../src/Domain/Repository/Data/API/Entity/DemandeEntity";
+import DemandeEntity from "../src/Domain/Data/API/Entity/DemandeEntity";
 
 const demandeStub: DemandeEntity = {
     codes: [{

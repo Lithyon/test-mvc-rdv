@@ -1,4 +1,4 @@
-import DomaineEntity from "../src/Domain/Repository/Data/API/Entity/DomaineEntity";
+import DomaineEntity from "../src/Domain/Data/API/Entity/DomaineEntity";
 
 const domaineStub: DomaineEntity = {
     codes: [{

@@ -1,5 +1,5 @@
-import RendezVousRequestEntity from "../src/Domain/Repository/Data/API/Entity/RendezVousRequestEntity";
-import {CanalCode} from "../src/Domain/Repository/Data/Enum/Canal";
+import RendezVousRequestEntity from "../src/Domain/Data/API/Entity/RendezVousRequestEntity";
+import {CanalCode} from "../src/Domain/Data/Enum/Canal";
 
 const rendezVousRequestStub: RendezVousRequestEntity = {
     adresseMail: "test@test.fr",

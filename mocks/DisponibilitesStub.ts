@@ -1,4 +1,4 @@
-import DisponibilitesEntity from "../src/Domain/Repository/Data/API/Entity/DisponibilitesEntity";
+import DisponibilitesEntity from "../src/Domain/Data/API/Entity/DisponibilitesEntity";
 
 const disponibilitesStub: DisponibilitesEntity = {
     disponibilites: [

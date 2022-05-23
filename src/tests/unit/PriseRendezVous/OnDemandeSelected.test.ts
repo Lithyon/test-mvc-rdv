@@ -1,7 +1,7 @@
 import {init} from "./common/Init";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
-import {TypeDemande} from "../../../Domain/Repository/Data/Enum/Demande";
-import {TypeDomaine} from "../../../Domain/Repository/Data/Enum/Domaine";
+import {TypeDemande} from "../../../Domain/Data/Enum/Demande";
+import {TypeDomaine} from "../../../Domain/Data/Enum/Domaine";
 
 describe('Prise de rendez vous - OnDomaineSelected', function () {
 

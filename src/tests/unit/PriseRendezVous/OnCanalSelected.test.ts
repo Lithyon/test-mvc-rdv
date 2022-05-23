@@ -1,6 +1,6 @@
 import {init} from "./common/Init";
 import disponibilitesStub from "../../../../mocks/DisponibilitesStub";
-import {CanalCode} from "../../../Domain/Repository/Data/Enum/Canal";
+import {CanalCode} from "../../../Domain/Data/Enum/Canal";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 
 describe('Prise de rendez vous - OnCanalSelected', function () {

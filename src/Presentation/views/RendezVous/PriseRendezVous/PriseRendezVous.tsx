@@ -1,7 +1,7 @@
 import {Alert, Button, Form} from "macif-components";
 import RendezVousSelectionModelView from "../ModelView/RendezVous/RendezVousSelectionModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
-import {TypeDomaine} from "../../../../Domain/Repository/Data/Enum/Domaine";
+import {TypeDomaine} from "../../../../Domain/Data/Enum/Domaine";
 import Textarea from "../../../components/Textarea";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
 import DomaineModelView from "../ModelView/Domaine/DomaineModelView";

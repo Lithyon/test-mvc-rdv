@@ -1,4 +1,4 @@
-import RendezVousEntity from "../src/Domain/Repository/Data/API/Entity/RendezVousEntity";
+import RendezVousEntity from "../src/Domain/Data/API/Entity/RendezVousEntity";
 
 const rendezVousStub: RendezVousEntity = {
     listeRejets: []
