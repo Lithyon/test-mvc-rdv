@@ -1,4 +1,4 @@
-import {Alert, Button, Form, Loader} from "macif-components";
+import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
 import {useEffect, useState} from "react";
 import {add, isAfter, isBefore, sub} from 'date-fns';
@@ -8,6 +8,7 @@ import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
 import useErrorObservable from "../../../hooks/useErrorObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
+import DisplayError from "../../../components/DisplayError";
 
 export interface JourSwitcherProps {
     readonly choiceSelected: Date,
@@ -60,9 +61,7 @@ export default function JourSwitcher({
     }
 
     if (hasError) {
-        return <Alert variant="danger">
-            Un erreur est survenu
-        </Alert>
+        return <DisplayError/>
     }
 
     return <Form.Group controlId="jour">
