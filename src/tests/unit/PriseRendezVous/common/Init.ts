@@ -21,7 +21,7 @@ import {RendezVousRepositoryImpl} from "../../../../Domain/Repository/RendezVous
 import DisponibilitesRequestEntity from "../../../../Domain/Data/API/Entity/DisponibilitesRequestEntity";
 import RendezVousRequestEntity from "../../../../Domain/Data/API/Entity/RendezVousRequestEntity";
 import RendezVousServiceImpl from "../../../../Domain/Services/RendezVous/RendezVousServiceImpl";
-import RendezVousController from "../../../../Presentation/views/RendezVous/RendezVousController";
+import RendezVousController from "../../../../Presentation/pages/RendezVous/RendezVousController";
 
 export function init(
     demande: DemandeEntity = demandeStub,

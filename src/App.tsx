@@ -1,8 +1,8 @@
 import React from "react";
-import RendezVous from "./Presentation/views/RendezVous";
+import Pages from "./Presentation/pages";
 
 function App() {
-  return <RendezVous />;
+  return <Pages />;
 }
 
 export default App;
