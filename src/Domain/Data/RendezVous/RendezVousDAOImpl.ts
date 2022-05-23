@@ -18,10 +18,15 @@ export default class RendezVousDAOImpl
                 body: JSON.stringify(request)
             })
         );
+
         const {data, messages} = await response.json();
-        // if (messages) {
-        //   throw new Error("toto");
-        // }
+
+        if (messages) {
+            messages.map((error: any) => {
+                throw new Error(error)
+            });
+        }
+
         return data;
     }
 
@@ -37,9 +42,13 @@ export default class RendezVousDAOImpl
         );
 
         const {data, messages} = await response.json();
-        // if (messages) {
-        //   throw new Error("toto");
-        // }
+
+        if (messages) {
+            messages.map((error: any) => {
+                throw new Error(error)
+            });
+        }
+
         return data;
     }
 }

@@ -10,10 +10,15 @@ export default class PointAccueilDAOImpl
         const response = await myFetch<any>(
             `${BASE_URL}/unprotected/espace-client/pointaccueil/_lire_point_accueil?cdBuro=${cdBuro}`
         );
+
         const {data, messages} = await response.json();
-        // if (messages) {
-        //   throw new Error("toto");
-        // }
+
+        if (messages) {
+            messages.map((error: any) => {
+                throw new Error(error)
+            });
+        }
+
         return data;
     }
 }
