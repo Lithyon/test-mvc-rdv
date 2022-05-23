@@ -14,6 +14,8 @@ import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder
 import DomaineModelViewBuilder from "./ModelView/Domaine/DomaineModelViewBuilder";
 import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
 import {LoadingObservable} from "../../commons/LoadingObservable";
+import ErrorObservableImpl from "../../commons/Impl/ErrorObservableImpl";
+import {ErrorObservable} from "../../commons/ErrorObservable";
 import {DomaineServiceImpl} from "../../../Domain/Services/Domaine";
 import {DemandeServiceImpl} from "../../../Domain/Services/Demande";
 import {PointAccueilServiceImpl} from "../../../Domain/Services/PointAccueil";
@@ -38,6 +40,7 @@ export default class RendezVousController
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
+    private readonly _hasErrorObserver: ErrorObservableImpl;
 
     constructor(
         readonly dependencies: RendezVousControllerDependencies
@@ -51,6 +54,7 @@ export default class RendezVousController
         this.loadDisponibilites = this.loadDisponibilites.bind(this);
         this.onHeureSelected = this.onHeureSelected.bind(this);
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
+        this._hasErrorObserver = new ErrorObservableImpl();
         this._state = {
             domaines: [],
             demandes: [],
@@ -126,31 +130,36 @@ export default class RendezVousController
     }
 
     async loadDisponibilites(dtDebut = new Date()) {
-        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: false});
-        const dtJour = new Date();
+        try {
+            this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: false});
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            const dtJour = new Date();
 
-        if (dtDebut.getDate() === dtJour.getDate()) {
-            dtDebut.setDate(dtJour.getDate() + 1);
-        }
-
-        this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
-            canalRendezVous: this._state.rendezVous.canalSelected,
-            cdBuro: this._state.rendezVous.cdBuro,
-            cdDemande: this._state.rendezVous.demandeSelected,
-            cdDomaine: this._state.rendezVous.domaineSelected,
-            dtDebut,
-        }));
-
-        this._state = {
-            ...this._state,
-            disponibilites: DisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites),
-            rendezVous: {
-                ...this._state.rendezVous,
-                proposerChoixHoraire: false
+            if (dtDebut.getDate() === dtJour.getDate()) {
+                dtDebut.setDate(dtJour.getDate() + 1);
             }
-        }
 
-        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
+            this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
+                canalRendezVous: this._state.rendezVous.canalSelected,
+                cdBuro: this._state.rendezVous.cdBuro,
+                cdDemande: this._state.rendezVous.demandeSelected,
+                cdDomaine: this._state.rendezVous.domaineSelected,
+                dtDebut,
+            }));
+
+            this._state = {
+                ...this._state,
+                disponibilites: DisponibilitesModelViewBuilder.buildFromDisponibilites(this._disponibilites),
+                rendezVous: {
+                    ...this._state.rendezVous,
+                    proposerChoixHoraire: false
+                }
+            }
+
+            this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
+        } catch (error) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
         this.raiseStateChanged();
     }
 
@@ -195,5 +204,9 @@ export default class RendezVousController
 
     get onLoadDisponibilitesObserver(): LoadingObservable {
         return this._onLoadDisponibilitesObserver;
+    }
+
+    get hasErrorObserver(): ErrorObservable {
+        return this._hasErrorObserver;
     }
 }

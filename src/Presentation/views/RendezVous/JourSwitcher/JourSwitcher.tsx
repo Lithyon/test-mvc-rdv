@@ -5,13 +5,18 @@ import {add, isAfter, isBefore, sub} from 'date-fns';
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
+import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
+import useErrorObservable from "../../../hooks/useErrorObservable";
+import {ErrorObservable} from "../../../commons/ErrorObservable";
+import DisplayError from "../../../components/DisplayError";
 
 export interface JourSwitcherProps {
     readonly choiceSelected: Date,
     readonly onChoiceSelected: Function,
     readonly dataSource: DisponibilitesModelView,
     readonly onClick: Function,
-    readonly onLoadDisponibilitesObserver: LoadingObservable
+    readonly onLoadDisponibilitesObserver: LoadingObservable,
+    readonly hasErrorObserver: ErrorObservable
 }
 
 export default function JourSwitcher({
@@ -19,9 +24,10 @@ export default function JourSwitcher({
                                          onChoiceSelected,
                                          dataSource,
                                          onClick,
-                                         onLoadDisponibilitesObserver
+                                         onLoadDisponibilitesObserver,
+                                         hasErrorObserver
                                      }: JourSwitcherProps) {
-    const {disponibilites, aucuneDisponibilite} = dataSource;
+    const {disponibilites} = dataSource;
 
     const [datePrev, setDatePrev] = useState(new Date());
     const [dateNext, setDateNext] = useState(new Date());
@@ -29,6 +35,7 @@ export default function JourSwitcher({
     const [disabledNext, setDisabledNext] = useState(true);
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
+    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorObserver)
 
     useEffect(() => {
         if (disponibilites.length > 0) {
@@ -51,6 +58,10 @@ export default function JourSwitcher({
 
     const handleClickNext = () => {
         onClick(dateNext);
+    }
+
+    if (hasError) {
+        return <DisplayError/>
     }
 
     return <Form.Group controlId="jour">
