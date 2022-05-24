@@ -46,6 +46,7 @@ export default class RendezVousController
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
+        const stateForm = window.history.state.usr as RendezVousModelView;
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -55,7 +56,7 @@ export default class RendezVousController
         this.onHeureSelected = this.onHeureSelected.bind(this);
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
-        this._state = {
+        this._state = stateForm || {
             domaines: [],
             demandes: [],
             canal: [],
@@ -81,6 +82,7 @@ export default class RendezVousController
                 nmCommu: this._pointAccueil.state.nmCommu,
             }
         };
+        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
         this.raiseStateChanged();
     }
 
@@ -126,7 +128,7 @@ export default class RendezVousController
             },
         };
         this.raiseStateChanged();
-        await this.loadDisponibilites()
+        await this.loadDisponibilites();
     }
 
     async loadDisponibilites(dtDebut = new Date()) {

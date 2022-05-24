@@ -12,6 +12,7 @@ import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import Connexion from "../Connexion";
+import RendezVousModelView from "../ModelView/RendezVous/RendezVousModelView";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -28,6 +29,7 @@ export interface PriseRendezVousProps {
     readonly onHeureSelected: Function;
     readonly onLoadDisponibilitesObserver: LoadingObservable;
     readonly hasErrorObserver: ErrorObservable;
+    readonly stateLocation: RendezVousModelView;
 }
 
 export default function PriseRendezVous({
@@ -44,7 +46,8 @@ export default function PriseRendezVous({
                                             loadDisponibilites,
                                             onHeureSelected,
                                             onLoadDisponibilitesObserver,
-                                            hasErrorObserver
+                                            hasErrorObserver,
+                                            stateLocation
                                         }: PriseRendezVousProps) {
     return (
         <Form className="mcf-mt--5">
@@ -92,7 +95,7 @@ export default function PriseRendezVous({
                                    proposerChoixHoraire={dataSource.proposerChoixHoraire}
                                    onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
                 </>}
-            {dataSource.heure !== 0 && <Connexion/>}
+            {dataSource.heure !== 0 && <Connexion dataSource={stateLocation}/>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );
