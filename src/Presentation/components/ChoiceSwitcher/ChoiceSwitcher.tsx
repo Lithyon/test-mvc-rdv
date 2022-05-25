@@ -2,13 +2,13 @@ import {Badge, Form} from "macif-components";
 
 export interface Choice {
     readonly libelle: string;
-    readonly code: string | number | boolean;
+    readonly code: string | number;
     readonly isNew?: boolean;
 }
 
 export interface ChoiceSwitcherProps<T extends Choice> {
     readonly onChoiceSelected: Function;
-    readonly choiceSelected: string | number | boolean;
+    readonly choiceSelected: string | number;
     readonly dataSource: Array<T>;
     readonly label: string;
     readonly labelInfo?: string;
