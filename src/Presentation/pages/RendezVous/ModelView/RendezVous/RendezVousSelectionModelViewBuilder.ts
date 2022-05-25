@@ -4,6 +4,8 @@ export default class RendezVousSelectionModelViewBuilder {
     static buildEmpty(): RendezVousSelectionModelView {
         return {
             proposerChoixHoraire: false,
+            afficherChoixCanaux: false,
+            afficherChoixConnexion: false,
             choixConnexionSelected: "",
             adresseMail: "",
             canalSelected: "",

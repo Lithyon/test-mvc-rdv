@@ -13,6 +13,8 @@ import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import RendezVousModelView from "../ModelView/RendezVous/RendezVousModelView";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexionModelView";
+import PagesDetails from "../../PagesDetails";
+import {useNavigate} from "react-router-dom";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -53,6 +55,8 @@ export default function PriseRendezVous({
                                             onChoixConnexionSelected,
                                             choixConnexion
                                         }: PriseRendezVousProps) {
+    const navigate = useNavigate()
+    console.log(choixConnexion)
     return (
         <Form className="mcf-mt--5">
             <h3>Votre rendez-vous</h3>
@@ -77,7 +81,7 @@ export default function PriseRendezVous({
                 </p>
                 <Button variant="light">Demander mon rendez-vous Pro</Button>
             </Alert>}
-            <ChoiceSwitcher onChoiceSelected={onCanalSelected}
+            <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
                             choiceSelected={dataSource.canalSelected}
                             dataSource={canal}
                             id="canal"
@@ -99,11 +103,16 @@ export default function PriseRendezVous({
                                    proposerChoixHoraire={dataSource.proposerChoixHoraire}
                                    onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
                 </>}
-            {choixConnexion.length > 0 && <h3>Vos informations</h3>}
-            <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} choiceSelected={dataSource.choixConnexionSelected}
+            {dataSource.afficherChoixConnexion && choixConnexion.length > 0 && <h3>Vos informations</h3>}
+            <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
+                            choiceSelected={dataSource.choixConnexionSelected}
                             dataSource={choixConnexion} nbSwitchers={2}
                             label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
                             id="hasAccount"/>
+            {dataSource.choixConnexionSelected !== "" && <div className="mcf-d--flex mcf-justify-content--between">
+                <Button variant="outline--primary">Annuler</Button>
+                <Button onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
+            </div>}
             <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );

@@ -13,6 +13,7 @@ export interface ChoiceSwitcherProps<T extends Choice> {
     readonly label: string;
     readonly labelInfo?: string;
     readonly id: string;
+    readonly show?: boolean;
     readonly nbSwitchers?: number;
 }
 
@@ -23,9 +24,10 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                              label,
                                                              labelInfo,
                                                              id,
+                                                             show = true,
                                                              nbSwitchers = 3
                                                          }: ChoiceSwitcherProps<T>) {
-    return dataSource.length > 0 ? (
+    return show && dataSource.length > 0 ? (
         <Form.Group controlId={id}>
             <Form.Label required>{label}</Form.Label>
             {labelInfo && <Form.Text muted>{labelInfo}</Form.Text>}
