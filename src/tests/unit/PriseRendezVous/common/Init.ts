@@ -22,6 +22,9 @@ import DisponibilitesRequestEntity from "../../../../Domain/Data/API/Entity/Disp
 import RendezVousRequestEntity from "../../../../Domain/Data/API/Entity/RendezVousRequestEntity";
 import RendezVousServiceImpl from "../../../../Domain/Services/RendezVous/RendezVousServiceImpl";
 import RendezVousController from "../../../../Presentation/pages/RendezVous/RendezVousController";
+import {ChoixConnexionServiceImpl} from "../../../../Domain/Services/ChoixConnexion";
+import {ChoixConnexionRepositoryImpl} from "../../../../Domain/Repository/ChoixConnexion";
+import DefaultChoixConnexion from "../../../../Domain/Data/Enum/ChoixConnexion";
 
 export function init(
     demande: DemandeEntity = demandeStub,
@@ -49,6 +52,11 @@ export function init(
     });
     const canalService = new CanalServiceImpl(canalRepository);
 
+    const choixConnexionRepository = new ChoixConnexionRepositoryImpl({
+        defaultChoixConnexion: DefaultChoixConnexion
+    });
+    const choixConnexionService = new ChoixConnexionServiceImpl(choixConnexionRepository);
+
     const pointAccueilRepository = new PointAccueilRepositoryImpl({
         async getPointAccueil(cdBuro: string): Promise<PointAccueilEntity> {
             return pointAccueil;
@@ -72,6 +80,7 @@ export function init(
         canalService,
         pointAccueilService,
         rendezVousService,
+        choixConnexionService
     });
 
     return controller;

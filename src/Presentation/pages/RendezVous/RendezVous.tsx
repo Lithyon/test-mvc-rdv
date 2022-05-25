@@ -33,7 +33,9 @@ export default function RendezVous({controller}: RendezVousProps) {
                                          onHeureSelected={controller.onHeureSelected}
                                          onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
                                          hasErrorObserver={controller.hasErrorObserver}
-                                         stateLocation={state}/>
+                                         stateLocation={state}
+                                         choixConnexion={state.choixConnexion}
+                                         onChoixConnexionSelected={controller.onChoixConnexionSelected}/>
                     </Card>
                 </Col>
             </Row>

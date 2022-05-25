@@ -21,13 +21,16 @@ import {DemandeServiceImpl} from "../../../Domain/Services/Demande";
 import {PointAccueilServiceImpl} from "../../../Domain/Services/PointAccueil";
 import {CanalServiceImpl} from "../../../Domain/Services/Canal";
 import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
+import {ChoixConnexion, ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
+import {ChoixConnexionServiceImpl} from "../../../Domain/Services/ChoixConnexion";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
     readonly demandeService: DemandeServiceImpl,
     readonly pointAccueilService: PointAccueilServiceImpl,
     readonly canalService: CanalServiceImpl,
-    readonly rendezVousService: RendezVousServiceImpl
+    readonly rendezVousService: RendezVousServiceImpl,
+    readonly choixConnexionService: ChoixConnexionServiceImpl
 }
 
 export default class RendezVousController
@@ -37,6 +40,7 @@ export default class RendezVousController
     private _domaines?: Array<Domaine>;
     private _demandes?: Array<Demande>;
     private _canal?: Array<Canal>;
+    private _choixConnexion?: Array<ChoixConnexion>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
@@ -46,7 +50,7 @@ export default class RendezVousController
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
-        const stateForm = window.history.state.usr as RendezVousModelView;
+        const stateForm = window.history.state?.usr as RendezVousModelView;
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -54,12 +58,14 @@ export default class RendezVousController
         this.onJourSelected = this.onJourSelected.bind(this);
         this.loadDisponibilites = this.loadDisponibilites.bind(this);
         this.onHeureSelected = this.onHeureSelected.bind(this);
+        this.onChoixConnexionSelected = this.onChoixConnexionSelected.bind(this);
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._state = stateForm || {
             domaines: [],
             demandes: [],
             canal: [],
+            choixConnexion: [],
             disponibilites: DisponibilitesModelViewBuilder.buildEmpty(),
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
@@ -92,10 +98,12 @@ export default class RendezVousController
             ...this._state,
             demandes: this._demandes.map(DemandeModelViewBuilder.buildFromDemande),
             canal: [],
+            choixConnexion: [],
             rendezVous: {
                 ...this._state.rendezVous,
                 demandeSelected: "",
                 canalSelected: "",
+                choixConnexionSelected: "",
                 precision: "",
                 domaineSelected,
             }
@@ -108,9 +116,11 @@ export default class RendezVousController
         this._state = {
             ...this._state,
             canal: this._canal,
+            choixConnexion: [],
             rendezVous: {
                 ...this._state.rendezVous,
                 canalSelected: "",
+                choixConnexionSelected: "",
                 precision: "",
                 demandeSelected,
             },
@@ -121,8 +131,10 @@ export default class RendezVousController
     async onCanalSelected(canalSelected: CanalCode) {
         this._state = {
             ...this._state,
+            choixConnexion: [],
             rendezVous: {
                 ...this._state.rendezVous,
+                choixConnexionSelected: "",
                 precision: "",
                 canalSelected,
             },
@@ -168,6 +180,7 @@ export default class RendezVousController
     onPrecisionChanged(precision: string) {
         this._state = {
             ...this._state,
+            choixConnexion: [],
             rendezVous: {
                 ...this._state.rendezVous,
                 precision,
@@ -179,9 +192,11 @@ export default class RendezVousController
     onJourSelected(jourSelected: Date) {
         this._state = {
             ...this._state,
+            choixConnexion: [],
             rendezVous: {
                 ...this._state.rendezVous,
                 heure: 0,
+                choixConnexionSelected: "",
                 jour: jourSelected,
                 proposerChoixHoraire: true
             }
@@ -190,11 +205,25 @@ export default class RendezVousController
     }
 
     onHeureSelected(heureSelected: number) {
+        this._choixConnexion = this.dependencies.choixConnexionService.getDefaultChoixConnexion()
+            this._state = {
+                ...this._state,
+                choixConnexion: this._choixConnexion,
+                rendezVous: {
+                    ...this._state.rendezVous,
+                    choixConnexionSelected: "",
+                    heure: heureSelected,
+                }
+            }
+        this.raiseStateChanged();
+    }
+
+    onChoixConnexionSelected(choixConnexionSelected: ChoixConnexionCode) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                heure: heureSelected,
+                choixConnexionSelected,
             }
         }
         this.raiseStateChanged();
