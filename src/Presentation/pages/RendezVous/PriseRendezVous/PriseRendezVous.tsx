@@ -56,7 +56,6 @@ export default function PriseRendezVous({
                                             choixConnexion
                                         }: PriseRendezVousProps) {
     const navigate = useNavigate()
-    console.log(choixConnexion)
     return (
         <Form className="mcf-mt--5">
             <h3>Votre rendez-vous</h3>
