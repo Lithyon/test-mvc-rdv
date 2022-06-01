@@ -16,7 +16,7 @@ export interface JourSwitcherProps {
     readonly dataSource: DisponibilitesModelView,
     readonly onClick: Function,
     readonly onLoadDisponibilitesObserver: LoadingObservable,
-    readonly hasErrorObserver: ErrorObservable
+    readonly hasErrorDisponibilitesObserver: ErrorObservable
 }
 
 export default function JourSwitcher({
@@ -25,7 +25,7 @@ export default function JourSwitcher({
                                          dataSource,
                                          onClick,
                                          onLoadDisponibilitesObserver,
-                                         hasErrorObserver
+                                         hasErrorDisponibilitesObserver
                                      }: JourSwitcherProps) {
     const {disponibilites} = dataSource;
 
@@ -35,7 +35,7 @@ export default function JourSwitcher({
     const [disabledNext, setDisabledNext] = useState(true);
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
-    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorObserver)
+    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver)
 
     useEffect(() => {
         if (disponibilites.length > 0) {

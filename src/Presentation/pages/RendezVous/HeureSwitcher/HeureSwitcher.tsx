@@ -4,6 +4,7 @@ import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
+import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
 
 export interface HeureSwitcherProps {
     readonly onChoiceSelected: Function;
@@ -11,7 +12,8 @@ export interface HeureSwitcherProps {
     readonly jourSelected: Date;
     readonly dataSource: Array<JourDisponibleModelView>;
     readonly proposerChoixHoraire: boolean;
-    readonly onLoadDisponibilitesObserver: LoadingObservable
+    readonly onLoadDisponibilitesObserver: LoadingObservable,
+    readonly canalSelected: string;
 }
 
 export default function HeureSwitcher({
@@ -20,20 +22,24 @@ export default function HeureSwitcher({
                                           dataSource,
                                           jourSelected,
                                           proposerChoixHoraire,
-                                          onLoadDisponibilitesObserver
+                                          onLoadDisponibilitesObserver,
+                                          canalSelected
                                       }: HeureSwitcherProps) {
     const disponibilitesMatin = dataSource.find(item => item.jour === jourSelected)?.disponibilitesMatin || [];
     const disponibilitesApresMidi = dataSource.find(item => item.jour === jourSelected)?.disponibilitesApresMidi || [];
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
 
+    const dureeRendezVous: string = canalSelected === CanalCode.AGENCE ? "30" : "15";
+
     return proposerChoixHoraire && isOver ? (<Card as={Form.Group} bg="gris-lune">
         <Card.Body>
             <Form as={'div'}>
                 <Form.Group>
                     <Form.Label>Puis votre horaire</Form.Label>
-                    <Form.Text muted>La liste n'affiche que les horaires disponibles pour ce jour et dans cette
-                        agence. Nos rendez-vous durent en moyenne 30 minutes.</Form.Text>
+                    <Form.Text className="mcf-text--small-2" muted>La liste n'affiche que les horaires disponibles pour ce jour et dans
+                        cette
+                        agence. Nos rendez-vous durent en moyenne {dureeRendezVous} minutes.</Form.Text>
                 </Form.Group>
                 <ChoiceSwitcher onChoiceSelected={onChoiceSelected}
                                 choiceSelected={choiceSelected}

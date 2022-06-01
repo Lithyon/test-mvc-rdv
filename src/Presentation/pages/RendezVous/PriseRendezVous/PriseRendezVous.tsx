@@ -30,7 +30,7 @@ export interface PriseRendezVousProps {
     readonly loadDisponibilites: Function;
     readonly onHeureSelected: Function;
     readonly onLoadDisponibilitesObserver: LoadingObservable;
-    readonly hasErrorObserver: ErrorObservable;
+    readonly hasErrorDisponibilitesObserver: ErrorObservable;
     readonly stateLocation: RendezVousModelView;
     readonly onChoixConnexionSelected: Function;
     readonly choixConnexion: Array<ChoixConnexionModelView>;
@@ -50,12 +50,13 @@ export default function PriseRendezVous({
                                             loadDisponibilites,
                                             onHeureSelected,
                                             onLoadDisponibilitesObserver,
-                                            hasErrorObserver,
+                                            hasErrorDisponibilitesObserver,
                                             stateLocation,
                                             onChoixConnexionSelected,
                                             choixConnexion
                                         }: PriseRendezVousProps) {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     return (
         <Form className="mcf-mt--5">
             <h3>Votre rendez-vous</h3>
@@ -96,11 +97,11 @@ export default function PriseRendezVous({
                     <JourSwitcher choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
                                   dataSource={disponibilites} onClick={loadDisponibilites}
                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}
-                                  hasErrorObserver={hasErrorObserver}/>
+                                  hasErrorDisponibilitesObserver={hasErrorDisponibilitesObserver}/>
                     <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
                                    dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
                                    proposerChoixHoraire={dataSource.proposerChoixHoraire}
-                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}/>
+                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver} canalSelected={dataSource.canalSelected}/>
                 </>}
             {dataSource.afficherChoixConnexion && choixConnexion.length > 0 && <h3>Vos informations</h3>}
             <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
@@ -112,7 +113,7 @@ export default function PriseRendezVous({
                 <Button variant="outline--primary">Annuler</Button>
                 <Button onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
             </div>}
-            <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
+            {/*<pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>*/}
         </Form>
     );
 }

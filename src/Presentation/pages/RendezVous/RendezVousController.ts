@@ -45,6 +45,7 @@ export default class RendezVousController
     private _pointAccueil?: PointAccueil;
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
     private readonly _hasErrorObserver: ErrorObservableImpl;
+    private readonly _hasErrorDisponibilitesObserver: ErrorObservableImpl;
 
     constructor(
         readonly dependencies: RendezVousControllerDependencies
@@ -61,6 +62,7 @@ export default class RendezVousController
         this.onChoixConnexionSelected = this.onChoixConnexionSelected.bind(this);
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
+        this._hasErrorDisponibilitesObserver = new ErrorObservableImpl();
         this._state = stateForm || {
             domaines: [],
             demandes: [],
@@ -86,44 +88,59 @@ export default class RendezVousController
         return this._hasErrorObserver;
     }
 
+    get hasErrorDisponibilitesObserver(): ErrorObservableImpl {
+        return this._hasErrorDisponibilitesObserver;
+    }
+
     async onLoad() {
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
-        this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
-        this._domaines = await this.dependencies.domaineService.getDomaines();
-        this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
-        this._state = {
-            ...this._state,
-            canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
-            domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
-            pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
-                this._pointAccueil
-            ),
-            rendezVous: {
-                ...this._state.rendezVous,
-                cdBuro: this._pointAccueil.state.cdBuro,
-                nmCommu: this._pointAccueil.state.nmCommu,
-            }
-        };
-        this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
+
+        try {
+            this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            this._domaines = await this.dependencies.domaineService.getDomaines();
+            this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
+            this._state = {
+                ...this._state,
+                canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
+                domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
+                pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
+                    this._pointAccueil
+                ),
+                rendezVous: {
+                    ...this._state.rendezVous,
+                    cdBuro: this._pointAccueil.state.cdBuro,
+                    nmCommu: this._pointAccueil.state.nmCommu,
+                }
+            };
+            this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
         this.raiseStateChanged();
     }
 
     async onDomaineSelected(domaineSelected: string) {
-        this._demandes = await this.dependencies.demandeService.getDemandes(domaineSelected);
-        this._state = {
-            ...this._state,
-            demandes: this._demandes.map(DemandeModelViewBuilder.buildFromDemande),
-            rendezVous: {
-                ...this._state.rendezVous,
-                demandeSelected: "",
-                canalSelected: "",
-                choixConnexionSelected: "",
-                afficherChoixConnexion: false,
-                afficherChoixCanaux: false,
-                precision: "",
-                domaineSelected,
-            }
-        };
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            this._demandes = await this.dependencies.demandeService.getDemandes(domaineSelected);
+            this._state = {
+                ...this._state,
+                demandes: this._demandes.map(DemandeModelViewBuilder.buildFromDemande),
+                rendezVous: {
+                    ...this._state.rendezVous,
+                    demandeSelected: "",
+                    canalSelected: "",
+                    choixConnexionSelected: "",
+                    afficherChoixConnexion: false,
+                    afficherChoixCanaux: false,
+                    precision: "",
+                    domaineSelected,
+                }
+            };
+        } catch (error) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
         this.raiseStateChanged();
     }
 
@@ -161,7 +178,7 @@ export default class RendezVousController
     async loadDisponibilites(dtDebut = new Date()) {
         try {
             this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: false});
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            this._hasErrorDisponibilitesObserver.raiseAdvancementEvent({hasError: false});
             const dtJour = new Date();
 
             if (dtDebut.getDate() === dtJour.getDate()) {
@@ -188,7 +205,7 @@ export default class RendezVousController
 
             this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
         } catch (error) {
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+            this._hasErrorDisponibilitesObserver.raiseAdvancementEvent({hasError: true});
         }
         this.raiseStateChanged();
     }

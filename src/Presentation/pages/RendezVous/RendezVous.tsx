@@ -4,6 +4,9 @@ import PriseRendezVous from "./PriseRendezVous";
 import RendezVousController from "./RendezVousController";
 import useAttachController from "../../hooks/useAttachController";
 import useInitContexte from "../../hooks/useInitContexte";
+import ErrorIsTriggered from "../../commons/ErrorEvent/ErrorIsTriggered";
+import useErrorObservable from "../../hooks/useErrorObservable";
+import DisplayError from "../../components/DisplayError";
 
 interface RendezVousProps {
     readonly controller: RendezVousController;
@@ -12,7 +15,12 @@ interface RendezVousProps {
 export default function RendezVous({controller}: RendezVousProps) {
     const state = useAttachController(controller);
 
-    useInitContexte(controller)
+    useInitContexte(controller);
+
+    const {hasError}: ErrorIsTriggered = useErrorObservable(controller.hasErrorObserver);
+    if (hasError) {
+        return <DisplayError/>
+    }
     return (
         <Container className="mcf-mt--10">
             <Row>
@@ -32,7 +40,7 @@ export default function RendezVous({controller}: RendezVousProps) {
                                          loadDisponibilites={controller.loadDisponibilites}
                                          onHeureSelected={controller.onHeureSelected}
                                          onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
-                                         hasErrorObserver={controller.hasErrorObserver}
+                                         hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
                                          stateLocation={state}
                                          choixConnexion={state.choixConnexion}
                                          onChoixConnexionSelected={controller.onChoixConnexionSelected}/>

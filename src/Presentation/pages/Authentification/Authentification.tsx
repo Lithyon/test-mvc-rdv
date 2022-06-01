@@ -5,15 +5,14 @@ import RendezVousModelView from "../RendezVous/ModelView/RendezVous/RendezVousMo
 
 export default function Authentification() {
     const navigate = useNavigate();
-    const location  = useLocation();
+    const location = useLocation();
     const state = location.state as RendezVousModelView;
     return <Container className="mcf-mt--10">
         <Row>
             <Col>
                 <Card body>
-                    Coucou
-                    <Button onClick={() => navigate(PagesDetails.RendezVous.link + `?b=${state.rendezVous.cdBuro}`, { state })}>Previous</Button>
-                    <pre><code>{JSON.stringify(state.rendezVous, null, 4)}</code></pre>
+                    <Button onClick={() => navigate(PagesDetails.RendezVous.link + `?b=${state.rendezVous.cdBuro}`, {state})}>Previous</Button>
+                    {/*<pre><code>{JSON.stringify(state.rendezVous, null, 4)}</code></pre>*/}
                 </Card>
             </Col>
         </Row>
