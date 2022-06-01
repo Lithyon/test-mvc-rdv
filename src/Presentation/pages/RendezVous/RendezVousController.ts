@@ -1,3 +1,4 @@
+import Canal from "../../../Domain/Model/Canal/Canal";
 import Domaine from "../../../Domain/Model/Domaine/Domaine";
 import BaseController from "../../commons/BaseController";
 import {IsLoadable} from "../../commons/IsLoadable";
@@ -23,6 +24,7 @@ import {CanalServiceImpl} from "../../../Domain/Services/Canal";
 import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {ChoixConnexionServiceImpl} from "../../../Domain/Services/ChoixConnexion";
+import CanalModelViewBuilder from "./ModelView/Canal/CanalModelViewBuilder";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -36,9 +38,9 @@ interface RendezVousControllerDependencies {
 export default class RendezVousController
     extends BaseController<RendezVousModelView>
     implements IsLoadable {
-    private _state: RendezVousModelView;
     private _domaines?: Array<Domaine>;
     private _demandes?: Array<Demande>;
+    private _canal?: Array<Canal>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
@@ -62,7 +64,7 @@ export default class RendezVousController
         this._state = stateForm || {
             domaines: [],
             demandes: [],
-            canal: this.dependencies.canalService.getDefaultCanal(),
+            canal: [],
             choixConnexion: this.dependencies.choixConnexionService.getDefaultChoixConnexion(),
             disponibilites: DisponibilitesModelViewBuilder.buildEmpty(),
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
@@ -70,12 +72,28 @@ export default class RendezVousController
         };
     }
 
+    private _state: RendezVousModelView;
+
+    get state(): RendezVousModelView {
+        return this._state;
+    }
+
+    get onLoadDisponibilitesObserver(): LoadingObservable {
+        return this._onLoadDisponibilitesObserver;
+    }
+
+    get hasErrorObserver(): ErrorObservable {
+        return this._hasErrorObserver;
+    }
+
     async onLoad() {
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
         this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
         this._domaines = await this.dependencies.domaineService.getDomaines();
+        this._canal = await this.dependencies.canalService.getDefaultCanal(cdBuro);
         this._state = {
             ...this._state,
+            canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
             domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
                 this._pointAccueil
@@ -223,17 +241,5 @@ export default class RendezVousController
             }
         }
         this.raiseStateChanged();
-    }
-
-    get state(): RendezVousModelView {
-        return this._state;
-    }
-
-    get onLoadDisponibilitesObserver(): LoadingObservable {
-        return this._onLoadDisponibilitesObserver;
-    }
-
-    get hasErrorObserver(): ErrorObservable {
-        return this._hasErrorObserver;
     }
 }

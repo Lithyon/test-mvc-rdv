@@ -13,7 +13,6 @@ import DomaineServiceImpl from "../../../../Domain/Services/Domaine/DomaineServi
 import {DemandeRepositoryImpl} from "../../../../Domain/Repository/Demande/DemandeRepositoryImpl";
 import DemandeServiceImpl from "../../../../Domain/Services/Demande/DemandeServiceImpl";
 import CanalRepositoryImpl from "../../../../Domain/Repository/Canal/CanalRepositoryImpl";
-import DefaultCanal from "../../../../Domain/Data/Enum/Canal";
 import CanalServiceImpl from "../../../../Domain/Services/Canal/CanalServiceImpl";
 import {PointAccueilRepositoryImpl} from "../../../../Domain/Repository/PointAccueil/PointAccueilRepositoryImpl";
 import PointAccueilServiceImpl from "../../../../Domain/Services/PointAccueil/PointAccueilServiceImpl";
@@ -25,10 +24,13 @@ import RendezVousController from "../../../../Presentation/pages/RendezVous/Rend
 import {ChoixConnexionServiceImpl} from "../../../../Domain/Services/ChoixConnexion";
 import {ChoixConnexionRepositoryImpl} from "../../../../Domain/Repository/ChoixConnexion";
 import DefaultChoixConnexion from "../../../../Domain/Data/Enum/ChoixConnexion";
+import EligibiliteEntity from "../../../../Domain/Data/API/Entity/EligibiliteEntity";
+import {eligibilitesStub} from "../../../../../mocks/EligibilitesStub";
 
 export function init(
+    eligibilites: EligibiliteEntity = eligibilitesStub,
     demande: DemandeEntity = demandeStub,
-    domaine:DomaineEntity = domaineStub,
+    domaine: DomaineEntity = domaineStub,
     pointAccueil: PointAccueilEntity = pointAccueilStub,
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub) {
@@ -48,7 +50,9 @@ export function init(
     const demandeService = new DemandeServiceImpl(demandeRepository);
 
     const canalRepository = new CanalRepositoryImpl({
-        defaultCanalDataSource: DefaultCanal
+        async getEligibilites(): Promise<EligibiliteEntity> {
+            return eligibilites;
+        }
     });
     const canalService = new CanalServiceImpl(canalRepository);
 

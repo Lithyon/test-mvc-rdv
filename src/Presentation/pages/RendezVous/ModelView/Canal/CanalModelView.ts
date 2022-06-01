@@ -1,4 +1,4 @@
-import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
+import {CanalCode} from "../../../../../Domain/Data/Enum/Canal";
 
 export default interface CanalModelView {
     libelle: string,

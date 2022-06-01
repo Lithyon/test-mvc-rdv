@@ -2,6 +2,8 @@ import pointAccueilStub from "../../../../mocks/PointAccueilStub";
 import {init} from "./common/Init";
 import domaineStub from "../../../../mocks/DomaineStub";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
+import {canauxSansVisioStub, canauxStub} from "../../../../mocks/CanauxStub";
+import {eligibilitesSansVisioStub} from "../../../../mocks/EligibilitesStub";
 
 describe('Prise de rendez vous - OnLoad', function () {
 
@@ -254,6 +256,38 @@ describe('Prise de rendez vous - OnLoad', function () {
             const actual = controller.state;
 
             expect(actual.rendezVous.nmCommu).toBe(expected);
+
+            done();
+        });
+
+        controller.onLoad();
+    });
+
+    it("doit afficher tous les canaux de prise de rendez-vous", (done) => {
+        const expected = canauxStub;
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.canal.length).toBe(expected.length);
+
+            done();
+        });
+
+        controller.onLoad();
+    });
+
+    it("doit afficher deux canaux de prise de rendez-vous sur trois", (done) => {
+        const expected = canauxSansVisioStub;
+
+        const controller = init(eligibilitesSansVisioStub);
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+
+            expect(actual.canal.length).toBe(expected.length);
 
             done();
         });

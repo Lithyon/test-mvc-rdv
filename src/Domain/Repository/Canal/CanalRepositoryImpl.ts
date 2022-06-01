@@ -1,12 +1,33 @@
-import {Canal} from "../../Data/Enum/Canal";
-import {CanalRepositoryDependencies} from "./CanalRepository";
+import Canal from "../../Model/Canal/Canal";
+import {CanalCode} from "../../Data/Enum/Canal";
+import EligibiliteDAO from "../../Data/Eligibilite/EligibiliteDAO";
 
 export default class CanalRepositoryImpl {
+    private _dataSource: EligibiliteDAO;
 
-    constructor(readonly dependencies: CanalRepositoryDependencies) {
+    constructor(readonly dataSource: EligibiliteDAO) {
+        this._dataSource = dataSource;
     }
 
-    getDefaultCanal(): Array<Canal> {
-        return this.dependencies.defaultCanalDataSource;
+    async getCanaux(cdBuro: string): Promise<Array<Canal>> {
+        const eligibilites = await this._dataSource.getEligibilites(cdBuro);
+
+        const listeCanauxEligibles = new Array<Canal>();
+
+        eligibilites.eligibleRdvPhysique && listeCanauxEligibles.push(new Canal({
+            libelle: "En agence",
+            code: CanalCode.AGENCE
+        }));
+        eligibilites.eligibleRdvTelephonique && listeCanauxEligibles.push(new Canal({
+            libelle: "Par téléphone",
+            code: CanalCode.TELEPHONE
+        }));
+        eligibilites.eligibleRdvVisio && listeCanauxEligibles.push(new Canal({
+            libelle: "En visioconférence",
+            code: CanalCode.VISIO,
+            isNew: true
+        }));
+
+        return listeCanauxEligibles;
     }
 }

@@ -1,6 +1,6 @@
 import CanalRepositoryImpl from "./CanalRepositoryImpl";
-import DefaultCanal from "../../Data/Enum/Canal";
+import EligibiliteDAO from "../../Data/Eligibilite";
 
 export {CanalRepositoryImpl};
 
-export default new CanalRepositoryImpl({defaultCanalDataSource: DefaultCanal});
+export default new CanalRepositoryImpl(EligibiliteDAO);

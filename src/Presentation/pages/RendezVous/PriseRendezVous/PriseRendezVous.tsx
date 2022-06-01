@@ -6,7 +6,7 @@ import Textarea from "../../../components/Textarea";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
 import DomaineModelView from "../ModelView/Domaine/DomaineModelView";
 import DemandeModelView from "../ModelView/Demande/DemandeModelView";
-import CanalModelView from "../ModelView/CanalModelView";
+import CanalModelView from "../ModelView/Canal/CanalModelView";
 import JourSwitcher from "../JourSwitcher";
 import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";

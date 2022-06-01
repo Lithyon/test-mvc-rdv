@@ -3,7 +3,7 @@ import BandeauPointAccueilModelView from "../../BandeauPointAccueil/ModelView/Ba
 import {DisponibilitesModelView} from "../Disponibilites/DisponibilitesModelView";
 import DomaineModelView from "../Domaine/DomaineModelView";
 import DemandeModelView from "../Demande/DemandeModelView";
-import CanalModelView from "../CanalModelView";
+import CanalModelView from "../Canal/CanalModelView";
 import ChoixConnexionModelView from "../ChoixConnexionModelView";
 
 export default interface RendezVousModelView {

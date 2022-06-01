@@ -1,4 +1,5 @@
 import {CanalRepositoryImpl} from "../../Repository/Canal";
+import Canal from "../../Model/Canal/Canal";
 
 export default class CanalServiceImpl {
     private canalRepo: CanalRepositoryImpl;
@@ -7,7 +8,7 @@ export default class CanalServiceImpl {
         this.canalRepo = _canalRepo;
     }
 
-    getDefaultCanal() {
-        return this.canalRepo.getDefaultCanal();
+    getDefaultCanal(cdBuro: string): Promise<Array<Canal>> {
+        return this.canalRepo.getCanaux(cdBuro);
     }
 }
