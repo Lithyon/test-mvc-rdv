@@ -8,7 +8,7 @@ export default class CanalServiceImpl {
         this.canalRepo = _canalRepo;
     }
 
-    getDefaultCanal(cdBuro: string): Promise<Array<Canal>> {
+    getCanaux(cdBuro: string): Promise<Array<Canal>> {
         return this.canalRepo.getCanaux(cdBuro);
     }
 }

@@ -90,7 +90,7 @@ export default class RendezVousController
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
         this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
         this._domaines = await this.dependencies.domaineService.getDomaines();
-        this._canal = await this.dependencies.canalService.getDefaultCanal(cdBuro);
+        this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
         this._state = {
             ...this._state,
             canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
