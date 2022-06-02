@@ -29,10 +29,12 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                          }: ChoiceSwitcherProps<T>) {
     return show && dataSource.length > 0 ? (
         <Form.Group controlId={id}>
-            <Form.Label required>{label}</Form.Label>
+            <h3 id={id} className="mcf-text--small-1">{label}</h3>
             {labelInfo && <Form.Text muted>{labelInfo}</Form.Text>}
             <Form.SwitcherGroup
                 type="radio"
+                role="radiogroup"
+                aria-labelledby={id}
                 nbSwitchers={nbSwitchers}
                 name={id}
                 value={choiceSelected}
@@ -40,7 +42,7 @@ export default function ChoiceSwitcher<T extends Choice>({
             >
                 {dataSource.map((value, index) => {
                     return (
-                        <Form.Switcher key={index} value={value.code}>
+                        <Form.Switcher id={value.libelle + value.code + index} key={index} value={value.code}>
                             {value.isNew &&
                                 <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}

@@ -33,11 +33,14 @@ export default function JourSwitcher({
     const [dateNext, setDateNext] = useState(new Date());
     const [disabledPrev, setDisabledPrev] = useState(true);
     const [disabledNext, setDisabledNext] = useState(true);
+    const [dejaNavigue, setdejaNavigue] = useState(false);
+
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver)
 
     useEffect(() => {
+        console.log("dataSource", dataSource)
         if (disponibilites.length > 0) {
             const dtJour = new Date();
             const dispoDebut = sub(new Date(disponibilites[0].jour), {days: 6})
@@ -45,18 +48,28 @@ export default function JourSwitcher({
             const dtMax = add(dtJour, {months: 3});
 
             setDatePrev(dispoDebut);
-            setDisabledPrev(isBefore(dispoDebut, dtJour))
+            setDisabledPrev(isBefore(dispoDebut, dtJour));
 
-            setDateNext(dispoFin)
-            setDisabledNext(isAfter(dispoFin, dtMax))
+            setDateNext(dispoFin);
+            setDisabledNext(isAfter(dispoFin, dtMax));
+
+            if (dejaNavigue) {
+                setFocusSurPremierJour();
+            }
         }
     }, [disponibilites])
 
+    const setFocusSurPremierJour = () => {
+        document.getElementById(disponibilites[0].jour.toString())?.focus();
+    }
+
     const handleClickPrev = () => {
+        setdejaNavigue(true);
         onClick(datePrev);
     }
 
     const handleClickNext = () => {
+        setdejaNavigue(true);
         onClick(dateNext);
     }
 
@@ -65,14 +78,16 @@ export default function JourSwitcher({
     }
 
     return <Form.Group controlId="jour">
-        <Form.Label>Choisissez la date de votre rendez-vous</Form.Label>
+        <h3 id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</h3>
         <div className="mcf-d--flex mcf-align-items--center mcf-mt--2">
             <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickPrev}
-                    disabled={disabledPrev}>
+                    disabled={disabledPrev} aria-disabled={disabledPrev} aria-label="Jours précédents">
                 <i className="icon-fleche_gauche"/>
             </Button>
             {isOver ? <Form.SwitcherGroup
                 type="radio"
+                role="radiogroup"
+                aria-labelledby="carouselDate"
                 nbSwitchers={6}
                 name="jour"
                 value={choiceSelected}
@@ -82,7 +97,7 @@ export default function JourSwitcher({
                 {disponibilites.map((value, index) => {
                     const disabled = value.ferie || (value.disponibilitesMatin.length === 0 && value.disponibilitesApresMidi.length === 0)
                     return (
-                        <Form.Switcher key={index} value={value.jour} disabled={disabled}>
+                        <Form.Switcher key={index} value={value.jour} disabled={disabled} aria-disabled={disabled} id={value.jour}>
                             {value.jour.toLocaleDateString('fr-FR', {
                                 weekday: "short",
                                 day: "numeric",
@@ -93,7 +108,7 @@ export default function JourSwitcher({
                 })}
             </Form.SwitcherGroup> : <Loader ball className="mcf-mx--auto"/>}
             <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickNext}
-                    disabled={disabledNext}>
+                    disabled={disabledNext} aria-disabled={disabledNext} aria-label="Jours suivants">
                 <i className="icon-fleche-droite"/>
             </Button>
         </div>

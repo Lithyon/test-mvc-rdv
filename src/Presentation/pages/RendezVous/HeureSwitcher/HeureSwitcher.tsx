@@ -30,14 +30,14 @@ export default function HeureSwitcher({
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
 
-    const dureeRendezVous: string = canalSelected === CanalCode.AGENCE ? "30" : "15";
+    const dureeRendezVous: string = canalSelected === CanalCode.TELEPHONE ? "15" : "30";
 
     return proposerChoixHoraire && isOver ? (<Card as={Form.Group} bg="gris-lune">
         <Card.Body>
             <Form as={'div'}>
                 <Form.Group>
                     <Form.Label>Puis votre horaire</Form.Label>
-                    <Form.Text className="mcf-text--small-2" muted>La liste n'affiche que les horaires disponibles pour ce jour et dans
+                    <Form.Text className="mcf-text--small-1" muted>La liste n'affiche que les horaires disponibles pour ce jour et dans
                         cette
                         agence. Nos rendez-vous durent en moyenne {dureeRendezVous} minutes.</Form.Text>
                 </Form.Group>

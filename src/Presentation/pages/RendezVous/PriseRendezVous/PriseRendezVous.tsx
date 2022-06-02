@@ -59,7 +59,7 @@ export default function PriseRendezVous({
 
     return (
         <Form className="mcf-mt--5">
-            <h3>Votre rendez-vous</h3>
+            <h2>Votre rendez-vous</h2>
             <ChoiceSwitcher onChoiceSelected={onDomaineSelected}
                             choiceSelected={dataSource.domaineSelected}
                             dataSource={domaines}
@@ -85,13 +85,12 @@ export default function PriseRendezVous({
                             choiceSelected={dataSource.canalSelected}
                             dataSource={canal}
                             id="canal"
-                            label="Vous souhaitez un rendez-vous"
-                            labelInfo="Si vous choisissez par téléphone, un conseiller vous rappellera pour fixer un rendez-vous."/>
+                            label="Vous souhaitez un rendez-vous"/>
             {dataSource.canalSelected &&
                 <>
                     <Textarea label="Apporter une précision, si nécessaire :"
                               id="precision"
-                              maxLenght={234}
+                              maxLength={234}
                               onChange={onPrecisionChanged}
                               value={dataSource.precision}/>
                     <JourSwitcher choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
