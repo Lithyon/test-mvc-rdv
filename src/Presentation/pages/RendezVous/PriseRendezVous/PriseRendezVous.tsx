@@ -61,7 +61,8 @@ export default function PriseRendezVous({
         <Form className="mcf-mt--5">
             <h2>Votre rendez-vous</h2>
             <p className="mcf-text--info mcf-mb--6 mcf-font-weight--bold">
-                <i className="icon-macif-mobile-info-plein"></i>Sauf mention contraire, tous les champs sont requis.
+                <i className="icon-macif-mobile-info-plein"></i><span
+                className="mcf-ml--1">Sauf mention contraire, tous les champs sont requis.</span>
             </p>
             <ChoiceSwitcher onChoiceSelected={onDomaineSelected}
                             choiceSelected={dataSource.domaineSelected}
