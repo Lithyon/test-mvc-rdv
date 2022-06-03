@@ -88,7 +88,7 @@ export default function PriseRendezVous({
                             label="Vous souhaitez un rendez-vous"/>
             {dataSource.canalSelected &&
                 <>
-                    <Textarea label="Apporter une précision, si nécessaire :"
+                    <Textarea label="Apportez une précision, si nécessaire :"
                               id="precision"
                               maxLength={234}
                               onChange={onPrecisionChanged}

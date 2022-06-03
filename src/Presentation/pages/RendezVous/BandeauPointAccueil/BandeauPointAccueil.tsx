@@ -24,7 +24,7 @@ export default function BandeauPointAccueil({dataSource}: BandeauPointAccueilPro
             <Card.Body className="mcf-d--flex mcf-align-items--center">
                 <div className="mcf-text--center mcf-w--50">
                     <i className="icon-localisation mcf-icon--5"/>
-                    <h2 className="mcf-h4 mcf-mt--5">Agence choisie</h2>
+                    <Card.Text as={"h2"} className="mcf-h4 mcf-mt--5">Agence choisie</Card.Text>
                 </div>
                 <address className="mcf-d--flex mcf-flex--column mcf-w--50">
                     <span>{nomPointAccueil}</span>
