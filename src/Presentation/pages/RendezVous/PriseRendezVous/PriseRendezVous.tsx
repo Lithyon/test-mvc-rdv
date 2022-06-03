@@ -60,6 +60,9 @@ export default function PriseRendezVous({
     return (
         <Form className="mcf-mt--5">
             <h2>Votre rendez-vous</h2>
+            <p className="mcf-text--info mcf-mb--6 mcf-font-weight--bold">
+                <i className="icon-macif-mobile-info-plein"></i>Sauf mention contraire, tous les champs sont requis.
+            </p>
             <ChoiceSwitcher onChoiceSelected={onDomaineSelected}
                             choiceSelected={dataSource.domaineSelected}
                             dataSource={domaines}
@@ -110,9 +113,8 @@ export default function PriseRendezVous({
                             id="hasAccount"/>
             {dataSource.choixConnexionSelected !== "" && <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
+                <Button className="mcf-mr--3" onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
             </div>}
-            {/*<pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>*/}
         </Form>
     );
 }
