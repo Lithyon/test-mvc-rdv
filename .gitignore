@@ -7,9 +7,11 @@
 
 # testing
 /coverage
+junit.xml
+test-report.xml
 
 #production
-/public/index.html
+/dist
 
 # misc
 .DS_Store
