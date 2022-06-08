@@ -37,7 +37,7 @@ export default function JourSwitcher({
 
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
-    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver)
+    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver);
 
     useEffect(() => {
         if (disponibilites.length > 0) {
@@ -53,14 +53,10 @@ export default function JourSwitcher({
             setDisabledNext(isAfter(dispoFin, dtMax));
 
             if (dejaNavigue) {
-                setFocusSurPremierJour();
+                document.getElementById(disponibilites[0].jour.toString())?.focus();
             }
         }
-    }, [disponibilites])
-
-    const setFocusSurPremierJour = () => {
-        document.getElementById(disponibilites[0].jour.toString())?.focus();
-    }
+    }, [disponibilites, dejaNavigue])
 
     const handleClickPrev = () => {
         setDejaNavigue(true);

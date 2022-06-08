@@ -21,7 +21,7 @@ export default function Textarea({label, id, maxLength, onChange, value}: Textar
 
     const ariaLiveValue: "off" | "assertive" | "polite" | undefined = count <= 20 ? "assertive" : "polite"
 
-    useEffect(() => onChange(inputValue), [inputValue])
+    useEffect(() => onChange(inputValue), [inputValue, onChange])
 
     return <Form.Group controlId={id}>
         <Form.Label as={"h3"} className="mcf-text--small-1">{label}<span className="mcf-sr-only">{infoCounter}</span></Form.Label>
