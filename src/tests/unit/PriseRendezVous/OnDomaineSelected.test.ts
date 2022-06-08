@@ -3,6 +3,7 @@ import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 import demandeStub from "../../../../mocks/DemandeStub";
 import {TypeDomaine} from "../../../Domain/Data/Enum/Domaine";
 import {TypeDemande} from "../../../Domain/Data/Enum/Demande";
+import DomaineModelView from "../../../Presentation/pages/RendezVous/ModelView/Domaine/DomaineModelView";
 
 describe('Prise de rendez vous - OnDomaineSelected', function () {
 
@@ -19,7 +20,7 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.AUTO);
+        controller.onDomaineSelected({code: TypeDomaine.AUTO, libelle: ""} as DomaineModelView);
     });
 
     it("ne doit pas fournir une liste de choix de demandes si le domaine sélectionner est pour un professionnel", (done) => {
@@ -35,7 +36,7 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.PRO);
+        controller.onDomaineSelected({code: TypeDomaine.PRO, libelle: ""} as DomaineModelView);
     });
 
     it("ne doit pas fournir une liste de choix de demandes avec un sinistre si le domaine santé est sélectionné", (done) => {
@@ -51,7 +52,7 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.SANTE);
+        controller.onDomaineSelected({code: TypeDomaine.SANTE, libelle: ""} as DomaineModelView);
     });
 
     it("doit fournir un code quand un choix de domaines est récupéré", (done) => {
@@ -67,7 +68,7 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.AUTO);
+        controller.onDomaineSelected({code: TypeDomaine.AUTO, libelle: ""} as DomaineModelView);
     });
 
     it("doit fournir un libelle quand un choix de domaines est récupéré", (done) => {
@@ -83,7 +84,7 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.AUTO);
+        controller.onDomaineSelected({code: TypeDomaine.AUTO, libelle: ""} as DomaineModelView);
     });
 
     it("doit renseigner le code domaine sélectionné pour la prise de rendez vous", function (done) {
@@ -94,11 +95,11 @@ describe('Prise de rendez vous - OnDomaineSelected', function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
 
-            expect(actual.rendezVous.domaineSelected).toBe(expected);
+            expect(actual.rendezVous.domaineSelected.code).toBe(expected);
 
             done();
         });
 
-        controller.onDomaineSelected(TypeDomaine.AUTO);
+        controller.onDomaineSelected({code: TypeDomaine.AUTO, libelle: ""} as DomaineModelView);
     });
 });

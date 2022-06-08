@@ -4,7 +4,7 @@ import {DisponibilitesModelView} from "../Disponibilites/DisponibilitesModelView
 import DomaineModelView from "../Domaine/DomaineModelView";
 import DemandeModelView from "../Demande/DemandeModelView";
 import CanalModelView from "../Canal/CanalModelView";
-import ChoixConnexionModelView from "../ChoixConnexionModelView";
+import ChoixConnexionModelView from "../ChoixConnexion/ChoixConnexionModelView";
 
 export default interface RendezVousModelView {
     readonly domaines: Array<DomaineModelView>;

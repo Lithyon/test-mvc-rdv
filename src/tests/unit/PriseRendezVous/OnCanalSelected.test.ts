@@ -1,6 +1,7 @@
 import {init} from "./common/Init";
 import disponibilitesStub from "../../../../mocks/DisponibilitesStub";
 import {CanalCode} from "../../../Domain/Data/Enum/Canal";
+import CanalModelView from "../../../Presentation/pages/RendezVous/ModelView/Canal/CanalModelView";
 
 describe('Prise de rendez vous - OnCanalSelected', function () {
 
@@ -12,11 +13,11 @@ describe('Prise de rendez vous - OnCanalSelected', function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
 
-            expect(actual.rendezVous.canalSelected).toBe(expected);
+            expect(actual.rendezVous.canalSelected.code).toBe(expected);
             done();
         });
 
-        controller.onCanalSelected(expected);
+        controller.onCanalSelected({code: expected, libelle: ""} as CanalModelView);
     });
 
     it("doit récupérer les disponibilités lorsque le canal est sélectionné", function (done) {
@@ -33,6 +34,6 @@ describe('Prise de rendez vous - OnCanalSelected', function () {
             });
         });
 
-        controller.onCanalSelected(CanalCode.AGENCE);
+        controller.onCanalSelected({code: CanalCode.AGENCE, libelle: ""} as CanalModelView);
     });
 });

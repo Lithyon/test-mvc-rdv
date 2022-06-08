@@ -11,6 +11,13 @@ export default class DisponibilitesModelViewBuilder {
         }
     }
 
+    static buildEmptyHeure(): HeureDisponibleModelView {
+        return {
+            code: 0,
+            libelle: ""
+        }
+    }
+
     static buildFromDisponibilites(disponibilites: Disponibilites): DisponibilitesModelView {
         return {
             aucuneDisponibilite: disponibilites.state.aucuneDisponibilite,

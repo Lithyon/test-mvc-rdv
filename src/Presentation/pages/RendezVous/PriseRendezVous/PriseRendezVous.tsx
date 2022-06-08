@@ -12,7 +12,7 @@ import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import RendezVousModelView from "../ModelView/RendezVous/RendezVousModelView";
-import ChoixConnexionModelView from "../ModelView/ChoixConnexionModelView";
+import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
 import PagesDetails from "../../PagesDetails";
 import {useNavigate} from "react-router-dom";
 
@@ -74,7 +74,7 @@ export default function PriseRendezVous({
                             dataSource={demandes}
                             id="demande"
                             label="Votre demande concerne ?"/>
-            {dataSource.domaineSelected === TypeDomaine.PRO && <Alert variant="primary">
+            {dataSource.domaineSelected.code === TypeDomaine.PRO && <Alert variant="primary">
                 <span className="icon icon-macif-mobile-info-plein mcf-icon--3 mcf-float--left"></span>
                 <p>
                     Ce cas nécessite une prise en charge particulière. Aussi, nous vous invitons à remplir un nouveau
@@ -90,7 +90,7 @@ export default function PriseRendezVous({
                             dataSource={canal}
                             id="canal"
                             label="Vous souhaitez un rendez-vous"/>
-            {dataSource.canalSelected &&
+            {dataSource.canalSelected.code !== "" &&
                 <>
                     <Textarea label="Apportez une précision, si nécessaire :"
                               id="precision"
@@ -112,10 +112,11 @@ export default function PriseRendezVous({
                             dataSource={choixConnexion} nbSwitchers={2}
                             label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
                             id="hasAccount"/>
-            {dataSource.choixConnexionSelected !== "" && <div className="mcf-d--flex mcf-justify-content--between">
+            {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
                 <Button className="mcf-mr--3" onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
             </div>}
+            <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );
 }

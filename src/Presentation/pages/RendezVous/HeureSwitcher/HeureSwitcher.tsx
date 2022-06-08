@@ -5,15 +5,17 @@ import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
+import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibleModelView";
+import CanalModelView from "../ModelView/Canal/CanalModelView";
 
 export interface HeureSwitcherProps {
     readonly onChoiceSelected: Function;
-    readonly choiceSelected: number;
+    readonly choiceSelected: HeureDisponibleModelView;
     readonly jourSelected: Date;
     readonly dataSource: Array<JourDisponibleModelView>;
     readonly proposerChoixHoraire: boolean;
     readonly onLoadDisponibilitesObserver: LoadingObservable,
-    readonly canalSelected: string;
+    readonly canalSelected: CanalModelView;
 }
 
 export default function HeureSwitcher({
@@ -30,7 +32,7 @@ export default function HeureSwitcher({
 
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
 
-    const dureeRendezVous: string = canalSelected === CanalCode.TELEPHONE ? "15" : "30";
+    const dureeRendezVous: string = canalSelected.code === CanalCode.TELEPHONE ? "15" : "30";
 
     return proposerChoixHoraire && isOver ? (<Card as={Form.Group} bg="gris-lune">
         <Card.Body>

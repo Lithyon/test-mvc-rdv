@@ -1,5 +1,6 @@
 import Canal from "../../../../../Domain/Model/Canal/Canal";
 import CanalModelView from "./CanalModelView";
+import {CanalCode} from "../../../../../Domain/Data/Enum/Canal";
 
 export default class CanalModelViewBuilder {
     static buildFromCanal(canal: Canal): CanalModelView {
@@ -11,5 +12,12 @@ export default class CanalModelViewBuilder {
             canalModelView.isNew = canal.state.isNew;
         }
         return canalModelView;
+    }
+
+    static buildEmpty() {
+        return {
+            code: "",
+            libelle: ""
+        };
     }
 }

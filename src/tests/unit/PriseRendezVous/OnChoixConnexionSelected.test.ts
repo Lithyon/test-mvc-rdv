@@ -1,5 +1,6 @@
 import {init} from "./common/Init";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
+import ChoixConnexionModelView from "../../../Presentation/pages/RendezVous/ModelView/ChoixConnexion/ChoixConnexionModelView";
 
 describe('Prise de rendez vous - OnChoixConnexionSelected', function () {
 
@@ -15,7 +16,7 @@ describe('Prise de rendez vous - OnChoixConnexionSelected', function () {
             done();
         });
 
-        controller.onChoixConnexionSelected(expected);
+        controller.onChoixConnexionSelected({code: expected, libelle: ""} as ChoixConnexionModelView);
     });
 
 });

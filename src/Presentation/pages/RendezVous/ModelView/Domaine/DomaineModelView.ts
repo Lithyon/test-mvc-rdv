@@ -1,4 +1,4 @@
 export default interface DomaineModelView {
-    code: string;
-    libelle: string;
+    readonly code: string;
+    readonly libelle: string;
 }

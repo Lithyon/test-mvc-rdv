@@ -8,7 +8,6 @@ import BandeauPointAccueilModelViewBuilder from "./BandeauPointAccueil/ModelView
 import PointAccueil from "../../../Domain/Model/PointAccueil/PointAccueil";
 import Demande from "../../../Domain/Model/Demande/Demande";
 import DisponibilitesModelViewBuilder from "./ModelView/Disponibilites/DisponibilitesModelViewBuilder";
-import {CanalCode} from "../../../Domain/Data/Enum/Canal";
 import DisponibilitesRequest from "../../../Domain/Model/Disponibilites/DisponibilitesRequest";
 import Disponibilites from "../../../Domain/Model/Disponibilites/Disponibilites";
 import DemandeModelViewBuilder from "./ModelView/Demande/DemandeModelViewBuilder";
@@ -22,9 +21,14 @@ import {DemandeServiceImpl} from "../../../Domain/Services/Demande";
 import {PointAccueilServiceImpl} from "../../../Domain/Services/PointAccueil";
 import {CanalServiceImpl} from "../../../Domain/Services/Canal";
 import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
-import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {ChoixConnexionServiceImpl} from "../../../Domain/Services/ChoixConnexion";
 import CanalModelViewBuilder from "./ModelView/Canal/CanalModelViewBuilder";
+import DomaineModelView from "./ModelView/Domaine/DomaineModelView";
+import DemandeModelView from "./ModelView/Demande/DemandeModelView";
+import CanalModelView from "./ModelView/Canal/CanalModelView";
+import HeureDisponibleModelView from "./ModelView/Disponibilites/HeureDisponibleModelView";
+import ChoixConnexionModelViewBuilder from "./ModelView/ChoixConnexion/ChoixConnexionModelViewBuilder";
+import ChoixConnexionModelView from "./ModelView/ChoixConnexion/ChoixConnexionModelView";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -120,22 +124,24 @@ export default class RendezVousController
         this.raiseStateChanged();
     }
 
-    async onDomaineSelected(domaineSelected: string) {
+    async onDomaineSelected(domaineSelected: DomaineModelView) {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
-            this._demandes = await this.dependencies.demandeService.getDemandes(domaineSelected);
+            this._demandes = await this.dependencies.demandeService.getDemandes(domaineSelected.code);
             this._state = {
                 ...this._state,
                 demandes: this._demandes.map(DemandeModelViewBuilder.buildFromDemande),
                 rendezVous: {
                     ...this._state.rendezVous,
-                    demandeSelected: "",
-                    canalSelected: "",
-                    choixConnexionSelected: "",
+                    demandeSelected: DemandeModelViewBuilder.buildEmpty(),
+                    canalSelected: CanalModelViewBuilder.buildEmpty(),
+                    choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
+                    heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                    jour: new Date(),
                     afficherChoixConnexion: false,
                     afficherChoixCanaux: false,
                     precision: "",
-                    domaineSelected,
+                    domaineSelected
                 }
             };
         } catch (error) {
@@ -144,13 +150,15 @@ export default class RendezVousController
         this.raiseStateChanged();
     }
 
-    onDemandeSelected(demandeSelected: string) {
+    onDemandeSelected(demandeSelected: DemandeModelView) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                canalSelected: "",
-                choixConnexionSelected: "",
+                canalSelected: CanalModelViewBuilder.buildEmpty(),
+                choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
+                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                jour: new Date(),
                 afficherChoixConnexion: false,
                 afficherChoixCanaux: true,
                 precision: "",
@@ -160,12 +168,14 @@ export default class RendezVousController
         this.raiseStateChanged();
     }
 
-    async onCanalSelected(canalSelected: CanalCode) {
+    async onCanalSelected(canalSelected: CanalModelView) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                choixConnexionSelected: "",
+                choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
+                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                jour: new Date(),
                 afficherChoixConnexion: false,
                 precision: "",
                 canalSelected,
@@ -186,10 +196,10 @@ export default class RendezVousController
             }
 
             this._disponibilites = await this.dependencies.rendezVousService.getDisponibilites(new DisponibilitesRequest({
-                canalRendezVous: this._state.rendezVous.canalSelected,
+                canalRendezVous: this._state.rendezVous.canalSelected.code,
                 cdBuro: this._state.rendezVous.cdBuro,
-                cdDemande: this._state.rendezVous.demandeSelected,
-                cdDomaine: this._state.rendezVous.domaineSelected,
+                cdDemande: this._state.rendezVous.demandeSelected.code,
+                cdDomaine: this._state.rendezVous.domaineSelected.code,
                 dtDebut,
             }));
 
@@ -226,8 +236,8 @@ export default class RendezVousController
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                heure: 0,
-                choixConnexionSelected: "",
+                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
                 jour: jourSelected,
                 afficherChoixConnexion: false,
                 proposerChoixHoraire: true
@@ -236,20 +246,20 @@ export default class RendezVousController
         this.raiseStateChanged();
     }
 
-    onHeureSelected(heureSelected: number) {
+    onHeureSelected(heureSelected: HeureDisponibleModelView) {
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                choixConnexionSelected: "",
+                choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
                 afficherChoixConnexion: true,
-                heure: heureSelected,
+                heure: heureSelected
             }
         }
         this.raiseStateChanged();
     }
 
-    onChoixConnexionSelected(choixConnexionSelected: ChoixConnexionCode) {
+    onChoixConnexionSelected(choixConnexionSelected: ChoixConnexionModelView) {
         this._state = {
             ...this._state,
             rendezVous: {

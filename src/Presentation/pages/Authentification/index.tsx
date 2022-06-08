@@ -1,6 +1,9 @@
 import AuthentificationView from "./Authentification";
+import AuthentificationController from "./AuthentificationController";
 
 export default function Authentification() {
 
-    return <AuthentificationView />;
+    const controller = new AuthentificationController({});
+
+    return <AuthentificationView controller={controller}/>;
 }

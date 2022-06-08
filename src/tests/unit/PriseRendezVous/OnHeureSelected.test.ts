@@ -1,5 +1,6 @@
 import {init} from "./common/Init";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
+import HeureDisponibleModelView from "../../../Presentation/pages/RendezVous/ModelView/Disponibilites/HeureDisponibleModelView";
 
 describe('Prise de rendez vous - OnHeureSelected', function () {
 
@@ -15,7 +16,7 @@ describe('Prise de rendez vous - OnHeureSelected', function () {
             done();
         });
 
-        controller.onHeureSelected(expected);
+        controller.onHeureSelected({code: 1, libelle: ""} as HeureDisponibleModelView);
     });
 
 });
