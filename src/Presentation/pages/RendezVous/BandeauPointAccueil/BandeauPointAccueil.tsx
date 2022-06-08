@@ -27,7 +27,7 @@ export default function BandeauPointAccueil({dataSource}: BandeauPointAccueilPro
                     <Card.Text as={"h2"} className="mcf-h4 mcf-mt--5">Agence choisie</Card.Text>
                 </div>
                 <address className="mcf-d--flex mcf-flex--column mcf-w--50">
-                    <span>{nomPointAccueil}</span>
+                    <p>{nomPointAccueil}</p>
                     <p>
                         {noVoie} {typeVoie} {nomVoie}{" "}
                     </p>
@@ -36,7 +36,7 @@ export default function BandeauPointAccueil({dataSource}: BandeauPointAccueilPro
                     </p>
                     <a
                         href={`tel:${telPointAccueil}`}
-                        className="mcf-text--big-3 mcf-font-weight--bold mcf-text--body"
+                        className="mcf-text--big-3 mcf-font-weight--bold mcf-text--body mcf-mb--4"
                     >
                         {telPointAccueil}
                     </a>

@@ -29,7 +29,7 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                          }: ChoiceSwitcherProps<T>) {
     return show && dataSource.length > 0 ? (
         <Form.Group controlId={id}>
-            <Form.Label as={"h3"} id={id} className="mcf-text--small-1">{label}</Form.Label>
+            <Form.Label as={"h3"} id={id} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">{label}</Form.Label>
             {labelInfo && <Form.Text muted>{labelInfo}</Form.Text>}
             <Form.SwitcherGroup
                 type="radio"
