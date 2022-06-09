@@ -1,3 +1,7 @@
 include:
   - "http://gitlab.macif.fr:82/outils-maciffr/cicd/autodevops-v3/raw/master/node/node-npm-14.18.3-alpine3.15.yml"
   - "http://gitlab.macif.fr:82/outils-maciffr/cicd/autodevops-v3/raw/master/react/maciffr-react-spa.yml"
+
+variables:
+  # GroupId de l'artifact (obligatoire)
+  CICD_ARTIFACT_GROUPID: com.macif.internet.technique
