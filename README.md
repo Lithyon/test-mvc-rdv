@@ -2,7 +2,7 @@
 
 Application avec architecture MVC. 
 
-[![Quality Gate Status](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/api/project_badges/measure?project=btoc-sites.sites.maciffr-maciffr-react-rdv-v2&metric=alert_status)](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/dashboard?id=btoc-sites.sites.maciffr-maciffr-react-rdv-v2)
+[![Quality gate](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/api/project_badges/quality_gate?project=btoc-sites.sites.maciffr-maciffr-react-rdv-v2)](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/dashboard?id=btoc-sites.sites.maciffr-maciffr-react-rdv-v2)
 
 [![Maintainability Rating](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/api/project_badges/measure?project=btoc-sites.sites.maciffr-maciffr-react-rdv-v2&metric=sqale_rating)](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/dashboard?id=btoc-sites.sites.maciffr-maciffr-react-rdv-v2)
 [![Reliability Rating](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/api/project_badges/measure?project=btoc-sites.sites.maciffr-maciffr-react-rdv-v2&metric=reliability_rating)](http://sonarqube-poc-maciffr.apps.nclr0002.recette.macif.fr/dashboard?id=btoc-sites.sites.maciffr-maciffr-react-rdv-v2)
