@@ -1,6 +1,6 @@
 import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {add, isAfter, isBefore, sub} from 'date-fns';
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
@@ -39,6 +39,8 @@ export default function JourSwitcher({
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver);
 
+    const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = disponibilites.map(() => React.createRef<HTMLLabelElement>());
+
     useEffect(() => {
         if (disponibilites.length > 0) {
             const dtJour = new Date();
@@ -52,11 +54,12 @@ export default function JourSwitcher({
             setDateNext(dispoFin);
             setDisabledNext(isAfter(dispoFin, dtMax));
 
-            if (dejaNavigue) {
-                document.getElementById(disponibilites[0].jour.toString())?.focus();
+            if (dejaNavigue && tableauRefInput[0].current) {
+                tableauRefInput[0].current.focus();
             }
         }
-    }, [disponibilites, dejaNavigue])
+    }, [disponibilites])
+
 
     const handleClickPrev = () => {
         setDejaNavigue(true);
@@ -92,7 +95,8 @@ export default function JourSwitcher({
                 {disponibilites.map((value, index) => {
                     const disabled = value.ferie || (value.disponibilitesMatin.length === 0 && value.disponibilitesApresMidi.length === 0)
                     return (
-                        <Form.Switcher key={index} value={value.jour} disabled={disabled} aria-disabled={disabled} id={value.jour}>
+                        <Form.Switcher ref={tableauRefInput[index]} key={index} value={value.jour} disabled={disabled} aria-disabled={disabled}
+                                       id={value.jour}>
                             {value.jour.toLocaleDateString('fr-FR', {
                                 weekday: "short",
                                 day: "numeric",
