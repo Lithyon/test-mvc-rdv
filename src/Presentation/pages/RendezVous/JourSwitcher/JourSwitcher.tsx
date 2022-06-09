@@ -1,6 +1,6 @@
 import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {add, isAfter, isBefore, sub} from 'date-fns';
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
@@ -39,7 +39,7 @@ export default function JourSwitcher({
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver);
 
-    const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = disponibilites.map(() => React.createRef<HTMLLabelElement>());
+    const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = useMemo(() => disponibilites.map(() => React.createRef<HTMLLabelElement>()), [disponibilites]);
 
     useEffect(() => {
         if (disponibilites.length > 0) {
@@ -54,11 +54,11 @@ export default function JourSwitcher({
             setDateNext(dispoFin);
             setDisabledNext(isAfter(dispoFin, dtMax));
 
-            if (dejaNavigue && tableauRefInput[0].current) {
-                tableauRefInput[0].current.focus();
+            if (dejaNavigue) {
+                tableauRefInput[0].current?.focus();
             }
         }
-    }, [disponibilites])
+    }, [disponibilites, dejaNavigue, tableauRefInput])
 
 
     const handleClickPrev = () => {
