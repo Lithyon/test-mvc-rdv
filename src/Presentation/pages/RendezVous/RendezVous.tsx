@@ -1,4 +1,3 @@
-import {Card, Col, Container, Row} from "macif-components";
 import BandeauPointAccueil from "./BandeauPointAccueil";
 import PriseRendezVous from "./PriseRendezVous";
 import RendezVousController from "./RendezVousController";
@@ -22,31 +21,25 @@ export default function RendezVous({controller}: RendezVousProps) {
         return <DisplayError/>
     }
     return (
-        <Container className="mcf-mt--10">
-            <Row>
-                <Col>
-                    <Card body>
-                        <BandeauPointAccueil dataSource={state.pointAccueil}/>
-                        <PriseRendezVous dataSource={state.rendezVous}
-                                         demandes={state.demandes}
-                                         domaines={state.domaines}
-                                         canal={state.canal}
-                                         onDomaineSelected={controller.onDomaineSelected}
-                                         onDemandeSelected={controller.onDemandeSelected}
-                                         onCanalSelected={controller.onCanalSelected}
-                                         onPrecisionChanged={controller.onPrecisionChanged}
-                                         disponibilites={state.disponibilites}
-                                         onJourSelected={controller.onJourSelected}
-                                         loadDisponibilites={controller.loadDisponibilites}
-                                         onHeureSelected={controller.onHeureSelected}
-                                         onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
-                                         hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
-                                         stateLocation={state}
-                                         choixConnexion={state.choixConnexion}
-                                         onChoixConnexionSelected={controller.onChoixConnexionSelected}/>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <BandeauPointAccueil dataSource={state.pointAccueil}/>
+            <PriseRendezVous dataSource={state.rendezVous}
+                                demandes={state.demandes}
+                                domaines={state.domaines}
+                                canal={state.canal}
+                                onDomaineSelected={controller.onDomaineSelected}
+                                onDemandeSelected={controller.onDemandeSelected}
+                                onCanalSelected={controller.onCanalSelected}
+                                onPrecisionChanged={controller.onPrecisionChanged}
+                                disponibilites={state.disponibilites}
+                                onJourSelected={controller.onJourSelected}
+                                loadDisponibilites={controller.loadDisponibilites}
+                                onHeureSelected={controller.onHeureSelected}
+                                onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
+                                hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
+                                stateLocation={state}
+                                choixConnexion={state.choixConnexion}
+                                onChoixConnexionSelected={controller.onChoixConnexionSelected}/>
+        </>
     );
 }

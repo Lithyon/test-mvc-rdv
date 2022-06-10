@@ -29,6 +29,7 @@ import CanalModelView from "./ModelView/Canal/CanalModelView";
 import HeureDisponibleModelView from "./ModelView/Disponibilites/HeureDisponibleModelView";
 import ChoixConnexionModelViewBuilder from "./ModelView/ChoixConnexion/ChoixConnexionModelViewBuilder";
 import ChoixConnexionModelView from "./ModelView/ChoixConnexion/ChoixConnexionModelView";
+import HeureDisponibleModelViewBuilder from "./ModelView/Disponibilites/HeureDisponibleModelViewBuilder";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -47,6 +48,7 @@ export default class RendezVousController
     private _canal?: Array<Canal>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
+    private readonly _stateForm: RendezVousModelView
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
     private readonly _hasErrorObserver: ErrorObservableImpl;
     private readonly _hasErrorDisponibilitesObserver: ErrorObservableImpl;
@@ -55,7 +57,7 @@ export default class RendezVousController
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
-        const stateForm = window.history.state?.usr as RendezVousModelView;
+        this._stateForm = window.history.state?.usr as RendezVousModelView;
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -67,7 +69,7 @@ export default class RendezVousController
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._hasErrorDisponibilitesObserver = new ErrorObservableImpl();
-        this._state = stateForm || {
+        this._state = this._stateForm || {
             domaines: [],
             demandes: [],
             canal: [],
@@ -100,23 +102,25 @@ export default class RendezVousController
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
 
         try {
-            this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
-            this._domaines = await this.dependencies.domaineService.getDomaines();
-            this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
-            this._state = {
-                ...this._state,
-                canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
-                domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
-                pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
-                    this._pointAccueil
-                ),
-                rendezVous: {
-                    ...this._state.rendezVous,
-                    cdBuro: this._pointAccueil.state.cdBuro,
-                    nmCommu: this._pointAccueil.state.nmCommu,
-                }
-            };
+            if (!this._stateForm) {
+                this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
+                this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+                this._domaines = await this.dependencies.domaineService.getDomaines();
+                this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
+                this._state = {
+                    ...this._state,
+                    canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
+                    domaines: this._domaines.map(DomaineModelViewBuilder.buildFromDomaine),
+                    pointAccueil: BandeauPointAccueilModelViewBuilder.buildFromPointAccueil(
+                        this._pointAccueil
+                    ),
+                    rendezVous: {
+                        ...this._state.rendezVous,
+                        cdBuro: this._pointAccueil.state.cdBuro,
+                        nmCommu: this._pointAccueil.state.nmCommu,
+                    }
+                };
+            }
             this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
@@ -136,7 +140,7 @@ export default class RendezVousController
                     demandeSelected: DemandeModelViewBuilder.buildEmpty(),
                     canalSelected: CanalModelViewBuilder.buildEmpty(),
                     choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
-                    heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                    heure: HeureDisponibleModelViewBuilder.buildEmpty(),
                     jour: new Date(),
                     afficherChoixConnexion: false,
                     afficherChoixCanaux: false,
@@ -157,7 +161,7 @@ export default class RendezVousController
                 ...this._state.rendezVous,
                 canalSelected: CanalModelViewBuilder.buildEmpty(),
                 choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
-                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                heure: HeureDisponibleModelViewBuilder.buildEmpty(),
                 jour: new Date(),
                 afficherChoixConnexion: false,
                 afficherChoixCanaux: true,
@@ -174,7 +178,7 @@ export default class RendezVousController
             rendezVous: {
                 ...this._state.rendezVous,
                 choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
-                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                heure: HeureDisponibleModelViewBuilder.buildEmpty(),
                 jour: new Date(),
                 afficherChoixConnexion: false,
                 precision: "",
@@ -236,7 +240,7 @@ export default class RendezVousController
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+                heure: HeureDisponibleModelViewBuilder.buildEmpty(),
                 choixConnexionSelected: ChoixConnexionModelViewBuilder.buildEmpty(),
                 jour: jourSelected,
                 afficherChoixConnexion: false,

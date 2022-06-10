@@ -11,12 +11,12 @@ describe('Prise de rendez vous - OnChoixConnexionSelected', function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.rendezVous.choixConnexionSelected).toBe(expected);
+            expect(actual.rendezVous.choixConnexionSelected.code).toBe(expected);
 
             done();
         });
 
-        controller.onChoixConnexionSelected({code: expected, libelle: ""} as ChoixConnexionModelView);
+        controller.onChoixConnexionSelected({code: ChoixConnexionCode.NO_ACCOUNT, libelle: ""} as ChoixConnexionModelView);
     });
 
 });

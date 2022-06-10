@@ -2,8 +2,8 @@ import RendezVousSelectionModelView from "./RendezVousSelectionModelView";
 import DomaineModelViewBuilder from "../Domaine/DomaineModelViewBuilder";
 import DemandeModelViewBuilder from "../Demande/DemandeModelViewBuilder";
 import CanalModelViewBuilder from "../Canal/CanalModelViewBuilder";
-import DisponibilitesModelViewBuilder from "../Disponibilites/DisponibilitesModelViewBuilder";
 import ChoixConnexionModelViewBuilder from "../ChoixConnexion/ChoixConnexionModelViewBuilder";
+import HeureDisponibleModelViewBuilder from "../Disponibilites/HeureDisponibleModelViewBuilder";
 
 export default class RendezVousSelectionModelViewBuilder {
     static buildEmpty(): RendezVousSelectionModelView {
@@ -18,7 +18,7 @@ export default class RendezVousSelectionModelViewBuilder {
             demandeSelected: DemandeModelViewBuilder.buildEmpty(),
             domaineSelected: DomaineModelViewBuilder.buildEmpty(),
             estFilleul: false,
-            heure: DisponibilitesModelViewBuilder.buildEmptyHeure(),
+            heure: HeureDisponibleModelViewBuilder.buildEmpty(),
             jour: new Date(),
             nmCommu: "",
             noSocietaireParrain: "",

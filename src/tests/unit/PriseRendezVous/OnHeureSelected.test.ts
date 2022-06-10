@@ -11,7 +11,7 @@ describe('Prise de rendez vous - OnHeureSelected', function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.rendezVous.heure).toBe(expected);
+            expect(actual.rendezVous.heure.code).toBe(expected);
 
             done();
         });

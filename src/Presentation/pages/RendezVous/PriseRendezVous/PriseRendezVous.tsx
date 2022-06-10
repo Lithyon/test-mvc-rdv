@@ -14,7 +14,8 @@ import {ErrorObservable} from "../../../commons/ErrorObservable";
 import RendezVousModelView from "../ModelView/RendezVous/RendezVousModelView";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
 import PagesDetails from "../../PagesDetails";
-import {useNavigate} from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -56,13 +57,24 @@ export default function PriseRendezVous({
                                             choixConnexion
                                         }: PriseRendezVousProps) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const titreRendezVousRef = useRef<HTMLHeadingElement>(null);
+
+    useEffect(() => {
+        if (titreRendezVousRef?.current && location.hash !== "") {
+            // scrollIntoView est expérimental, trouver une autre solution ?
+            titreRendezVousRef.current.scrollIntoView({ behavior: 'smooth' });
+            titreRendezVousRef.current.focus();
+            titreRendezVousRef.current.setAttribute("tabIndex", "-1");
+        }
+    }, [location, titreRendezVousRef]);
 
     return (
         <Form className="mcf-mt--5">
-            <h2>Votre rendez-vous</h2>
-            <p className="mcf-text--info mcf-mb--3 mcf-font-weight--bold">
-                <i className="icon-macif-mobile-info-plein"></i><span
-                className="mcf-ml--1">Sauf mention contraire, tous les champs sont requis.</span>
+            <h2 id="titre-rendez-vous" ref={titreRendezVousRef}>Votre rendez-vous</h2>
+            <p className="mcf-text--info mcf-mb--6 mcf-font-weight--bold">
+                <i className="icon-macif-mobile-info-plein"></i>
+                <span className="mcf-ml--1">Sauf mention contraire, tous les champs sont requis.</span>
             </p>
             <ChoiceSwitcher onChoiceSelected={onDomaineSelected}
                             choiceSelected={dataSource.domaineSelected}
@@ -116,7 +128,6 @@ export default function PriseRendezVous({
                 <Button variant="outline--primary">Annuler</Button>
                 <Button className="mcf-mr--3" onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
             </div>}
-            <pre><code>{JSON.stringify(dataSource, null, 4)}</code></pre>
         </Form>
     );
 }

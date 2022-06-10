@@ -1,5 +1,8 @@
 
 import {Button, Card} from "macif-components";
+import { useLocation, useNavigate } from "react-router-dom";
+import PagesDetails from "../../PagesDetails";
+import RendezVousModelView from "../../RendezVous/ModelView/RendezVous/RendezVousModelView";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 
 export interface BandeauModificationProps {
@@ -7,29 +10,32 @@ export interface BandeauModificationProps {
 }
 
 export default function BandeauModification({dataSource}: BandeauModificationProps) {
-    return <Card bg="gris-sable">
-        <Card.Body className="mcf-d-md--flex mcf-align-items--center mcf-justify-content--between">
-            <span className="icon icon-calendrier-check mcf-icon--6 mcf-pb-lg--0 mcf-pr-md--3" aria-hidden={true}/>
+    const navigate = useNavigate();
+    const location = useLocation();
+    const state = location.state as RendezVousModelView;
 
-            <div>
+    return <Card bg="gris-sable">
+        <Card.Body className="mcf-grid mcf-align-items--center">
+            <span className="icon icon-calendrier-check mcf-icon--6 mcf-d--none mcf-d-md--flex mcf-g-col-1" aria-hidden={true}/>
+
+            <div className="mcf-g-col-12 mcf-g-col-md-10">
                 Je souhaite un rendez-vous {dataSource.canalSelected.libelle.toLowerCase()} le
                 {" "}<span className="mcf-font-weight--bold">{dataSource.jour.toLocaleDateString('fr-FR', {
-                        weekday: "long",
                         day: "numeric",
-                        month: "short"
+                        month: "short",
+                        year: "numeric"
                     })}</span>
                 {" "}à {dataSource.heure.libelle} à l'agence de {dataSource.nmCommu}.
                 {" "}Ma demande concerne {dataSource.demandeSelected.libelle.toLowerCase()} pour le domaine {dataSource.domaineSelected.libelle.toLowerCase()}.
             </div>
 
-            <Button variant="outline--primary mcf-d--flex mcf-d-md--none mcf-w--100 mcf-justify-content--center">
-                <span className="icon icon-macif-mobile-crayon mcf-icon--left mcf-pr--2" aria-hidden={true}/>
-                Modifier
-            </Button>
-            <Button variant="outline--primary mcf-d--none mcf-d-md--flex">
-                <span className="icon icon-macif-mobile-crayon mcf-icon--left mcf-pr--2" aria-hidden={true}/>
-                Modifier
-            </Button>
+            <div className="mcf-g-col-12 mcf-g-col-md-1">
+                <Button variant="outline--primary" className="mcf-d--flex mcf-justify-content--center" block 
+                    onClick={() => navigate(PagesDetails.RendezVous.link + `?b=${dataSource.cdBuro}#titre-rendez-vous`, {state})}>
+                    <span className="icon icon-macif-mobile-crayon mcf-icon--left mcf-pr--2" aria-hidden={true}/>
+                    Modifier
+                </Button>
+            </div>
         </Card.Body>
     </Card>;
 }
