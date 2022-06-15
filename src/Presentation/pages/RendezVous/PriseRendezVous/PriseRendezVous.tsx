@@ -12,8 +12,12 @@ import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
-import {useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useRef} from "react";
+import PagesDetails from "../../PagesDetails";
+import { useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useRef } from "react";
+import DisplayError from "../../../components/DisplayError";
+import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
+import useLoaderObservable from "../../../hooks/useLoaderObservable";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -57,6 +61,8 @@ export default function PriseRendezVous({
     const navigate = useNavigate();
     const location = useLocation();
     const titreRendezVousRef = useRef<HTMLHeadingElement>(null);
+
+    const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
 
     useEffect(() => {
         if (titreRendezVousRef?.current && location.hash !== "") {
@@ -111,21 +117,33 @@ export default function PriseRendezVous({
                                   dataSource={disponibilites} onClick={loadDisponibilites}
                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}
                                   hasErrorDisponibilitesObserver={hasErrorDisponibilitesObserver}/>
-                    <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
-                                   dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
-                                   proposerChoixHoraire={dataSource.proposerChoixHoraire}
-                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver} canalSelected={dataSource.canalSelected}/>
-                </>}
-            {dataSource.afficherChoixConnexion && choixConnexion.length > 0 && <h3>Vos informations</h3>}
-            <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
-                            choiceSelected={dataSource.choixConnexionSelected}
-                            dataSource={choixConnexion} nbSwitchers={2}
-                            label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
-                            id="hasAccount"/>
-            {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
-                <Button variant="outline--primary">Annuler</Button>
-                <Button className="mcf-mr--3" onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
-            </div>}
+                    {disponibilites.aucuneDisponibilite ?
+                        <>
+                            <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
+                                           dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
+                                           proposerChoixHoraire={dataSource.proposerChoixHoraire}
+                                           onLoadDisponibilitesObserver={onLoadDisponibilitesObserver} canalSelected={dataSource.canalSelected}/>
+
+                            {dataSource.afficherChoixConnexion && choixConnexion.length > 0 &&
+                                <>
+                                    <h3>Vos informations</h3>
+
+                                    <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
+                                                    choiceSelected={dataSource.choixConnexionSelected}
+                                                    dataSource={choixConnexion} nbSwitchers={2}
+                                                    label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
+                                                    id="hasAccount"/>
+                                    {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
+                                        <Button variant="outline--primary">Annuler</Button>
+                                        <Button className="mcf-mr--3" onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
+                                    </div>}
+                                </>
+                            }
+                        </>
+                        : isOver && <DisplayError message={`Aucune disponibilité pour un rendez-vous ${dataSource.canalSelected.libelle.toLowerCase()} sur cette période. Veuillez essayer une autre période ou utiliser un autre type de rendez-vous`}/>
+                    }
+                </>
+            }
         </Form>
     );
 }
