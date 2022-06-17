@@ -6,6 +6,7 @@ import DomaineService from "../../../Domain/Services/Domaine/";
 import CanalService from "../../../Domain/Services/Canal/";
 import PointAccueilService from "../../../Domain/Services/PointAccueil/";
 import ChoixConnexionService from "../../../Domain/Services/ChoixConnexion";
+import AuthentificationService from "../../../Domain/Services/Authentification";
 
 export default function RendezVous() {
     const controller = new RendezVousController({
@@ -14,7 +15,8 @@ export default function RendezVous() {
         pointAccueilService: PointAccueilService,
         canalService: CanalService,
         rendezVousService: RendezVousService,
-        choixConnexionService: ChoixConnexionService
+        choixConnexionService: ChoixConnexionService,
+        authentificationService: AuthentificationService
     });
 
     return <RendezVousView controller={controller}/>;

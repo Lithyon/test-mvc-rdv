@@ -16,6 +16,7 @@ import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionM
 import PagesDetails from "../../PagesDetails";
 import { useLocation, useNavigate} from "react-router-dom";
 import { useEffect, useRef } from "react";
+import {ChoixConnexionCode} from "../../../../Domain/Data/Enum/ChoixConnexion";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -35,6 +36,7 @@ export interface PriseRendezVousProps {
     readonly stateLocation: RendezVousModelView;
     readonly onChoixConnexionSelected: Function;
     readonly choixConnexion: Array<ChoixConnexionModelView>;
+    readonly onValidationFormulaire: Function;
 }
 
 export default function PriseRendezVous({
@@ -54,7 +56,8 @@ export default function PriseRendezVous({
                                             hasErrorDisponibilitesObserver,
                                             stateLocation,
                                             onChoixConnexionSelected,
-                                            choixConnexion
+                                            choixConnexion,
+                                            onValidationFormulaire
                                         }: PriseRendezVousProps) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -68,6 +71,14 @@ export default function PriseRendezVous({
             titreRendezVousRef.current.setAttribute("tabIndex", "-1");
         }
     }, [location, titreRendezVousRef]);
+
+    function handleConnexion() {
+        if (dataSource.choixConnexionSelected.code === ChoixConnexionCode.HAS_ACCOUNT) {
+            onValidationFormulaire();
+        } else {
+            navigate(PagesDetails.Auth.link, {state: stateLocation});
+        }
+    }
 
     return (
         <Form className="mcf-mt--5">
@@ -126,7 +137,7 @@ export default function PriseRendezVous({
                             id="hasAccount"/>
             {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button className="mcf-mr--3" onClick={() => navigate(PagesDetails.Auth.link, {state: stateLocation})}>Suivant</Button>
+                <Button className="mcf-mr--3" onClick={() => handleConnexion()}>Suivant</Button>
             </div>}
         </Form>
     );

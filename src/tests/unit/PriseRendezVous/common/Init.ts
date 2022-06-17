@@ -26,6 +26,11 @@ import {ChoixConnexionRepositoryImpl} from "../../../../Domain/Repository/ChoixC
 import DefaultChoixConnexion from "../../../../Domain/Data/Enum/ChoixConnexion";
 import EligibiliteEntity from "../../../../Domain/Data/API/Entity/EligibiliteEntity";
 import {eligibilitesStub} from "../../../../../mocks/EligibilitesStub";
+import {AuthentificationRepositoryImpl} from "../../../../Domain/Repository/Authentification";
+import RendezVousModelView from "../../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
+import {AuthentificationServiceImpl} from "../../../../Domain/Services/Authentification";
+import AuthentificationEntity from "../../../../Domain/Data/API/Entity/AuthentificationEntity";
+import authentificationStub from "../../../../../mocks/AuthentificationStub";
 
 export function init(
     eligibilites: EligibiliteEntity = eligibilitesStub,
@@ -33,7 +38,8 @@ export function init(
     domaine: DomaineEntity = domaineStub,
     pointAccueil: PointAccueilEntity = pointAccueilStub,
     disponibilites: DisponibilitesEntity = disponibilitesStub,
-    rendezVous: RendezVousEntity = rendezVousStub) {
+    rendezVous: RendezVousEntity = rendezVousStub,
+    authentification: AuthentificationEntity = authentificationStub) {
 
     const domaineRepository = new DomaineRepositoryImpl({
         async getDomaines(): Promise<DomaineEntity> {
@@ -76,16 +82,27 @@ export function init(
             return rendezVous;
         }
     })
-    const rendezVousService = new RendezVousServiceImpl(rendezVousRepository)
+    const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
-    const controller = new RendezVousController({
+    const authentificationRepository = new AuthentificationRepositoryImpl({
+        async initialiseConnexion(urlRedirection: string, uuid: string): Promise<AuthentificationEntity> {
+            return authentification;
+        }
+    }, {
+        async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
+            return "uuidSauvegardeDonneesUtilisateur";
+        }
+    })
+
+    const authentificationService = new AuthentificationServiceImpl(authentificationRepository);
+
+    return new RendezVousController({
         demandeService,
         domaineService,
         canalService,
         pointAccueilService,
         rendezVousService,
-        choixConnexionService
+        choixConnexionService,
+        authentificationService
     });
-
-    return controller;
 }

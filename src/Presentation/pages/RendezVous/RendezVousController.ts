@@ -30,6 +30,8 @@ import HeureDisponibleModelView from "./ModelView/Disponibilites/HeureDisponible
 import ChoixConnexionModelViewBuilder from "./ModelView/ChoixConnexion/ChoixConnexionModelViewBuilder";
 import ChoixConnexionModelView from "./ModelView/ChoixConnexion/ChoixConnexionModelView";
 import HeureDisponibleModelViewBuilder from "./ModelView/Disponibilites/HeureDisponibleModelViewBuilder";
+import {AuthentificationServiceImpl} from "../../../Domain/Services/Authentification";
+import PagesDetails from "../PagesDetails";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -37,7 +39,8 @@ interface RendezVousControllerDependencies {
     readonly pointAccueilService: PointAccueilServiceImpl,
     readonly canalService: CanalServiceImpl,
     readonly rendezVousService: RendezVousServiceImpl,
-    readonly choixConnexionService: ChoixConnexionServiceImpl
+    readonly choixConnexionService: ChoixConnexionServiceImpl,
+    readonly authentificationService: AuthentificationServiceImpl
 }
 
 export default class RendezVousController
@@ -66,6 +69,7 @@ export default class RendezVousController
         this.loadDisponibilites = this.loadDisponibilites.bind(this);
         this.onHeureSelected = this.onHeureSelected.bind(this);
         this.onChoixConnexionSelected = this.onChoixConnexionSelected.bind(this);
+        this.onValidationFormulaire = this.onValidationFormulaire.bind(this);
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._hasErrorDisponibilitesObserver = new ErrorObservableImpl();
@@ -96,6 +100,16 @@ export default class RendezVousController
 
     get hasErrorDisponibilitesObserver(): ErrorObservableImpl {
         return this._hasErrorDisponibilitesObserver;
+    }
+
+    async onValidationFormulaire() {
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            await this.dependencies.authentificationService.authentificationUtilisateur(this._state, window.location.origin + PagesDetails.Auth.link)
+
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
     }
 
     async onLoad() {
