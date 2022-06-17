@@ -42,7 +42,8 @@ export default function ChoiceSwitcher<T extends Choice>({
             >
                 {dataSource.map((value, index) => {
                     return (
-                        <Form.Switcher id={value.libelle + value.code + index} key={index} value={value}>
+                        <Form.Switcher id={id + value.libelle + value.code + index } key={index} value={value}
+                                       className={"mcf-btn--switcher--outline"} ariaRequired={true} required>
                             {value.isNew &&
                                 <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}

@@ -81,12 +81,11 @@ export function init(
         async creerRendezVous(request: RendezVousRequestEntity): Promise<RendezVousEntity> {
             return rendezVous;
         }
-    });
+    })
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const authentificationRepository = new AuthentificationRepositoryImpl({
-        async initialiseConnexion(urlRedirection: string, uuid: string) {
-        },
+        async initialiseConnexion(urlRedirection: string, uuid: string) {},
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";
         }

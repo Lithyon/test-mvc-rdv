@@ -19,4 +19,3 @@ export class RequestBuilder {
         return new RequestBuilderImpl("DELETE", uri);
     }
 }
-
