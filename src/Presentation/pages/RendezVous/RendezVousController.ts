@@ -105,7 +105,10 @@ export default class RendezVousController
     async onValidationFormulaire() {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
-            await this.dependencies.authentificationService.authentificationUtilisateur(this._state, window.location.origin + PagesDetails.Auth.link)
+            await this.dependencies.authentificationService.authentificationUtilisateur(
+                this._state,
+                window.location.origin + window.location.pathname + PagesDetails.Auth.link
+            )
 
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
