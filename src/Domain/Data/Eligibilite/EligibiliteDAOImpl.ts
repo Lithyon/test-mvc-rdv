@@ -1,19 +1,18 @@
-import {myFetch} from "../API/Commons/MyFetch";
 import EligibiliteEntity from "../API/Entity/EligibiliteEntity";
 import EligibiliteDAO from "./EligibiliteDAO";
+import {RequestMacif} from "../API/Commons/RequestMacif";
+
+const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-rendezvous-rest`;
 
 export default class EligibiliteDAOImpl implements EligibiliteDAO {
-
-
     async getEligibilites(cdBuro: string): Promise<EligibiliteEntity> {
-        const response = await myFetch<any>(
-            `internet-rendezvous-rest/unprotected/v3/rendezvous/eligibilite?cdBuro=${cdBuro}`
-        );
+        const response = await fetch(
+            new RequestMacif(`${BASE_URL}/unprotected/v3/rendezvous/eligibilite?cdBuro=${cdBuro}`)
+        )
 
         const {data, messages} = await response.json();
 
         if (messages) {
-            // TODO: IMPLEM GESTION D'ERREUR
             messages.map((error: any) => {
                 throw new Error(error)
             });

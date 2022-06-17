@@ -2,22 +2,23 @@ import RendezVousDAO from "./RendezVousDAO";
 import DisponibilitesEntity from "../API/Entity/DisponibilitesEntity";
 import DisponibilitesRequestEntity from "../API/Entity/DisponibilitesRequestEntity";
 import RendezVousRequestEntity from "../API/Entity/RendezVousRequestEntity";
-import {myFetch} from "../API/Commons/MyFetch";
+import {RequestMacif} from "../API/Commons/RequestMacif";
+import {HeadersMacif} from "../API/Commons/HeadersMacif";
 
-const BASE_URL = "/internet-rendezvous-rest";
+const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-rendezvous-rest`;
 
 export default class RendezVousDAOImpl
     implements RendezVousDAO {
     async creerRendezVous(request: RendezVousRequestEntity) {
-        const response = await myFetch<any>(
-            new Request(`${BASE_URL}/v3/rendezvous/agence/creer`, {
+        const response = await fetch(
+            new RequestMacif(`${BASE_URL}/v3/rendezvous/agence/creer`, {
                 method: "POST",
-                headers: new Headers({
+                headers: new HeadersMacif({
                     "Content-Type": "application/JSON",
                 }),
                 body: JSON.stringify(request)
             })
-        );
+        )
 
         const {data, messages} = await response.json();
 
@@ -31,15 +32,15 @@ export default class RendezVousDAOImpl
     }
 
     async getDisponibilites(request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
-        const response = await myFetch<any>(
-            new Request(`${BASE_URL}/unprotected/v3/rendezvous/disponibilites`, {
+        const response = await fetch(
+            new RequestMacif(`${BASE_URL}/unprotected/v3/rendezvous/disponibilites`, {
                 method: "POST",
-                headers: new Headers({
+                headers: new HeadersMacif({
                     "Content-Type": "application/JSON",
                 }),
                 body: JSON.stringify(request)
             })
-        );
+        )
 
         const {data, messages} = await response.json();
 

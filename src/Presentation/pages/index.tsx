@@ -5,6 +5,8 @@ import Authentification from "./Authentification";
 import { Card, Col, Container, Row } from "macif-components";
 
 export default function Pages() {
+    const [serverPath] = window.location.pathname.split(/\/app/gi);
+
     return <Container className="mcf-mt--10">
             <Row>
                 <Col>
