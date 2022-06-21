@@ -13,8 +13,8 @@ import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
 import PagesDetails from "../../PagesDetails";
-import { useLocation, useNavigate} from "react-router-dom";
-import { useEffect, useRef } from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useEffect, useRef} from "react";
 import DisplayError from "../../../components/DisplayError";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
@@ -67,7 +67,7 @@ export default function PriseRendezVous({
     useEffect(() => {
         if (titreRendezVousRef?.current && location.hash !== "") {
             // scrollIntoView est expérimental, trouver une autre solution ?
-            titreRendezVousRef.current.scrollIntoView({ behavior: 'smooth' });
+            titreRendezVousRef.current.scrollIntoView({behavior: "smooth"});
             titreRendezVousRef.current.focus();
             titreRendezVousRef.current.setAttribute("tabIndex", "-1");
         }
@@ -117,7 +117,7 @@ export default function PriseRendezVous({
                                   dataSource={disponibilites} onClick={loadDisponibilites}
                                   onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}
                                   hasErrorDisponibilitesObserver={hasErrorDisponibilitesObserver}/>
-                    {disponibilites.aucuneDisponibilite ?
+                    {!disponibilites.aucuneDisponibilite ?
                         <>
                             <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
                                            dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
@@ -140,7 +140,12 @@ export default function PriseRendezVous({
                                 </>
                             }
                         </>
-                        : isOver && <DisplayError message={`Aucune disponibilité pour un rendez-vous ${dataSource.canalSelected.libelle.toLowerCase()} sur cette période. Veuillez essayer une autre période ou utiliser un autre type de rendez-vous`}/>
+                        : isOver &&
+                        <DisplayError>
+                            <>Aucune disponibilité pour un rendez-vous {dataSource.canalSelected.libelle.toLowerCase()} sur cette période.
+                                {" "}Veuillez essayer une autre période ou utiliser un autre type de rendez-vous
+                            </>
+                        </DisplayError>
                     }
                 </>
             }

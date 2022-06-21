@@ -1,11 +1,12 @@
+import React from "react";
 import {Alert} from "macif-components";
 
 interface DisplayErrorProps {
-    message?: string
+    children?: JSX.Element | string;
 }
 
-export default function DisplayError({message = "Une erreur est survenue"}: DisplayErrorProps) {
+export default function DisplayError({children = "Une erreur est survenue"}: DisplayErrorProps) {
     return <Alert variant="danger">
-        {message}
+        {children}
     </Alert>;
 }
