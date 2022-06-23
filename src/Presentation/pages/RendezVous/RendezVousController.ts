@@ -293,7 +293,7 @@ export default class RendezVousController
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             await this.dependencies.authentificationService.authentificationUtilisateur(
                 this._state,
-                window.location.origin + window.location.pathname + PagesDetails.Auth.link
+                window.location.origin + window.location.pathname // + PagesDetails.Auth.link
             );
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
