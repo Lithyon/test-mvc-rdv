@@ -85,14 +85,11 @@ export function init(
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const authentificationRepository = new AuthentificationRepositoryImpl({
-        async initialiseConnexion(urlRedirection: string, uuid: string): Promise<AuthentificationEntity> {
-            return authentification;
-        }
-    }, {
+        async initialiseConnexion(urlRedirection: string, uuid: string) {},
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";
         }
-    })
+    });
 
     const authentificationService = new AuthentificationServiceImpl(authentificationRepository);
 

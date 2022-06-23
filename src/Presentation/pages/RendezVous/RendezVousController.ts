@@ -32,6 +32,8 @@ import ChoixConnexionModelView from "./ModelView/ChoixConnexion/ChoixConnexionMo
 import HeureDisponibleModelViewBuilder from "./ModelView/Disponibilites/HeureDisponibleModelViewBuilder";
 import {AuthentificationServiceImpl} from "../../../Domain/Services/Authentification";
 import PagesDetails from "../PagesDetails";
+import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
+import {NavigateFunction} from "react-router-dom";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -100,19 +102,6 @@ export default class RendezVousController
 
     get hasErrorDisponibilitesObserver(): ErrorObservableImpl {
         return this._hasErrorDisponibilitesObserver;
-    }
-
-    async onValidationFormulaire() {
-        try {
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
-            await this.dependencies.authentificationService.authentificationUtilisateur(
-                this._state,
-                window.location.origin + window.location.pathname + PagesDetails.Auth.link
-            )
-
-        } catch (e) {
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
-        }
     }
 
     async onLoad() {
@@ -290,4 +279,43 @@ export default class RendezVousController
         }
         this.raiseStateChanged();
     }
+
+    async onValidationFormulaire(navigate: NavigateFunction) {
+        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT) {
+            this.redirectionVersAuthentification(navigate);
+        } else {
+            await this.redirectionMireDeConnexion();
+        }
+    }
+
+    async redirectionMireDeConnexion() {
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            await this.dependencies.authentificationService.authentificationUtilisateur(
+                this._state,
+                window.location.origin + window.location.pathname + PagesDetails.Auth.link
+            );
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
+    }
+
+    redirectionVersAuthentification(navigate: NavigateFunction) {
+        navigate(PagesDetails.Auth.link, {state: this._state});
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

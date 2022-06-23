@@ -1,6 +1,6 @@
 {
   "name": "maciffr-react-rdv",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
@@ -12,7 +12,6 @@
     "@types/react-dom": "^17.0.11",
     "date-fns": "^2.28.0",
     "macif-components": "^2.0.1",
-    "maciffr-services-js": "^1.19.1",
     "react": "^17.0.2",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^17.0.2",

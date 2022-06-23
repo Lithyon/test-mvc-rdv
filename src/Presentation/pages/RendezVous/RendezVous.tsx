@@ -37,7 +37,6 @@ export default function RendezVous({controller}: RendezVousProps) {
                                 onHeureSelected={controller.onHeureSelected}
                                 onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
                                 hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
-                                stateLocation={state}
                                 choixConnexion={state.choixConnexion}
                                 onChoixConnexionSelected={controller.onChoixConnexionSelected}
                                 onValidationFormulaire={controller.onValidationFormulaire}/>

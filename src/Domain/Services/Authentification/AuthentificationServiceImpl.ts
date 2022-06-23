@@ -8,8 +8,7 @@ export default class AuthentificationServiceImpl {
         this.authentificationRepo = _authentificationRepo;
     }
 
-    authentificationUtilisateur(state: RendezVousModelView, urlRedirection: string): Promise<void> {
-        // FIXME: return value void?
+    authentificationUtilisateur(state: RendezVousModelView, urlRedirection: string) {
         return this.authentificationRepo.authentificationUtilisateur(state, urlRedirection);
     }
 }

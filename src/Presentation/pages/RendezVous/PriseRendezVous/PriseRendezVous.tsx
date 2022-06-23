@@ -11,12 +11,9 @@ import JourSwitcher from "../JourSwitcher";
 import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
-import RendezVousModelView from "../ModelView/RendezVous/RendezVousModelView";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
-import PagesDetails from "../../PagesDetails";
-import { useLocation, useNavigate} from "react-router-dom";
-import { useEffect, useRef } from "react";
-import {ChoixConnexionCode} from "../../../../Domain/Data/Enum/ChoixConnexion";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useEffect, useRef} from "react";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -33,7 +30,6 @@ export interface PriseRendezVousProps {
     readonly onHeureSelected: Function;
     readonly onLoadDisponibilitesObserver: LoadingObservable;
     readonly hasErrorDisponibilitesObserver: ErrorObservable;
-    readonly stateLocation: RendezVousModelView;
     readonly onChoixConnexionSelected: Function;
     readonly choixConnexion: Array<ChoixConnexionModelView>;
     readonly onValidationFormulaire: Function;
@@ -54,7 +50,6 @@ export default function PriseRendezVous({
                                             onHeureSelected,
                                             onLoadDisponibilitesObserver,
                                             hasErrorDisponibilitesObserver,
-                                            stateLocation,
                                             onChoixConnexionSelected,
                                             choixConnexion,
                                             onValidationFormulaire
@@ -71,14 +66,6 @@ export default function PriseRendezVous({
             titreRendezVousRef.current.setAttribute("tabIndex", "-1");
         }
     }, [location, titreRendezVousRef]);
-
-    function handleConnexion() {
-        if (dataSource.choixConnexionSelected.code === ChoixConnexionCode.HAS_ACCOUNT) {
-            onValidationFormulaire();
-        } else {
-            navigate(PagesDetails.Auth.link, {state: stateLocation});
-        }
-    }
 
     return (
         <Form className="mcf-mt--5">
@@ -137,7 +124,7 @@ export default function PriseRendezVous({
                             id="hasAccount"/>
             {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button className="mcf-mr--3" onClick={() => handleConnexion()}>Suivant</Button>
+                <Button className="mcf-mr--3" onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
             </div>}
         </Form>
     );
