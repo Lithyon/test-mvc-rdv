@@ -3,7 +3,7 @@ import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
 import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
 
 describe('Creation de compte', function () {
-    it('doit récupérer la civilité ', function (done) {
+    it('doit récupérer la civilité', function (done) {
         const expected = CiviliteCode.MONSIEUR;
 
         const controller = init();

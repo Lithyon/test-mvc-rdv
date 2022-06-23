@@ -6,6 +6,12 @@ export const TypeDemande = {
     SINISTRE: "04",
 };
 
+export const DEMANDES_AVEC_PARRAINAGE = [
+    TypeDemande.AUTRE,
+    TypeDemande.DEVIS,
+    TypeDemande.SOUSCRIPTION
+]
+
 export const DEMANDES_HORS_SINISTRE = [
     TypeDemande.AUTRE,
     TypeDemande.DEVIS,

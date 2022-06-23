@@ -2,9 +2,16 @@ import {CiviliteModelView} from "../ModelView/Civilite/CiviliteModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {Button, Form} from "macif-components";
 import {InformationsCommercialesModelView} from "../ModelView/InformationsCommerciales/InformationsCommercialesModelView";
+import {ParrainageChoixModelView} from "../ModelView/Parrainage/ParrainageChoixModelView";
+import {ParrainageNumeroSocietaireModelView} from "../ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
+import Parrainage from "./Parrainage/Parrainage";
+import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
+import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
 
 interface CreationCompteSelectionModelView {
     readonly civilite: CiviliteModelView;
+    readonly parrainageChoix: ParrainageChoixModelView;
+    readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly informationsCommercialesEmail: InformationsCommercialesModelView;
     readonly informationsCommercialesSms: InformationsCommercialesModelView;
     readonly informationsCommercialesTelephone: InformationsCommercialesModelView;
@@ -12,8 +19,13 @@ interface CreationCompteSelectionModelView {
 
 export interface CreationCompteProps {
     readonly dataSource: CreationCompteSelectionModelView;
+    readonly rendezVous: RendezVousSelectionModelView;
     readonly civilite: Array<CiviliteModelView>;
+    readonly parrainageChoix: Array<ParrainageChoixModelView>;
+    readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly onCiviliteSelected: Function;
+    readonly onParrainageChoixSelected: Function;
+    readonly onChangeParrainageNumeroSocietaire: Function;
     readonly informationsCommercialesEmail: Array<InformationsCommercialesModelView>;
     readonly onInformationsCommercialesEmailSelected: Function;
     readonly informationsCommercialesSms: Array<InformationsCommercialesModelView>;
@@ -24,8 +36,13 @@ export interface CreationCompteProps {
 
 export default function CreationCompteView({
                                                dataSource,
+                                               rendezVous,
                                                civilite,
+                                               parrainageChoix,
+                                               parrainageNumeroSocietaire,
                                                onCiviliteSelected,
+                                               onParrainageChoixSelected,
+                                               onChangeParrainageNumeroSocietaire,
                                                informationsCommercialesEmail,
                                                onInformationsCommercialesEmailSelected,
                                                informationsCommercialesSms,
@@ -53,24 +70,33 @@ export default function CreationCompteView({
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesEmailSelected}
                             choiceSelected={dataSource.informationsCommercialesEmail}
                             dataSource={informationsCommercialesEmail}
-                            label={"J'accepte de recevoir ces informations commerciales par e-mail ?"}
-                            id={"informationsCommercialesEmail"}
+                            label="J'accepte de recevoir ces informations commerciales par e-mail ?"
+                            id="informationsCommercialesEmail"
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesSmsSelected}
                             choiceSelected={dataSource.informationsCommercialesSms}
                             dataSource={informationsCommercialesSms}
-                            label={"J'accepte de recevoir ces informations commerciales par SMS ?"}
-                            id={"informationsCommercialesSms"}
+                            label="J'accepte de recevoir ces informations commerciales par SMS ?"
+                            id="informationsCommercialesSms"
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesTelephoneSelected}
                             choiceSelected={dataSource.informationsCommercialesTelephone}
                             dataSource={informationsCommercialesTelephone}
-                            label={"J'accepte de recevoir ces informations commerciales par message vocal ?"}
-                            id={"informationsCommercialesTelephone"}
+                            label="J'accepte de recevoir ces informations commerciales par message vocal ?"
+                            id="informationsCommercialesTelephone"
             />
+
+            {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
+                <Parrainage dataSource={dataSource.parrainageChoix}
+                            parrainageChoix={parrainageChoix}
+                            parrainageNumeroSocietaire={parrainageNumeroSocietaire}
+                            onParrainageChoixSelected={onParrainageChoixSelected}
+                            onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire} />
+            }
+
             <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button variant={"primary"} type={"submit"}>Confirmer mon rendez-vous</Button>
+                <Button variant="primary" type="submit">Confirmer mon rendez-vous</Button>
             </div>
         </Form>
     </>;

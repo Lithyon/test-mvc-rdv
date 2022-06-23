@@ -15,8 +15,13 @@ export default function Authentification({controller}: AuthentificationProps) {
         <BandeauModification dataSource={state.rendezVous}/>
         <CreationCompte
             dataSource={state.creationCompte}
+            rendezVous={state.rendezVous}
             civilite={state.civilite}
+            parrainageChoix={state.parrainageChoix}
+            parrainageNumeroSocietaire={state.parrainageNumeroSocietaire}
             onCiviliteSelected={controller.onCiviliteSelected}
+            onParrainageChoixSelected={controller.onParrainageChoixSelected}
+            onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
             informationsCommercialesEmail={state.informationsCommercialesEmail}
             onInformationsCommercialesEmailSelected={controller.onInformationsCommercialesEmailSelected}
             informationsCommercialesSms={state.informationsCommercialesSms}

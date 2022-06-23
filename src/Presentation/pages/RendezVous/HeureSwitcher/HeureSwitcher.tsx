@@ -51,7 +51,7 @@ export default function HeureSwitcher({
                                 nbSwitchers={6}/>
                 {disponibilitesMatin.length === 0 && (
                     <Form.Group>
-                        <Form.Label as={"h3"} className="mcf-text--small-1">Matin</Form.Label>
+                        <Form.Label as="h3" className="mcf-text--small-1">Matin</Form.Label>
                         <Form.Text className="mcf-text--small-1">Il n'y a plus de rendez-vous disponible pour le matin</Form.Text>
                     </Form.Group>
                 )}
@@ -63,7 +63,7 @@ export default function HeureSwitcher({
                                 nbSwitchers={6}/>
                 {disponibilitesApresMidi.length === 0 && (
                     <Form.Group>
-                        <Form.Label as={"h3"} className="mcf-text--small-1">Après Midi</Form.Label>
+                        <Form.Label as="h3" className="mcf-text--small-1">Après Midi</Form.Label>
                         <Form.Text className="mcf-text--small-1">Il n'y a plus de rendez-vous disponible pour l'après-midi</Form.Text>
                     </Form.Group>
                 )}

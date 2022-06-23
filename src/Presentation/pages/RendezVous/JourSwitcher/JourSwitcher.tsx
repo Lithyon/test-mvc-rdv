@@ -76,7 +76,7 @@ export default function JourSwitcher({
     }
 
     return <Form.Group controlId="jour">
-        <Form.Label as={"h3"} id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</Form.Label>
+        <Form.Label as="h3" id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</Form.Label>
         <div className="mcf-d--flex mcf-align-items--center mcf-mt--2">
             <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickPrev}
                     disabled={disabledPrev} aria-disabled={disabledPrev} aria-label="Jours précédents">
@@ -96,7 +96,7 @@ export default function JourSwitcher({
                     const disabled = value.ferie || (value.disponibilitesMatin.length === 0 && value.disponibilitesApresMidi.length === 0);
                     return (
                         <Form.Switcher ref={tableauRefInput[index]} key={index} value={value.jour} disabled={disabled} aria-disabled={disabled}
-                                       id={value.jour} className={"mcf-btn--switcher--outline"}>
+                                       id={value.jour} className="mcf-btn--switcher--outline">
                             {value.jour.toLocaleDateString('fr-FR', {
                                 weekday: "short",
                                 day: "numeric",
