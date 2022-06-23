@@ -8,6 +8,26 @@ import {getNavId} from "../API/Commons/GetNavId";
 const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-authentification-rest`;
 
 export default class AuthentificationDAOImpl implements AuthentificationDAO {
+    private static doPost(path: string, params: { [key: string]: string }): void {
+        const form: HTMLFormElement = document.createElement("form");
+        form.method = "post";
+        form.action = path;
+
+        for (const key in params) {
+            if (params[key]) {
+                const hiddenField = document.createElement("input");
+                hiddenField.type = "hidden";
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
     async initialiseConnexion(urlRedirection: string, uuid: string) {
         const {data, messages} = await RequestBuilder
             .post<ResponseEntity<AuthentificationEntity>>(`${BASE_URL}/v1/sessions/initiate`)
@@ -41,11 +61,10 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
         const {data, messages} = await RequestBuilder
             .post<ResponseEntity<string>>(`${BASE_URL}/v1/sessions/userdata`)
             .appendHeader("Content-Type", "application/JSON")
-            .body({
-                userData: [
+            .body([
                     {itemName: "formulaire_creation_rdv", itemValue: state}
                 ]
-            })
+            )
             .fetchJson();
 
         if (messages) {
@@ -55,25 +74,5 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
         }
 
         return data;
-    }
-
-    private static doPost(path: string, params: { [key: string]: string }): void {
-        const form: HTMLFormElement = document.createElement("form");
-        form.method = "post";
-        form.action = path;
-
-        for (const key in params) {
-            if (params[key]) {
-                const hiddenField = document.createElement("input");
-                hiddenField.type = "hidden";
-                hiddenField.name = key;
-                hiddenField.value = params[key];
-
-                form.appendChild(hiddenField);
-            }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
     }
 }

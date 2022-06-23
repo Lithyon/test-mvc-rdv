@@ -26,4 +26,11 @@ export default class RendezVousSelectionModelViewBuilder {
             precision: ""
         };
     }
+
+    static buildFromSessionStorage(rendezVous: any): RendezVousSelectionModelView {
+        return {
+            ...rendezVous,
+            jour: new Date(rendezVous.jour),
+        };
+    }
 }

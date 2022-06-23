@@ -12,7 +12,6 @@ import HeureSwitcher from "../HeureSwitcher";
 import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import ChoixConnexionModelView from "../ModelView/ChoixConnexion/ChoixConnexionModelView";
-import PagesDetails from "../../PagesDetails";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useRef} from "react";
 import DisplayError from "../../../components/DisplayError";

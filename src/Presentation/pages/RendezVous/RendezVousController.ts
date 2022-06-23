@@ -34,6 +34,7 @@ import {AuthentificationServiceImpl} from "../../../Domain/Services/Authentifica
 import PagesDetails from "../PagesDetails";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {NavigateFunction} from "react-router-dom";
+import RendezVousModelViewBuilder from "./ModelView/RendezVous/RendezVousModelViewBuilder";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -62,7 +63,14 @@ export default class RendezVousController
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
+        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
         this._stateForm = window.history.state?.usr as RendezVousModelView;
+        if (sessionStorageState) {
+            this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(sessionStorageState);
+            console.log("path redirect =>", window.location.origin + window.location.pathname + PagesDetails.Auth.link)
+            window.history.replaceState(this._stateForm, "", window.location.origin + window.location.pathname + PagesDetails.Auth.link)
+        }
+        console.log("stateform => ", this._stateForm);
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -84,6 +92,8 @@ export default class RendezVousController
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
+        console.log("this._state => ", this._state);
+
     }
 
     private _state: RendezVousModelView;
@@ -106,7 +116,6 @@ export default class RendezVousController
 
     async onLoad() {
         const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
-
         try {
             if (!this._stateForm) {
                 this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
@@ -277,6 +286,7 @@ export default class RendezVousController
                 choixConnexionSelected,
             }
         }
+        console.log("RENDEZVOUS ON CHOIX CONNEXION => ", this._state.rendezVous);
         this.raiseStateChanged();
     }
 
@@ -302,6 +312,10 @@ export default class RendezVousController
 
     redirectionVersAuthentification(navigate: NavigateFunction) {
         navigate(PagesDetails.Auth.link, {state: this._state});
+    }
+
+    private setState(state: RendezVousModelView) {
+        this._state = state;
     }
 }
 
