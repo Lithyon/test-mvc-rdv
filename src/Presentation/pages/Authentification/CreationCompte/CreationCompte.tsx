@@ -7,6 +7,7 @@ import {ParrainageNumeroSocietaireModelView} from "../ModelView/Parrainage/Parra
 import Parrainage from "./Parrainage/Parrainage";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
+import AuthentificationController from "../AuthentificationController";
 
 interface CreationCompteSelectionModelView {
     readonly civilite: CiviliteModelView;
@@ -18,6 +19,7 @@ interface CreationCompteSelectionModelView {
 }
 
 export interface CreationCompteProps {
+    readonly errors: { [key: string]: string };
     readonly dataSource: CreationCompteSelectionModelView;
     readonly rendezVous: RendezVousSelectionModelView;
     readonly civilite: Array<CiviliteModelView>;
@@ -32,9 +34,11 @@ export interface CreationCompteProps {
     readonly onInformationsCommercialesSmsSelected: Function;
     readonly informationsCommercialesTelephone: Array<InformationsCommercialesModelView>;
     readonly onInformationsCommercialesTelephoneSelected: Function;
+    readonly onValidationFormulaire: Function;
 }
 
 export default function CreationCompteView({
+                                               errors,
                                                dataSource,
                                                rendezVous,
                                                civilite,
@@ -48,14 +52,15 @@ export default function CreationCompteView({
                                                informationsCommercialesSms,
                                                onInformationsCommercialesSmsSelected,
                                                informationsCommercialesTelephone,
-                                               onInformationsCommercialesTelephoneSelected
+                                               onInformationsCommercialesTelephoneSelected,
+                                               onValidationFormulaire
                                            }: CreationCompteProps) {
-    function handleSubmit() {
-        //TODO
+    function handleValidationFormulaire() {
+        onValidationFormulaire();
     }
 
     return <>
-        <Form onSubmit={handleSubmit} className="mcf-mt--5">
+        <Form className="mcf-mt--5">
             <h2>Vos informations</h2>
             <p className="mcf-mb--6 mcf-font-weight--bold">
                 <i className="icon-macif-mobile-info-plein"></i>
@@ -66,24 +71,28 @@ export default function CreationCompteView({
                             dataSource={civilite}
                             label="Civilité"
                             id="civilite"
+                            errorMessage={errors.civilite}
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesEmailSelected}
                             choiceSelected={dataSource.informationsCommercialesEmail}
                             dataSource={informationsCommercialesEmail}
                             label="J'accepte de recevoir ces informations commerciales par e-mail ?"
                             id="informationsCommercialesEmail"
+                            errorMessage={errors.informationsCommercialesEmail}
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesSmsSelected}
                             choiceSelected={dataSource.informationsCommercialesSms}
                             dataSource={informationsCommercialesSms}
                             label="J'accepte de recevoir ces informations commerciales par SMS ?"
                             id="informationsCommercialesSms"
+                            errorMessage={errors.informationsCommercialesSms}
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesTelephoneSelected}
                             choiceSelected={dataSource.informationsCommercialesTelephone}
                             dataSource={informationsCommercialesTelephone}
                             label="J'accepte de recevoir ces informations commerciales par message vocal ?"
                             id="informationsCommercialesTelephone"
+                            errorMessage={errors.informationsCommercialesTelephone}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
@@ -91,12 +100,14 @@ export default function CreationCompteView({
                             parrainageChoix={parrainageChoix}
                             parrainageNumeroSocietaire={parrainageNumeroSocietaire}
                             onParrainageChoixSelected={onParrainageChoixSelected}
-                            onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire} />
+                            onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire}
+                            errorMessageNumeroSocietaire={errors.numeroSocietaire}
+                />
             }
 
             <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button variant="primary" type="submit">Confirmer mon rendez-vous</Button>
+                <Button variant="primary" onClick={handleValidationFormulaire} disabled={Object.keys(errors).length > 0}>Confirmer mon rendez-vous</Button>
             </div>
         </Form>
     </>;

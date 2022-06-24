@@ -8,8 +8,13 @@ import {DefaultInformationsCommerciales} from "../../../../Domain/Data/Enum/Info
 import ParrainageServiceImpl from "../../../../Domain/Services/Parrainage/ParrainageServiceImpl";
 import {ParrainageRepositoryImpl} from "../../../../Domain/Repository/Parrainage";
 import {DefautParrainageChoix} from "../../../../Domain/Data/Enum/Parrainage";
+import {CreationCompteServiceImpl} from "../../../../Domain/Services/CreationCompte";
+import {CreationCompteRepositoryImpl} from "../../../../Domain/Repository/CreationCompte";
 
 export function init() {
+    const creationCompteRepository = new CreationCompteRepositoryImpl();
+    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository);
+
     const civiliteRepository = new CiviliteRepositoryImpl({defaultCivilite: DefaultCivilite});
     const civiliteService = new CiviliteServiceImpl(civiliteRepository);
 
@@ -21,5 +26,5 @@ export function init() {
     });
     const informationsCommercialesService = new InformationsCommercialesServiceImpl(informationsCommercialesRepository);
 
-    return new AuthentificationController({civiliteService, informationsCommercialesService, parrainageService});
+    return new AuthentificationController({creationCompteService, civiliteService, informationsCommercialesService, parrainageService});
 }

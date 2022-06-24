@@ -1,17 +1,18 @@
 import {Form} from "macif-components";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 export interface InputProps {
     readonly id: string;
     readonly label: string;
-    readonly type?: string;
     readonly message: string;
     readonly maxLength: number;
     readonly onChange: Function;
     readonly value: string;
+    readonly type?: string;
+    readonly errorMessage?: string;
 }
 
-export default function Input({label, type = "text", message, maxLength, id, onChange, value}: InputProps) {
+export default function Input({label, message, maxLength, id, onChange, value, errorMessage = "", type = "text"}: InputProps) {
     const [inputValue, setInputValue] = useState(value)
 
     useEffect(() => onChange(inputValue), [inputValue, onChange])
@@ -28,6 +29,11 @@ export default function Input({label, type = "text", message, maxLength, id, onC
                       onChange={handleChangeValue}
                       value={inputValue}
                       maxLength={maxLength}
-                      className="mcf-w--auto"/>
+                      className="mcf-w--auto"
+                      isInvalid={errorMessage !== ""} />
+        <Form.Control.Feedback type="invalid">
+            <span className="icon icon-erreur"></span>
+            {errorMessage}
+        </Form.Control.Feedback>
     </Form.Group>
 }

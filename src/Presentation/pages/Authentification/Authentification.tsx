@@ -7,13 +7,13 @@ interface AuthentificationProps {
     readonly controller: AuthentificationController;
 }
 
-
 export default function Authentification({controller}: AuthentificationProps) {
     const state = useAttachController(controller);
 
     return <>
         <BandeauModification dataSource={state.rendezVous}/>
         <CreationCompte
+            errors={state.errors}
             dataSource={state.creationCompte}
             rendezVous={state.rendezVous}
             civilite={state.civilite}
@@ -28,7 +28,8 @@ export default function Authentification({controller}: AuthentificationProps) {
             onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
             informationsCommercialesTelephone={state.informationsCommercialesTelephone}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
+            onValidationFormulaire={controller.onValidationFormulaire}
         />
-        {/*<pre><code>{JSON.stringify(controller.state, null, 4)}</code></pre>*/}
-    </>
+        <pre><code>{JSON.stringify(controller.state, null, 4)}</code></pre>
+    </>;
 }

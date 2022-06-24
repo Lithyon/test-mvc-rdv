@@ -15,6 +15,7 @@ export interface ChoiceSwitcherProps<T extends Choice> {
     readonly id: string;
     readonly show?: boolean;
     readonly nbSwitchers?: number;
+    readonly errorMessage?: string;
 }
 
 export default function ChoiceSwitcher<T extends Choice>({
@@ -25,7 +26,8 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                              labelInfo,
                                                              id,
                                                              show = true,
-                                                             nbSwitchers = 3
+                                                             nbSwitchers = 3,
+                                                             errorMessage = ""
                                                          }: ChoiceSwitcherProps<T>) {
     return show && dataSource.length > 0 ? (
         <Form.Group controlId={id}>
@@ -39,10 +41,11 @@ export default function ChoiceSwitcher<T extends Choice>({
                 name={id}
                 value={choiceSelected}
                 onChange={onChoiceSelected}
+                isInvalid={errorMessage !== ""}
             >
                 {dataSource.map((value, index) => {
                     return (
-                        <Form.Switcher id={id + value.libelle + value.code + index } key={index} value={value}
+                        <Form.Switcher id={id + value.libelle + value.code + index} key={index} value={value}
                                        className="mcf-btn--switcher--outline">
                             {value.isNew &&
                                 <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
@@ -51,6 +54,10 @@ export default function ChoiceSwitcher<T extends Choice>({
                     );
                 })}
             </Form.SwitcherGroup>
+            <Form.Control.Feedback type="invalid">
+                <span className="icon icon-erreur"></span>
+                {errorMessage}
+            </Form.Control.Feedback>
         </Form.Group>
     ) : <></>;
 }

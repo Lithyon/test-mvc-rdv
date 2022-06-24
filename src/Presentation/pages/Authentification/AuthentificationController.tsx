@@ -11,8 +11,10 @@ import {ParrainageChoixModelView} from "./ModelView/Parrainage/ParrainageChoixMo
 import ParrainageNumeroSocietaireModelViewBuilder from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelViewBuilder";
 import {ParrainageNumeroSocietaireModelView} from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
 import ParrainageServiceImpl from "../../../Domain/Services/Parrainage/ParrainageServiceImpl";
+import CreationCompteServiceImpl from "../../../Domain/Services/CreationCompte/CreationCompteServiceImpl";
 
-interface AuthentificationModelView {
+export interface AuthentificationModelView {
+    readonly errors: {[key: string]: string},
     readonly creationCompte: CreationCompteModelView,
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
@@ -24,6 +26,7 @@ interface AuthentificationModelView {
 }
 
 interface AuthentificationControllerDependencies {
+    readonly creationCompteService: CreationCompteServiceImpl,
     readonly civiliteService: CiviliteServiceImpl,
     readonly parrainageService: ParrainageServiceImpl,
     readonly informationsCommercialesService: InformationsCommercialesServiceImpl,
@@ -35,6 +38,7 @@ export default class AuthentificationController extends BaseController<Authentif
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
         const stateForm = window.history.state?.usr as RendezVousModelView;
+        this.onValidationFormulaire = this.onValidationFormulaire.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onChangeParrainageNumeroSocietaire = this.onChangeParrainageNumeroSocietaire.bind(this);
@@ -42,6 +46,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onInformationsCommercialesSmsSelected = this.onInformationsCommercialesSmsSelected.bind(this);
         this.onInformationsCommercialesTelephoneSelected = this.onInformationsCommercialesTelephoneSelected.bind(this);
         this._state = {
+            errors: {},
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
             civilite: this.dependencies.civiliteService.getDefaultCivilite(),
             parrainageChoix: this.dependencies.parrainageService.getDefautParrainageChoix(),
@@ -58,68 +63,94 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onCiviliteSelected(civilite: CiviliteModelView) {
+        delete this._state.errors.civilite;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                civilite: civilite
+                civilite
             }
         };
         this.raiseStateChanged();
     }
 
     onParrainageChoixSelected(parrainageChoix: ParrainageChoixModelView) {
+        delete this._state.errors.numeroSocietaire;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                parrainageChoix: parrainageChoix
+                parrainageChoix
             }
         };
         this.raiseStateChanged();
     }
 
-    onChangeParrainageNumeroSocietaire(parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView) {
+    onChangeParrainageNumeroSocietaire(numeroSocietaire: string) {
+        delete this._state.errors.numeroSocietaire;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                parrainageNumeroSocietaire: parrainageNumeroSocietaire
+                parrainageNumeroSocietaire: {
+                    ...this._state.creationCompte.parrainageNumeroSocietaire,
+                    numeroSocietaire
+                }
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesEmailSelected(informationsCommercialesEmail: InformationsCommercialesModelView) {
+        delete this._state.errors.informationsCommercialesEmail;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                informationsCommercialesEmail: informationsCommercialesEmail
+                informationsCommercialesEmail
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesSmsSelected(informationsCommercialesSms: InformationsCommercialesModelView) {
+        delete this._state.errors.informationsCommercialesSms;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                informationsCommercialesSms: informationsCommercialesSms
+                informationsCommercialesSms
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesTelephoneSelected(informationsCommercialesTelephone: InformationsCommercialesModelView) {
+        delete this._state.errors.informationsCommercialesTelephone;
+
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                informationsCommercialesTelephone: informationsCommercialesTelephone
+                informationsCommercialesTelephone
             }
         };
+        this.raiseStateChanged();
+    }
+
+    async onValidationFormulaire(): Promise<void> {
+        // TODO : faire l'appel pour valider le formulaire
+
+        this._state = {
+            ...this._state,
+            errors: this.dependencies.creationCompteService.validationFormulaire(this._state)
+        };
+
         this.raiseStateChanged();
     }
 }

@@ -12,9 +12,10 @@ export interface ParrainageProps {
     readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
+    readonly errorMessageNumeroSocietaire?: string;
 }
 
-export function Parrainage({dataSource, parrainageChoix, parrainageNumeroSocietaire, onParrainageChoixSelected, onChangeParrainageNumeroSocietaire}: ParrainageProps) {
+export function Parrainage({dataSource, parrainageChoix, parrainageNumeroSocietaire, onParrainageChoixSelected, onChangeParrainageNumeroSocietaire, errorMessageNumeroSocietaire}: ParrainageProps) {
     return <>
         <ChoiceSwitcher onChoiceSelected={onParrainageChoixSelected}
                         choiceSelected={dataSource}
@@ -23,13 +24,13 @@ export function Parrainage({dataSource, parrainageChoix, parrainageNumeroSocieta
                         id="choixParrainage"
         />
 
-        {/* TODO : Pas de caractères spéciaux : Ne pas les écrire ou déclencher l'erreur si il y en a ???? */}
         {dataSource.code === ParrainageCode.OUI &&
             <Input value={parrainageNumeroSocietaire.numeroSocietaire}
                    id="toot" onChange={onChangeParrainageNumeroSocietaire}
                    label="Numéro de sociétaire de votre parrain"
                    message="Ce numéro est inscrit dans l'email d'invitation au parrainage. Vous pourrez également communiquer cette information au moment de votre rendez-vous."
-                   maxLength={15}/>
+                   maxLength={15}
+                   errorMessage={errorMessageNumeroSocietaire}/>
         }
     </>;
 }
