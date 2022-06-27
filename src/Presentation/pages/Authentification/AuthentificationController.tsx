@@ -4,32 +4,29 @@ import RendezVousSelectionModelView from "../RendezVous/ModelView/RendezVous/Ren
 import {CreationCompteModelView} from "./ModelView/CreationCompte/CreationCompteModelView";
 import {CiviliteModelView} from "./ModelView/Civilite/CiviliteModelView";
 import CreationCompteModelViewBuilder from "./ModelView/CreationCompte/CreationCompteModelViewBuilder";
-import {CiviliteServiceImpl} from "../../../Domain/Services/Civilite";
-import {InformationsCommercialesServiceImpl} from "../../../Domain/Services/InformationsCommerciales";
-import {InformationsCommercialesModelView} from "./ModelView/InformationsCommerciales/InformationsCommercialesModelView";
-import {ParrainageChoixModelView} from "./ModelView/Parrainage/ParrainageChoixModelView";
 import ParrainageNumeroSocietaireModelViewBuilder from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelViewBuilder";
 import {ParrainageNumeroSocietaireModelView} from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
-import ParrainageServiceImpl from "../../../Domain/Services/Parrainage/ParrainageServiceImpl";
 import CreationCompteServiceImpl from "../../../Domain/Services/CreationCompte/CreationCompteServiceImpl";
+import {FormErrorModelView} from "./ModelView/FormError/FormErrorModelView";
+import FormErrorModelViewBuilder from "./ModelView/FormError/FormErrorModelViewBuilder";
+import {DefaultCivilite} from "../../../Domain/Data/Enum/DefaultCivilite";
+import {DefaultBooleanChoice} from "../../../Domain/Data/Enum/BooleanChoice";
+import {BooleanChoiceModelView} from "../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 export interface AuthentificationModelView {
-    readonly errors: {[key: string]: string},
+    readonly formError: FormErrorModelView,
     readonly creationCompte: CreationCompteModelView,
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
-    readonly parrainageChoix: Array<ParrainageChoixModelView>,
+    readonly parrainageChoix: Array<BooleanChoiceModelView>,
     readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView,
-    readonly informationsCommercialesEmail: Array<InformationsCommercialesModelView>,
-    readonly informationsCommercialesSms: Array<InformationsCommercialesModelView>,
-    readonly informationsCommercialesTelephone: Array<InformationsCommercialesModelView>,
+    readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>,
+    readonly informationsCommercialesSms: Array<BooleanChoiceModelView>,
+    readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
 }
 
 interface AuthentificationControllerDependencies {
     readonly creationCompteService: CreationCompteServiceImpl,
-    readonly civiliteService: CiviliteServiceImpl,
-    readonly parrainageService: ParrainageServiceImpl,
-    readonly informationsCommercialesService: InformationsCommercialesServiceImpl,
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> {
@@ -46,14 +43,14 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onInformationsCommercialesSmsSelected = this.onInformationsCommercialesSmsSelected.bind(this);
         this.onInformationsCommercialesTelephoneSelected = this.onInformationsCommercialesTelephoneSelected.bind(this);
         this._state = {
-            errors: {},
+            formError: FormErrorModelViewBuilder.buildEmpty(),
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
-            civilite: this.dependencies.civiliteService.getDefaultCivilite(),
-            parrainageChoix: this.dependencies.parrainageService.getDefautParrainageChoix(),
+            civilite: DefaultCivilite,
+            parrainageChoix: DefaultBooleanChoice,
             parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelViewBuilder.buildEmpty(),
-            informationsCommercialesEmail: this.dependencies.informationsCommercialesService.getDefaultInformationsCommerciales(),
-            informationsCommercialesSms: this.dependencies.informationsCommercialesService.getDefaultInformationsCommerciales(),
-            informationsCommercialesTelephone: this.dependencies.informationsCommercialesService.getDefaultInformationsCommerciales(),
+            informationsCommercialesEmail: DefaultBooleanChoice,
+            informationsCommercialesSms: DefaultBooleanChoice,
+            informationsCommercialesTelephone: DefaultBooleanChoice,
             rendezVous: stateForm?.rendezVous
         };
     }
@@ -63,7 +60,7 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onCiviliteSelected(civilite: CiviliteModelView) {
-        delete this._state.errors.civilite;
+        delete this._state.formError.errors.civilite;
 
         this._state = {
             ...this._state,
@@ -75,8 +72,8 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    onParrainageChoixSelected(parrainageChoix: ParrainageChoixModelView) {
-        delete this._state.errors.numeroSocietaire;
+    onParrainageChoixSelected(parrainageChoix: BooleanChoiceModelView) {
+        delete this._state.formError.errors.numeroSocietaire;
 
         this._state = {
             ...this._state,
@@ -89,7 +86,7 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onChangeParrainageNumeroSocietaire(numeroSocietaire: string) {
-        delete this._state.errors.numeroSocietaire;
+        delete this._state.formError.errors.numeroSocietaire;
 
         this._state = {
             ...this._state,
@@ -104,8 +101,8 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    onInformationsCommercialesEmailSelected(informationsCommercialesEmail: InformationsCommercialesModelView) {
-        delete this._state.errors.informationsCommercialesEmail;
+    onInformationsCommercialesEmailSelected(informationsCommercialesEmail: BooleanChoiceModelView) {
+        delete this._state.formError.errors.informationsCommercialesEmail;
 
         this._state = {
             ...this._state,
@@ -117,8 +114,8 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    onInformationsCommercialesSmsSelected(informationsCommercialesSms: InformationsCommercialesModelView) {
-        delete this._state.errors.informationsCommercialesSms;
+    onInformationsCommercialesSmsSelected(informationsCommercialesSms: BooleanChoiceModelView) {
+        delete this._state.formError.errors.informationsCommercialesSms;
 
         this._state = {
             ...this._state,
@@ -130,8 +127,8 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    onInformationsCommercialesTelephoneSelected(informationsCommercialesTelephone: InformationsCommercialesModelView) {
-        delete this._state.errors.informationsCommercialesTelephone;
+    onInformationsCommercialesTelephoneSelected(informationsCommercialesTelephone: BooleanChoiceModelView) {
+        delete this._state.formError.errors.informationsCommercialesTelephone;
 
         this._state = {
             ...this._state,
@@ -143,13 +140,14 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    async onValidationFormulaire(): Promise<void> {
+    async onValidationFormulaire() {
         // TODO : faire l'appel pour valider le formulaire
 
         this._state = {
             ...this._state,
-            errors: this.dependencies.creationCompteService.validationFormulaire(this._state)
+            formError: this.dependencies.creationCompteService.validationFormulaire(this._state.creationCompte)
         };
+        // show modal
 
         this.raiseStateChanged();
     }

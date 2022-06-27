@@ -1,13 +1,12 @@
 import {CiviliteModelView} from "../Civilite/CiviliteModelView";
-import {InformationsCommercialesModelView} from "../InformationsCommerciales/InformationsCommercialesModelView";
-import {ParrainageChoixModelView} from "../Parrainage/ParrainageChoixModelView";
 import {ParrainageNumeroSocietaireModelView} from "../Parrainage/ParrainageNumeroSocietaireModelView";
+import {BooleanChoiceModelView} from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 export interface CreationCompteModelView {
     readonly civilite: CiviliteModelView;
-    readonly parrainageChoix: ParrainageChoixModelView;
+    readonly parrainageChoix: BooleanChoiceModelView;
     readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
-    readonly informationsCommercialesEmail: InformationsCommercialesModelView;
-    readonly informationsCommercialesSms: InformationsCommercialesModelView;
-    readonly informationsCommercialesTelephone: InformationsCommercialesModelView;
+    readonly informationsCommercialesEmail: BooleanChoiceModelView;
+    readonly informationsCommercialesSms: BooleanChoiceModelView;
+    readonly informationsCommercialesTelephone: BooleanChoiceModelView;
 }

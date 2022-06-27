@@ -1,13 +1,10 @@
 import {init} from "./common/Init";
-import {ParrainageCode} from "../../../Domain/Data/Enum/Parrainage";
-import {ParrainageChoixModelView} from "../../../Presentation/pages/Authentification/ModelView/Parrainage/ParrainageChoixModelView";
-import {
-    ParrainageNumeroSocietaireModelView
-} from "../../../Presentation/pages/Authentification/ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
+import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
+import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 describe("Creation de compte - OnParrainageSelected", function () {
     it("doit récupérer la sélection du parrainage", function (done) {
-        const expected = {code: ParrainageCode.OUI, libelle: "Oui"} as ParrainageChoixModelView;
+        const expected = {code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView;
 
         const controller = init();
 

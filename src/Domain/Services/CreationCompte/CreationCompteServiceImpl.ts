@@ -1,7 +1,7 @@
 import CreationCompteRepositoryImpl from "../../Repository/CreationCompte/CreationCompteRepositoryImpl";
-import {AuthentificationModelView} from "../../../Presentation/pages/Authentification/AuthentificationController";
+import {FormErrorModelView} from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
+import {BooleanChoiceCode} from "../../Data/Enum/BooleanChoice";
 import {CreationCompteModelView} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
-import {ParrainageCode} from "../../Data/Enum/Parrainage";
 
 export default class CreationCompteServiceImpl {
     private creationCompteRepo: CreationCompteRepositoryImpl;
@@ -10,35 +10,36 @@ export default class CreationCompteServiceImpl {
         this.creationCompteRepo = _creationCompteRepo;
     }
 
-    validationFormulaire(state: AuthentificationModelView): { [key: string]: string } {
-        const errors: { [key: string]: string } = {};
+    validationFormulaire(creationCompte: CreationCompteModelView) {
+        // TODO Voir avec Antoine pour opti
+        const formError: FormErrorModelView = {errors: {}};
 
-        if (state.creationCompte.parrainageChoix && state.creationCompte.parrainageChoix.code === ParrainageCode.OUI) {
-            if (state.creationCompte.parrainageNumeroSocietaire.numeroSocietaire?.length > 0) {
-                const testRegex: RegExpMatchArray = state.creationCompte.parrainageNumeroSocietaire.numeroSocietaire.match(/\W|\D/) || [];
+        if (creationCompte.parrainageChoix && creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI) {
+            if (creationCompte.parrainageNumeroSocietaire.numeroSocietaire?.length > 0) {
+                const testRegex: RegExpMatchArray = creationCompte.parrainageNumeroSocietaire.numeroSocietaire.match(/\W|\D/) || [];
 
                 if (testRegex.length > 0) {
-                    errors.numeroSocietaire = "Le numéro de sociétaire ne doit pas contenir de caractères spéciaux";
+                    formError.errors.numeroSocietaire = "Le numéro de sociétaire ne doit pas contenir de caractères spéciaux";
                 }
             }
         }
 
-        if (!state.creationCompte.civilite.code) {
-            errors.civilite = "Veuillez préciser votre civilité";
+        if (!creationCompte.civilite.code) {
+            formError.errors.civilite = "Veuillez préciser votre civilité";
         }
 
-        if (!state.creationCompte.informationsCommercialesEmail.code) {
-            errors.informationsCommercialesEmail = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
+        if (!creationCompte.informationsCommercialesEmail.code) {
+            formError.errors.informationsCommercialesEmail = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
         }
 
-        if (!state.creationCompte.informationsCommercialesSms.code) {
-            errors.informationsCommercialesSms = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par SMS";
+        if (!creationCompte.informationsCommercialesSms.code) {
+            formError.errors.informationsCommercialesSms = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par SMS";
         }
 
-        if (!state.creationCompte.informationsCommercialesTelephone.code) {
-            errors.informationsCommercialesTelephone = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par message vocal";
+        if (!creationCompte.informationsCommercialesTelephone.code) {
+            formError.errors.informationsCommercialesTelephone = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par message vocal";
         }
 
-        return errors;
+        return formError;
     }
 }

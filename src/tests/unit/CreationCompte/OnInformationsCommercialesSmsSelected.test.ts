@@ -1,12 +1,10 @@
 import {init} from "./common/Init";
-import {InformationCommercialeCode} from "../../../Domain/Data/Enum/InformationsCommerciales";
-import {
-    InformationsCommercialesModelView
-} from "../../../Presentation/pages/Authentification/ModelView/InformationsCommerciales/InformationsCommercialesModelView";
+import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
+import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 describe('Creation de compte - OnInformationsCommercialesSmsSelected', function () {
     it("doit récupérer l'information commerciales SMS", function (done) {
-        const expected = {code: InformationCommercialeCode.OUI, libelle: "Oui"};
+        const expected = {code: BooleanChoiceCode.OUI, libelle: "Oui"};
 
         const controller = init();
 
@@ -15,6 +13,6 @@ describe('Creation de compte - OnInformationsCommercialesSmsSelected', function 
             expect(actual.creationCompte.informationsCommercialesSms).toBe(expected);
             done()
         })
-        controller.onInformationsCommercialesSmsSelected(expected as InformationsCommercialesModelView)
+        controller.onInformationsCommercialesSmsSelected(expected as BooleanChoiceModelView)
     });
 })

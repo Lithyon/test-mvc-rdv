@@ -1,21 +1,28 @@
 import React from "react";
 
 import ChoiceSwitcher from "../../../../components/ChoiceSwitcher";
-import {ParrainageChoixModelView} from "../../ModelView/Parrainage/ParrainageChoixModelView";
 import {ParrainageNumeroSocietaireModelView} from "../../ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
-import {ParrainageCode} from "../../../../../Domain/Data/Enum/Parrainage";
 import Input from "../../../../components/Input";
+import {BooleanChoiceModelView} from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
+import {BooleanChoiceCode} from "../../../../../Domain/Data/Enum/BooleanChoice";
 
 export interface ParrainageProps {
-    readonly dataSource: ParrainageChoixModelView;
-    readonly parrainageChoix: Array<ParrainageChoixModelView>;
+    readonly dataSource: BooleanChoiceModelView;
+    readonly parrainageChoix: Array<BooleanChoiceModelView>;
     readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly errorMessageNumeroSocietaire?: string;
 }
 
-export function Parrainage({dataSource, parrainageChoix, parrainageNumeroSocietaire, onParrainageChoixSelected, onChangeParrainageNumeroSocietaire, errorMessageNumeroSocietaire}: ParrainageProps) {
+export function Parrainage({
+                               dataSource,
+                               parrainageChoix,
+                               parrainageNumeroSocietaire,
+                               onParrainageChoixSelected,
+                               onChangeParrainageNumeroSocietaire,
+                               errorMessageNumeroSocietaire
+                           }: ParrainageProps) {
     return <>
         <ChoiceSwitcher onChoiceSelected={onParrainageChoixSelected}
                         choiceSelected={dataSource}
@@ -24,7 +31,7 @@ export function Parrainage({dataSource, parrainageChoix, parrainageNumeroSocieta
                         id="choixParrainage"
         />
 
-        {dataSource.code === ParrainageCode.OUI &&
+        {dataSource.code === BooleanChoiceCode.OUI &&
             <Input value={parrainageNumeroSocietaire.numeroSocietaire}
                    id="toot" onChange={onChangeParrainageNumeroSocietaire}
                    label="Numéro de sociétaire de votre parrain"

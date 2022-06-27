@@ -1,44 +1,35 @@
 import {CiviliteModelView} from "../ModelView/Civilite/CiviliteModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {Button, Form} from "macif-components";
-import {InformationsCommercialesModelView} from "../ModelView/InformationsCommerciales/InformationsCommercialesModelView";
-import {ParrainageChoixModelView} from "../ModelView/Parrainage/ParrainageChoixModelView";
 import {ParrainageNumeroSocietaireModelView} from "../ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
 import Parrainage from "./Parrainage/Parrainage";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
-import AuthentificationController from "../AuthentificationController";
-
-interface CreationCompteSelectionModelView {
-    readonly civilite: CiviliteModelView;
-    readonly parrainageChoix: ParrainageChoixModelView;
-    readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
-    readonly informationsCommercialesEmail: InformationsCommercialesModelView;
-    readonly informationsCommercialesSms: InformationsCommercialesModelView;
-    readonly informationsCommercialesTelephone: InformationsCommercialesModelView;
-}
+import {FormErrorModelView} from "../ModelView/FormError/FormErrorModelView";
+import {CreationCompteModelView} from "../ModelView/CreationCompte/CreationCompteModelView";
+import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 export interface CreationCompteProps {
-    readonly errors: { [key: string]: string };
-    readonly dataSource: CreationCompteSelectionModelView;
+    readonly formError: FormErrorModelView;
+    readonly dataSource: CreationCompteModelView;
     readonly rendezVous: RendezVousSelectionModelView;
     readonly civilite: Array<CiviliteModelView>;
-    readonly parrainageChoix: Array<ParrainageChoixModelView>;
+    readonly parrainageChoix: Array<BooleanChoiceModelView>;
     readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly onCiviliteSelected: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
-    readonly informationsCommercialesEmail: Array<InformationsCommercialesModelView>;
+    readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesEmailSelected: Function;
-    readonly informationsCommercialesSms: Array<InformationsCommercialesModelView>;
+    readonly informationsCommercialesSms: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesSmsSelected: Function;
-    readonly informationsCommercialesTelephone: Array<InformationsCommercialesModelView>;
+    readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesTelephoneSelected: Function;
     readonly onValidationFormulaire: Function;
 }
 
 export default function CreationCompteView({
-                                               errors,
+                                               formError: {errors},
                                                dataSource,
                                                rendezVous,
                                                civilite,
@@ -73,6 +64,16 @@ export default function CreationCompteView({
                             id="civilite"
                             errorMessage={errors.civilite}
             />
+            {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
+                <Parrainage dataSource={dataSource.parrainageChoix}
+                            parrainageChoix={parrainageChoix}
+                            parrainageNumeroSocietaire={parrainageNumeroSocietaire}
+                            onParrainageChoixSelected={onParrainageChoixSelected}
+                            onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire}
+                            errorMessageNumeroSocietaire={errors.numeroSocietaire}
+                />
+            }
+
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesEmailSelected}
                             choiceSelected={dataSource.informationsCommercialesEmail}
                             dataSource={informationsCommercialesEmail}
@@ -94,16 +95,6 @@ export default function CreationCompteView({
                             id="informationsCommercialesTelephone"
                             errorMessage={errors.informationsCommercialesTelephone}
             />
-
-            {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
-                <Parrainage dataSource={dataSource.parrainageChoix}
-                            parrainageChoix={parrainageChoix}
-                            parrainageNumeroSocietaire={parrainageNumeroSocietaire}
-                            onParrainageChoixSelected={onParrainageChoixSelected}
-                            onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire}
-                            errorMessageNumeroSocietaire={errors.numeroSocietaire}
-                />
-            }
 
             <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>

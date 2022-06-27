@@ -13,7 +13,7 @@ export default function Authentification({controller}: AuthentificationProps) {
     return <>
         <BandeauModification dataSource={state.rendezVous}/>
         <CreationCompte
-            errors={state.errors}
+            formError={state.formError}
             dataSource={state.creationCompte}
             rendezVous={state.rendezVous}
             civilite={state.civilite}
@@ -30,6 +30,5 @@ export default function Authentification({controller}: AuthentificationProps) {
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
             onValidationFormulaire={controller.onValidationFormulaire}
         />
-        <pre><code>{JSON.stringify(controller.state, null, 4)}</code></pre>
     </>;
 }

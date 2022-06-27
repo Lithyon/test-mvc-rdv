@@ -1,4 +1,4 @@
-export default class ParrainageChoixModelViewBuilder {
+export default class BooleanChoiceModelViewBuilder {
     static buildEmpty() {
         return {
             code: "",

@@ -1,12 +1,10 @@
 import {init} from "./common/Init";
-import {InformationCommercialeCode} from "../../../Domain/Data/Enum/InformationsCommerciales";
-import {
-    InformationsCommercialesModelView
-} from "../../../Presentation/pages/Authentification/ModelView/InformationsCommerciales/InformationsCommercialesModelView";
+import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
+import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 describe('Creation de compte - OnInformationsCommercialesEmailSelected', function () {
     it("doit récupérer l'information commerciales e-mail", function (done) {
-        const expected = {code: InformationCommercialeCode.OUI, libelle: "Oui"};
+        const expected = {code: BooleanChoiceCode.OUI, libelle: "Oui"};
 
         const controller = init();
 
@@ -15,6 +13,6 @@ describe('Creation de compte - OnInformationsCommercialesEmailSelected', functio
             expect(actual.creationCompte.informationsCommercialesEmail).toBe(expected);
             done()
         })
-        controller.onInformationsCommercialesEmailSelected(expected as InformationsCommercialesModelView)
+        controller.onInformationsCommercialesEmailSelected(expected as BooleanChoiceModelView)
     });
 })
