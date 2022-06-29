@@ -18,7 +18,6 @@ export default function Authentification({controller}: AuthentificationProps) {
             rendezVous={state.rendezVous}
             civilite={state.civilite}
             parrainageChoix={state.parrainageChoix}
-            parrainageNumeroSocietaire={state.parrainageNumeroSocietaire}
             onCiviliteSelected={controller.onCiviliteSelected}
             onParrainageChoixSelected={controller.onParrainageChoixSelected}
             onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
@@ -28,7 +27,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
             informationsCommercialesTelephone={state.informationsCommercialesTelephone}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
-            onValidationFormulaire={controller.onValidationFormulaire}
+            onCreationCompte={controller.onCreationCompte}
         />
     </>;
 }

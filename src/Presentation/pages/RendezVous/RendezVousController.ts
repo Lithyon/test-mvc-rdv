@@ -66,7 +66,6 @@ export default class RendezVousController
         super();
         const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
         this._stateForm = window.history.state?.usr as RendezVousModelView;
-        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv");
         if (sessionStorageState) {
             this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));
         }
@@ -91,8 +90,6 @@ export default class RendezVousController
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
-        console.log("this._state => ", this._state);
-
     }
 
     private _state: RendezVousModelView;
@@ -314,13 +311,5 @@ export default class RendezVousController
 
     private setState(state: RendezVousModelView) {
         this._state = state;
-    }
-
-    async onValidationFormulaire(navigate: NavigateFunction) {
-        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT) {
-            this.redirectionVersAuthentification(navigate);
-        } else {
-            await this.redirectionMireDeConnexion();
-        }
     }
 }

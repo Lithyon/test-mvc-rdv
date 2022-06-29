@@ -1,5 +1,4 @@
 import CiviliteModelViewBuilder from "../Civilite/CiviliteModelViewBuilder";
-import ParrainageNumeroSocietaireModelViewBuilder from "../Parrainage/ParrainageNumeroSocietaireModelViewBuilder";
 import BooleanChoiceModelViewBuilder from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelViewBuilder";
 
 export default class CreationCompteModelViewBuilder {
@@ -7,7 +6,6 @@ export default class CreationCompteModelViewBuilder {
         return {
             civilite: CiviliteModelViewBuilder.buildEmpty(),
             parrainageChoix: BooleanChoiceModelViewBuilder.buildEmpty(),
-            parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelViewBuilder.buildEmpty(),
             informationsCommercialesEmail: BooleanChoiceModelViewBuilder.buildEmpty(),
             informationsCommercialesSms: BooleanChoiceModelViewBuilder.buildEmpty(),
             informationsCommercialesTelephone: BooleanChoiceModelViewBuilder.buildEmpty(),

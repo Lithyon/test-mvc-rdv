@@ -4,14 +4,14 @@ import RendezVousSelectionModelView from "../RendezVous/ModelView/RendezVous/Ren
 import {CreationCompteModelView} from "./ModelView/CreationCompte/CreationCompteModelView";
 import {CiviliteModelView} from "./ModelView/Civilite/CiviliteModelView";
 import CreationCompteModelViewBuilder from "./ModelView/CreationCompte/CreationCompteModelViewBuilder";
-import ParrainageNumeroSocietaireModelViewBuilder from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelViewBuilder";
-import {ParrainageNumeroSocietaireModelView} from "./ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
 import CreationCompteServiceImpl from "../../../Domain/Services/CreationCompte/CreationCompteServiceImpl";
 import {FormErrorModelView} from "./ModelView/FormError/FormErrorModelView";
 import FormErrorModelViewBuilder from "./ModelView/FormError/FormErrorModelViewBuilder";
 import {DefaultCivilite} from "../../../Domain/Data/Enum/DefaultCivilite";
 import {DefaultBooleanChoice} from "../../../Domain/Data/Enum/BooleanChoice";
 import {BooleanChoiceModelView} from "../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
+import RendezVousSelectionModelViewBuilder
+    from "../RendezVous/ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
 
 export interface AuthentificationModelView {
     readonly formError: FormErrorModelView,
@@ -19,7 +19,6 @@ export interface AuthentificationModelView {
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
     readonly parrainageChoix: Array<BooleanChoiceModelView>,
-    readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView,
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesSms: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
@@ -30,12 +29,12 @@ interface AuthentificationControllerDependencies {
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> {
-    private readonly _state: AuthentificationModelView;
+    private _state: AuthentificationModelView;
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
         const stateForm = window.history.state?.usr as RendezVousModelView;
-        this.onValidationFormulaire = this.onValidationFormulaire.bind(this);
+        this.onCreationCompte = this.onCreationCompte.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onChangeParrainageNumeroSocietaire = this.onChangeParrainageNumeroSocietaire.bind(this);
@@ -47,11 +46,11 @@ export default class AuthentificationController extends BaseController<Authentif
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
             civilite: DefaultCivilite,
             parrainageChoix: DefaultBooleanChoice,
-            parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelViewBuilder.buildEmpty(),
             informationsCommercialesEmail: DefaultBooleanChoice,
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
-            rendezVous: stateForm?.rendezVous
+            //TODO A REVOIR SI BESOIN
+            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
         };
     }
 
@@ -73,7 +72,7 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onParrainageChoixSelected(parrainageChoix: BooleanChoiceModelView) {
-        delete this._state.formError.errors.numeroSocietaire;
+        delete this._state.formError.errors.noSocietaireParrain;
 
         this._state = {
             ...this._state,
@@ -85,17 +84,14 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    onChangeParrainageNumeroSocietaire(numeroSocietaire: string) {
-        delete this._state.formError.errors.numeroSocietaire;
+    onChangeParrainageNumeroSocietaire(noSocietaireParrain: string) {
+        delete this._state.formError.errors.noSocietaireParrain;
 
         this._state = {
             ...this._state,
-            creationCompte: {
-                ...this._state.creationCompte,
-                parrainageNumeroSocietaire: {
-                    ...this._state.creationCompte.parrainageNumeroSocietaire,
-                    numeroSocietaire
-                }
+            rendezVous: {
+                ...this._state.rendezVous,
+                noSocietaireParrain
             }
         };
         this.raiseStateChanged();
@@ -140,15 +136,12 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    async onValidationFormulaire() {
-        // TODO : faire l'appel pour valider le formulaire
-
+    async onCreationCompte() {
+        const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous)
         this._state = {
             ...this._state,
-            formError: this.dependencies.creationCompteService.validationFormulaire(this._state.creationCompte)
+            formError
         };
-        // show modal
-
         this.raiseStateChanged();
     }
 }

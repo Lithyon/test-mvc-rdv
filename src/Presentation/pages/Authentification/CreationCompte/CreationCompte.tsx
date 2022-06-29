@@ -1,7 +1,6 @@
 import {CiviliteModelView} from "../ModelView/Civilite/CiviliteModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {Button, Form} from "macif-components";
-import {ParrainageNumeroSocietaireModelView} from "../ModelView/Parrainage/ParrainageNumeroSocietaireModelView";
 import Parrainage from "./Parrainage/Parrainage";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
@@ -15,7 +14,6 @@ export interface CreationCompteProps {
     readonly rendezVous: RendezVousSelectionModelView;
     readonly civilite: Array<CiviliteModelView>;
     readonly parrainageChoix: Array<BooleanChoiceModelView>;
-    readonly parrainageNumeroSocietaire: ParrainageNumeroSocietaireModelView;
     readonly onCiviliteSelected: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
@@ -25,7 +23,7 @@ export interface CreationCompteProps {
     readonly onInformationsCommercialesSmsSelected: Function;
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesTelephoneSelected: Function;
-    readonly onValidationFormulaire: Function;
+    readonly onCreationCompte: Function;
 }
 
 export default function CreationCompteView({
@@ -34,7 +32,6 @@ export default function CreationCompteView({
                                                rendezVous,
                                                civilite,
                                                parrainageChoix,
-                                               parrainageNumeroSocietaire,
                                                onCiviliteSelected,
                                                onParrainageChoixSelected,
                                                onChangeParrainageNumeroSocietaire,
@@ -44,18 +41,17 @@ export default function CreationCompteView({
                                                onInformationsCommercialesSmsSelected,
                                                informationsCommercialesTelephone,
                                                onInformationsCommercialesTelephoneSelected,
-                                               onValidationFormulaire
+                                               onCreationCompte
                                            }: CreationCompteProps) {
-    function handleValidationFormulaire() {
-        onValidationFormulaire();
+    function handleCreationCompte() {
+        onCreationCompte();
     }
 
     return <>
         <Form className="mcf-mt--5">
             <h2>Vos informations</h2>
-            <p className="mcf-mb--6 mcf-font-weight--bold">
-                <i className="icon-macif-mobile-info-plein"></i>
-                <span className="mcf-ml--1">Sauf mention contraire, tous les champs sont requis.</span>
+            <p className="mcf-mb--6 mcf-ml--1">
+                Sauf mention contraire, tous les champs sont requis.
             </p>
             <ChoiceSwitcher onChoiceSelected={onCiviliteSelected}
                             choiceSelected={dataSource.civilite}
@@ -67,12 +63,18 @@ export default function CreationCompteView({
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
                 <Parrainage dataSource={dataSource.parrainageChoix}
                             parrainageChoix={parrainageChoix}
-                            parrainageNumeroSocietaire={parrainageNumeroSocietaire}
+                            noSocietaireParrain={rendezVous.noSocietaireParrain}
                             onParrainageChoixSelected={onParrainageChoixSelected}
                             onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire}
-                            errorMessageNumeroSocietaire={errors.numeroSocietaire}
+                            errorMessageNumeroSocietaire={errors.noSocietaireParrain}
                 />
             }
+
+            <Form.Label as="h2" className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
+                La Macif et des entités de son groupe (Aéma Groupe) peuvent être amenées à vous informer sur leurs produits, services et
+                avantages pour être au plus proche de vos besoins et vous apporter des conseils personnalisés.
+            </Form.Label>
+
 
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesEmailSelected}
                             choiceSelected={dataSource.informationsCommercialesEmail}
@@ -98,7 +100,8 @@ export default function CreationCompteView({
 
             <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button variant="primary" onClick={handleValidationFormulaire} disabled={Object.keys(errors).length > 0}>Confirmer mon rendez-vous</Button>
+                <Button variant="primary" onClick={handleCreationCompte} disabled={Object.keys(errors).length > 0}>Confirmer mon
+                    rendez-vous</Button>
             </div>
         </Form>
     </>;

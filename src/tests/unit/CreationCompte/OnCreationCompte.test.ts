@@ -1,44 +1,37 @@
 import {init} from "./common/Init";
-import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
-import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
 import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
+import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
+import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
 
-describe("Validation du formulaire", function () {
+describe("Creation Compte", function () {
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire", function (done) {
-        // TODO Voir avec Antoine pour opti
         const expected = {};
-
         const controller = init();
+        controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
+
+        controller.onInformationsCommercialesEmailSelected({
+            code: BooleanChoiceCode.OUI,
+            libelle: "Oui"
+        } as BooleanChoiceModelView);
+
+        controller.onInformationsCommercialesTelephoneSelected({
+            code: BooleanChoiceCode.OUI,
+            libelle: "Oui"
+        } as BooleanChoiceModelView);
+
+        controller.onInformationsCommercialesSmsSelected({
+            code: BooleanChoiceCode.OUI,
+            libelle: "Oui"
+        } as BooleanChoiceModelView);
 
         controller.subscribeStateChanged(() => {
-            controller.subscribeStateChanged(() => {
-                controller.subscribeStateChanged(() => {
-                    controller.subscribeStateChanged(() => {
-                        controller.subscribeStateChanged(() => {
-                            const actual = controller.state;
-                            expect(actual.formError.errors).toStrictEqual(expected);
-                            done();
-                        });
-                        controller.onValidationFormulaire();
-                    });
-                    controller.onInformationsCommercialesTelephoneSelected({
-                        code: BooleanChoiceCode.OUI,
-                        libelle: "Oui"
-                    } as BooleanChoiceModelView);
-                });
-                controller.onInformationsCommercialesSmsSelected({
-                    code: BooleanChoiceCode.OUI,
-                    libelle: "Oui"
-                } as BooleanChoiceModelView);
-            });
-            controller.onInformationsCommercialesEmailSelected({
-                code: BooleanChoiceCode.OUI,
-                libelle: "Oui"
-            } as BooleanChoiceModelView);
+            const actual = controller.state;
+            expect(actual.formError.errors).toStrictEqual(expected);
+            done();
         });
+        controller.onCreationCompte();
 
-        controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
     });
 
     it("doit vérifier que le numéro sociétaire est en erreur à cause des caractères spéciaux", function (done) {
@@ -50,10 +43,10 @@ describe("Validation du formulaire", function () {
             controller.subscribeStateChanged(() => {
                 controller.subscribeStateChanged(() => {
                     const actual = controller.state;
-                    expect(actual.formError.errors.numeroSocietaire).toBe(expected);
+                    expect(actual.formError.errors.noSocietaireParrain).toBe(expected);
                     done();
                 });
-                controller.onValidationFormulaire();
+                controller.onCreationCompte();
             });
             controller.onChangeParrainageNumeroSocietaire("*ù*ù");
         });
@@ -72,7 +65,7 @@ describe("Validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationFormulaire();
+        controller.onCreationCompte();
     });
 
     it("doit vérifier que l'information commerciale par email n'est pas sélectionnée", function (done) {
@@ -86,7 +79,7 @@ describe("Validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationFormulaire();
+        controller.onCreationCompte();
     });
 
     it("doit vérifier que l'information commerciale par SMS n'est pas sélectionnée", function (done) {
@@ -100,7 +93,7 @@ describe("Validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationFormulaire();
+        controller.onCreationCompte();
     });
 
     it("doit vérifier que l'information commerciale par message vocal n'est pas sélectionnée", function (done) {
@@ -114,7 +107,7 @@ describe("Validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationFormulaire();
+        controller.onCreationCompte();
     });
 });
 

@@ -23,7 +23,7 @@ describe("Creation de compte - OnParrainageSelected", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.creationCompte.parrainageNumeroSocietaire.numeroSocietaire).toBe(expected);
+            expect(actual.rendezVous.noSocietaireParrain).toBe(expected);
             done();
         });
         controller.onChangeParrainageNumeroSocietaire(expected);

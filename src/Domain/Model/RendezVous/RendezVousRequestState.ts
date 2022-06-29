@@ -2,7 +2,7 @@ import {CanalCode} from "../../Data/Enum/Canal";
 
 export default interface RendezVousRequestState {
     adresseMail: string;
-    canalRendezVous: CanalCode;
+    canalRendezVous: CanalCode | string;
     cdBuro: string;
     cdDemande: string;
     cdDomaine: string;
