@@ -13,7 +13,7 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
     const location = useLocation();
     const state = location.state as RendezVousModelView;
 
-    return <Card bg="gris-sable">
+    return <Card bg="gris-clair-de-lune">
         <Card.Body className="mcf-grid mcf-align-items--center">
             <span className="icon icon-calendrier-check mcf-icon--6 mcf-d--none mcf-d-md--flex mcf-g-col-1" aria-hidden={true}/>
 

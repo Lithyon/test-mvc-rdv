@@ -20,7 +20,7 @@ export default function BandeauPointAccueil({dataSource}: BandeauPointAccueilPro
     } = dataSource;
 
     return (
-        <Card bg="gris-sable" className="mcf-d--none mcf-d-md--flex mcf-flex--row">
+        <Card bg="gris-clair-de-lune" className="mcf-d--none mcf-d-md--flex mcf-flex--row">
             <Card.Body className="mcf-d--flex mcf-align-items--center">
                 <div className="mcf-text--center mcf-w--50">
                     <i className="icon-localisation mcf-icon--5"/>
