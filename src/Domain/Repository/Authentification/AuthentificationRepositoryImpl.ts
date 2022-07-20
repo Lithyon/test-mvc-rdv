@@ -2,7 +2,7 @@ import AuthentificationDAO from "../../Data/Authentification/AuthentificationDAO
 import RendezVousModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 
 export default class AuthentificationRepositoryImpl {
-    private _authentificationDAO: AuthentificationDAO;
+    private readonly _authentificationDAO: AuthentificationDAO;
 
     constructor(readonly authentificationDAO: AuthentificationDAO) {
         this._authentificationDAO = authentificationDAO;

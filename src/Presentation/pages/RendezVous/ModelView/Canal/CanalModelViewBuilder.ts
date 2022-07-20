@@ -3,7 +3,7 @@ import CanalModelView from "./CanalModelView";
 
 export default class CanalModelViewBuilder {
     static buildFromCanal(canal: Canal): CanalModelView {
-        let canalModelView: CanalModelView = {
+        const canalModelView: CanalModelView = {
             libelle: canal.state.libelle,
             code: canal.state.code,
         };

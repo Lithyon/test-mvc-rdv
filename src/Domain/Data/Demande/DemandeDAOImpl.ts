@@ -13,7 +13,7 @@ export default class DemandeDAOImpl implements DemandeDAO {
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 

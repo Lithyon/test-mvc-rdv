@@ -41,7 +41,7 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 
@@ -54,7 +54,7 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
             nonce: data.nonce,
             response_type: data.responseType,
             nav_id: getNavId() || ""
-        })
+        });
     }
 
     async sauvegardeDonneesUtilisateur(state: RendezVousModelView) {
@@ -69,7 +69,7 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 

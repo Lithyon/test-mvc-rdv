@@ -21,8 +21,12 @@ export class RequestBuilderImpl<TRESPONSEBODY> {
         });
 
         if (this._navId !== undefined && this._navId !== "undefined" && this._navId !== "") {
-            this.appendHeader("X-Nav-Id", this._navId)
+            this.appendHeader("X-Nav-Id", this._navId);
         }
+    }
+
+    private get isWritable() {
+        return this._method === "PUT" || this._method === "POST";
     }
 
     getNavId() {
@@ -49,22 +53,18 @@ export class RequestBuilderImpl<TRESPONSEBODY> {
 
     body<TBODY>(body: TBODY, formData = false) {
         if (this._body) {
-            throw new Error('Body is already assigned');
+            throw new Error("Body is already assigned");
         }
 
         this._body = formData ? body : JSON.stringify(body);
         return this;
     }
 
-    private get isWritable() {
-        return this._method === 'PUT' || this._method === 'POST';
-    }
-
     async fetchJson(): Promise<TRESPONSEBODY> {
         const isWritable = this.isWritable;
 
         if (isWritable && !this._body) {
-            throw new Error('Body must be initiliazed');
+            throw new Error("Body must be initiliazed");
         }
 
         const response = await fetch(this._uri, {

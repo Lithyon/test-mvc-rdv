@@ -2,7 +2,7 @@ import {CanalRepositoryImpl} from "../../Repository/Canal";
 import Canal from "../../Model/Canal/Canal";
 
 export default class CanalServiceImpl {
-    private canalRepo: CanalRepositoryImpl;
+    private readonly canalRepo: CanalRepositoryImpl;
 
     constructor(_canalRepo: CanalRepositoryImpl) {
         this.canalRepo = _canalRepo;

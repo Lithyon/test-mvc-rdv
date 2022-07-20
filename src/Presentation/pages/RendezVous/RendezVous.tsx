@@ -32,7 +32,7 @@ export default function RendezVous({controller}: RendezVousProps) {
 
     const {hasError}: ErrorIsTriggered = useErrorObservable(controller.hasErrorObserver);
     if (hasError) {
-        return <DisplayError/>
+        return <DisplayError/>;
     }
     return (
         <>

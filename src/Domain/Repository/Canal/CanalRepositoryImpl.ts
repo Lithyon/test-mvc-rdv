@@ -3,7 +3,7 @@ import {CanalCode} from "../../Data/Enum/Canal";
 import EligibiliteDAO from "../../Data/Eligibilite/EligibiliteDAO";
 
 export default class CanalRepositoryImpl {
-    private _dataSource: EligibiliteDAO;
+    private readonly _dataSource: EligibiliteDAO;
 
     constructor(readonly dataSource: EligibiliteDAO) {
         this._dataSource = dataSource;

@@ -5,7 +5,7 @@ import {TypeDomaine} from "../../Data/Enum/Domaine";
 import DemandeEntity from "../../Data/API/Entity/DemandeEntity";
 
 export class DemandeRepositoryImpl {
-    private _dataSource: DemandeDAO;
+    private readonly _dataSource: DemandeDAO;
 
     constructor(datasource: DemandeDAO) {
         this._dataSource = datasource;

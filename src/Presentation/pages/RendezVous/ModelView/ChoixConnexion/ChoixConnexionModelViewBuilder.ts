@@ -5,6 +5,6 @@ export default class ChoixConnexionModelViewBuilder {
         return {
             code: "",
             libelle: ""
-        }
+        };
     }
 }

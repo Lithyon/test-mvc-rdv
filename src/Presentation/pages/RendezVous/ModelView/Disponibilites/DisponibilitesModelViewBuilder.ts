@@ -12,9 +12,9 @@ export default class DisponibilitesModelViewBuilder {
                     disponibilitesMatin: value.disponibilitesMatin.map(HeureDisponibleModelViewBuilder.buildHeureDispo),
                     ferie: value.ferie,
                     jour: new Date(value.jour)
-                }
+                };
             })
-        }
+        };
     }
 
     static buildFromSessionStorage(disponibilites: any): DisponibilitesModelView {
@@ -26,9 +26,9 @@ export default class DisponibilitesModelViewBuilder {
                     disponibilitesMatin: value.disponibilitesMatin.map(HeureDisponibleModelViewBuilder.buildHeureDispo),
                     ferie: value.ferie,
                     jour: new Date(value.jour)
-                }
+                };
             })
-        }
+        };
     }
 
     static buildEmpty(): DisponibilitesModelView {

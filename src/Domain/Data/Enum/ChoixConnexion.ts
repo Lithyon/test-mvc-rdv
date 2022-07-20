@@ -14,6 +14,6 @@ const DefaultChoixConnexion: Array<ChoixConnexion> = [{
 }, {
     libelle: "Non je n'ai pas d'espace, je poursuis le formulaire",
     code: ChoixConnexionCode.NO_ACCOUNT
-}]
+}];
 
 export default DefaultChoixConnexion;

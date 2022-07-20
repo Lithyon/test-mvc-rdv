@@ -15,4 +15,5 @@ export default class DisponibilitesRequest {
     get state() {
         return this._state.clone();
     }
+
 }

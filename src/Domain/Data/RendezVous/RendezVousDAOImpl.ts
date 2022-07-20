@@ -19,7 +19,7 @@ export default class RendezVousDAOImpl
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 
@@ -35,7 +35,7 @@ export default class RendezVousDAOImpl
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 

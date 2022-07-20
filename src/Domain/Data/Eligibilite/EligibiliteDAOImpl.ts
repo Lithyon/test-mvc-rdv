@@ -13,7 +13,7 @@ export default class EligibiliteDAOImpl implements EligibiliteDAO {
 
         if (messages) {
             messages.forEach((error: any) => {
-                throw new Error(error)
+                throw new Error(error);
             });
         }
 

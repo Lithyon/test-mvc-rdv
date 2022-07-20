@@ -10,18 +10,18 @@ export interface TextareaProps {
 }
 
 export default function Textarea({label, id, maxLength, onChange, value}: TextareaProps) {
-    const [count, setCount] = useState(maxLength - value.length)
-    const [inputValue, setInputValue] = useState(value)
+    const [count, setCount] = useState(maxLength - value.length);
+    const [inputValue, setInputValue] = useState(value);
     const infoCounter = count <= 1 ? `${count} caractère restant` : `${count} caractères restants`;
 
     const recalculateCounter = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
         setCount(maxLength - event.target.value.length);
-    }
+    };
 
-    const ariaLiveValue: "off" | "assertive" | "polite" | undefined = count <= 20 ? "assertive" : "polite"
+    const ariaLiveValue: "off" | "assertive" | "polite" | undefined = count <= 20 ? "assertive" : "polite";
 
-    useEffect(() => onChange(inputValue), [inputValue, onChange])
+    useEffect(() => onChange(inputValue), [inputValue, onChange]);
 
     return <Form.Group controlId={id}>
         <Form.Label as={"h3"} className="mcf-text--small-1">{label}<span className="mcf-sr-only">{infoCounter}</span></Form.Label>
@@ -29,5 +29,5 @@ export default function Textarea({label, id, maxLength, onChange, value}: Textar
                       onChange={recalculateCounter}
                       maxLength={maxLength} value={inputValue}/>
         <Form.Text className="mcf-text--small-1" muted aria-live={ariaLiveValue} aria-atomic="true">{infoCounter}</Form.Text>
-    </Form.Group>
+    </Form.Group>;
 }

@@ -8,7 +8,7 @@ interface AuthentificationProps {
 
 export default function Authentification({controller}: AuthentificationProps) {
     return <>
-        <BandeauModification dataSource={controller.state.rendezVous} />
+        <BandeauModification dataSource={controller.state.rendezVous}/>
         <Button className="mcf-mt--7">Previous</Button>
-    </>
+    </>;
 }

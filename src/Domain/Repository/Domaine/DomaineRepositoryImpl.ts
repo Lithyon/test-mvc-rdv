@@ -4,7 +4,7 @@ import {DOMAINES} from "../../Data/Enum/Domaine";
 import DomaineEntity from "../../Data/API/Entity/DomaineEntity";
 
 export class DomaineRepositoryImpl {
-    private _dataSource: DomaineDAO;
+    private readonly _dataSource: DomaineDAO;
 
     constructor(datasource: DomaineDAO) {
         this._dataSource = datasource;
@@ -16,10 +16,10 @@ export class DomaineRepositoryImpl {
     }
 
     private _codificationsFilter(domaines: DomaineEntity) {
-        const {codes} = domaines
+        const {codes} = domaines;
         return codes.reduce((prev, curr) => {
             if (DOMAINES.includes(curr.code)) {
-                prev.push(new Domaine(curr))
+                prev.push(new Domaine(curr));
             }
             return prev;
         }, new Array<Domaine>());

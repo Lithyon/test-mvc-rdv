@@ -5,7 +5,7 @@ import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 import RendezVous from "../../Model/RendezVous/RendezVous";
 
 export class RendezVousRepositoryImpl {
-    private _dataSource: RendezVousDAO;
+    private readonly _dataSource: RendezVousDAO;
 
     constructor(datasource: RendezVousDAO) {
         this._dataSource = datasource;

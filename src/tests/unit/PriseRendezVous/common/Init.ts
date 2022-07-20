@@ -45,7 +45,7 @@ export function init(
         async getDomaines(): Promise<DomaineEntity> {
             return domaine;
         }
-    })
+    });
     const domaineService = new DomaineServiceImpl(domaineRepository);
 
     const demandeRepository = new DemandeRepositoryImpl({
@@ -71,7 +71,7 @@ export function init(
         async getPointAccueil(cdBuro: string): Promise<PointAccueilEntity> {
             return pointAccueil;
         }
-    })
+    });
     const pointAccueilService = new PointAccueilServiceImpl(pointAccueilRepository);
 
     const rendezVousRepository = new RendezVousRepositoryImpl({
@@ -81,11 +81,12 @@ export function init(
         async creerRendezVous(request: RendezVousRequestEntity): Promise<RendezVousEntity> {
             return rendezVous;
         }
-    })
+    });
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const authentificationRepository = new AuthentificationRepositoryImpl({
-        async initialiseConnexion(urlRedirection: string, uuid: string) {},
+        async initialiseConnexion(urlRedirection: string, uuid: string) {
+        },
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";
         }

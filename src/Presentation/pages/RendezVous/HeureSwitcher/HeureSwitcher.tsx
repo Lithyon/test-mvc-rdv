@@ -36,7 +36,7 @@ export default function HeureSwitcher({
 
     return proposerChoixHoraire && isOver ? (<Card as={Form.Group} bg="gris-lune">
         <Card.Body>
-            <Form as={'div'}>
+            <Form as={"div"}>
                 <Form.Group>
                     <Form.Label>Puis votre horaire</Form.Label>
                     <Form.Text className="mcf-text--small-1" muted>La liste n'affiche que les horaires disponibles pour ce jour et dans

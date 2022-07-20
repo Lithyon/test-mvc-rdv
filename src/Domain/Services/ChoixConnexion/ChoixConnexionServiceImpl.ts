@@ -1,7 +1,7 @@
 import {ChoixConnexionRepositoryImpl} from "../../Repository/ChoixConnexion";
 
 export default class ChoixConnexionServiceImpl {
-    private choixConnexionRepo: ChoixConnexionRepositoryImpl;
+    private readonly choixConnexionRepo: ChoixConnexionRepositoryImpl;
 
     constructor(_choixConnexionRepo: ChoixConnexionRepositoryImpl) {
         this.choixConnexionRepo = _choixConnexionRepo;

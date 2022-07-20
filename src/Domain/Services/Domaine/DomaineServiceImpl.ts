@@ -1,7 +1,7 @@
 import {DomaineRepositoryImpl} from "../../Repository/Domaine";
 
 export default class DomaineServiceImpl {
-    private domaineRepo: DomaineRepositoryImpl;
+    private readonly domaineRepo: DomaineRepositoryImpl;
 
     constructor(_domaineRepo: DomaineRepositoryImpl) {
         this.domaineRepo = _domaineRepo;

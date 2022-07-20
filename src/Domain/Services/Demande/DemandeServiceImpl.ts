@@ -1,7 +1,7 @@
 import {DemandeRepositoryImpl} from "../../Repository/Demande";
 
 export default class DemandeServiceImpl {
-    private demandeRepo: DemandeRepositoryImpl;
+    private readonly demandeRepo: DemandeRepositoryImpl;
 
     constructor(_demandeRepo: DemandeRepositoryImpl) {
         this.demandeRepo = _demandeRepo;

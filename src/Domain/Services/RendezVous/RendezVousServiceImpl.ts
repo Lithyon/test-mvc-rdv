@@ -3,7 +3,7 @@ import DisponibilitesRequest from "../../Model/Disponibilites/DisponibilitesRequ
 import {RendezVousRepositoryImpl} from "../../Repository/RendezVous";
 
 export default class RendezVousServiceImpl {
-    private rendezVousRepo: RendezVousRepositoryImpl;
+    private readonly rendezVousRepo: RendezVousRepositoryImpl;
 
     constructor(_rendezVousRepo: RendezVousRepositoryImpl) {
         this.rendezVousRepo = _rendezVousRepo;

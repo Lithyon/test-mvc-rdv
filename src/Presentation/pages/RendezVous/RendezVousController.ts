@@ -35,6 +35,7 @@ import PagesDetails from "../PagesDetails";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {NavigateFunction} from "react-router-dom";
 import RendezVousModelViewBuilder from "./ModelView/RendezVous/RendezVousModelViewBuilder";
+import {getCookie} from "../../../Domain/Data/API/Commons/Cookie";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -54,7 +55,7 @@ export default class RendezVousController
     private _canal?: Array<Canal>;
     private _disponibilites?: Disponibilites;
     private _pointAccueil?: PointAccueil;
-    private readonly _stateForm: RendezVousModelView
+    private readonly _stateForm: RendezVousModelView;
     private readonly _onLoadDisponibilitesObserver: LoadingObservableImpl;
     private readonly _hasErrorObserver: ErrorObservableImpl;
     private readonly _hasErrorDisponibilitesObserver: ErrorObservableImpl;
@@ -225,7 +226,7 @@ export default class RendezVousController
                     afficherChoixConnexion: false,
                     proposerChoixHoraire: false
                 }
-            }
+            };
 
             this._onLoadDisponibilitesObserver.raiseAdvancementEvent({isOver: true});
         } catch (error) {
@@ -241,7 +242,7 @@ export default class RendezVousController
                 ...this._state.rendezVous,
                 precision,
             }
-        }
+        };
         this.raiseStateChanged();
     }
 
@@ -256,7 +257,7 @@ export default class RendezVousController
                 afficherChoixConnexion: false,
                 proposerChoixHoraire: true
             }
-        }
+        };
         this.raiseStateChanged();
     }
 
@@ -269,7 +270,7 @@ export default class RendezVousController
                 afficherChoixConnexion: true,
                 heure: heureSelected
             }
-        }
+        };
         this.raiseStateChanged();
     }
 
@@ -280,12 +281,12 @@ export default class RendezVousController
                 ...this._state.rendezVous,
                 choixConnexionSelected,
             }
-        }
+        };
         this.raiseStateChanged();
     }
 
     async onValidationFormulaire(navigate: NavigateFunction) {
-        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT) {
+        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT || getCookie("mfsauth")) {
             this.redirectionVersAuthentification(navigate);
         } else {
             await this.redirectionMireDeConnexion();
@@ -307,10 +308,6 @@ export default class RendezVousController
     redirectionVersAuthentification(navigate: NavigateFunction) {
         navigate(PagesDetails.Auth.link, {state: this._state});
     }
-
-    // private setState(state: RendezVousModelView) {
-    //     this._state = state;
-    // }
 }
 
 

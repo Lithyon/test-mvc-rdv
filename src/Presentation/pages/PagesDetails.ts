@@ -8,13 +8,13 @@ export default class PagesDetails {
         return {
             name: "Prendre Rendez Vous",
             link: "/"
-        }
+        };
     }
 
     static get Auth(): PagesDetail {
         return {
             name: "Authentification",
             link: "/authentication"
-        }
+        };
     }
 }

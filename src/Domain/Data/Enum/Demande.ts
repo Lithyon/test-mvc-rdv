@@ -4,7 +4,7 @@ export const TypeDemande = {
     SOUSCRIPTION: "02",
     MODIFICATION_CONTRAT: "03",
     SINISTRE: "04",
-}
+};
 
 export const DEMANDES_HORS_SINISTRE = [
     TypeDemande.AUTRE,
