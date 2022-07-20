@@ -63,14 +63,11 @@ export default class RendezVousController
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
-        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
         this._stateForm = window.history.state?.usr as RendezVousModelView;
+        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv");
         if (sessionStorageState) {
-            this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(sessionStorageState);
-            console.log("path redirect =>", window.location.origin + window.location.pathname + PagesDetails.Auth.link)
-            window.history.replaceState(this._stateForm, "", window.location.origin + window.location.pathname + PagesDetails.Auth.link)
+            this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));
         }
-        console.log("stateform => ", this._stateForm);
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -92,8 +89,6 @@ export default class RendezVousController
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
         };
-        console.log("this._state => ", this._state);
-
     }
 
     private _state: RendezVousModelView;
@@ -286,7 +281,6 @@ export default class RendezVousController
                 choixConnexionSelected,
             }
         }
-        console.log("RENDEZVOUS ON CHOIX CONNEXION => ", this._state.rendezVous);
         this.raiseStateChanged();
     }
 
@@ -303,7 +297,7 @@ export default class RendezVousController
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             await this.dependencies.authentificationService.authentificationUtilisateur(
                 this._state,
-                window.location.origin + window.location.pathname // + PagesDetails.Auth.link
+                window.location.origin + window.location.pathname
             );
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
@@ -314,9 +308,9 @@ export default class RendezVousController
         navigate(PagesDetails.Auth.link, {state: this._state});
     }
 
-    private setState(state: RendezVousModelView) {
-        this._state = state;
-    }
+    // private setState(state: RendezVousModelView) {
+    //     this._state = state;
+    // }
 }
 
 
