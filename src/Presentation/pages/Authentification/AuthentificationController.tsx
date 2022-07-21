@@ -38,6 +38,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onChangeNom = this.onChangeNom.bind(this);
         this.onChangePrenom = this.onChangePrenom.bind(this);
+        this.onChangeNumeroTelephone = this.onChangeNumeroTelephone.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onChangeParrainageNumeroSocietaire = this.onChangeParrainageNumeroSocietaire.bind(this);
         this.onInformationsCommercialesEmailSelected = this.onInformationsCommercialesEmailSelected.bind(this);
@@ -169,6 +170,20 @@ export default class AuthentificationController extends BaseController<Authentif
             creationCompte: {
                 ...this._state.creationCompte,
                 prenom
+            }
+        };
+
+        this.raiseStateChanged();
+    }
+
+    onChangeNumeroTelephone(numeroTelephone: string) {
+        delete this._state.formError.errors.numeroTelephone;
+
+        this._state = {
+            ...this._state,
+            creationCompte: {
+                ...this._state.creationCompte,
+                numeroTelephone
             }
         };
 

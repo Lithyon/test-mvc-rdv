@@ -11,6 +11,7 @@ describe("Creation Compte", function () {
         controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
         controller.onChangeNom("Bobby");
         controller.onChangePrenom("Bobby");
+        controller.onChangeNumeroTelephone("0102030405");
 
         controller.onInformationsCommercialesEmailSelected({
             code: BooleanChoiceCode.OUI,
@@ -124,6 +125,34 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.errors.prenom).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le numero de telephone n'est pas sélectionnée", function (done) {
+        const expected = "Veuillez renseigner votre numéro de téléphone";
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.numeroTelephone).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le numero de telephone est mal renseigné", function (done) {
+        const expected = "Le numéro de téléphone renseigné est incorrect";
+
+        const controller = init();
+        controller.onChangeNumeroTelephone("o102030405");
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.numeroTelephone).toBe(expected);
             done();
         });
 

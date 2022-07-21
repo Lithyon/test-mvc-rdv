@@ -5,6 +5,7 @@ export interface CreationCompteModelView {
     readonly civilite: CiviliteModelView;
     readonly nom: string;
     readonly prenom: string;
+    readonly numeroTelephone: string;
     readonly parrainageChoix: BooleanChoiceModelView;
     readonly informationsCommercialesEmail: BooleanChoiceModelView;
     readonly informationsCommercialesSms: BooleanChoiceModelView;

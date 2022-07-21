@@ -18,6 +18,7 @@ export interface CreationCompteProps {
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
+    readonly onChangeNumeroTelephone: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
@@ -38,6 +39,7 @@ export default function CreationCompteView({
                                                onCiviliteSelected,
                                                onChangeNom,
                                                onChangePrenom,
+                                               onChangeNumeroTelephone,
                                                onParrainageChoixSelected,
                                                onChangeParrainageNumeroSocietaire,
                                                informationsCommercialesEmail,
@@ -79,6 +81,15 @@ export default function CreationCompteView({
                    onChange={onChangePrenom}
                    value={dataSource.prenom}
                    errorMessage={errors.prenom}
+            />
+
+            <Input id="numeroTelephone"
+                   label="Numéro de téléphone"
+                   onChange={onChangeNumeroTelephone}
+                   value={dataSource.numeroTelephone}
+                   message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
+                   maxLength={10}
+                   errorMessage={errors.numeroTelephone}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

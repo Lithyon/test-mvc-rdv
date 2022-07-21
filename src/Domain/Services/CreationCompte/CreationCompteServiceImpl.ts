@@ -51,6 +51,14 @@ export default class CreationCompteServiceImpl {
             formError.errors.prenom = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
         }
 
+        const regexTelephone: RegExpMatchArray = creationCompte?.numeroTelephone.match(/^0\d{9}/) || [];
+        if (creationCompte.numeroTelephone.length === 0) {
+            formError.errors.numeroTelephone = "Veuillez renseigner votre numéro de téléphone";
+
+        } else if (regexTelephone.length === 0) {
+            formError.errors.numeroTelephone = "Le numéro de téléphone renseigné est incorrect";
+        }
+
         if (!creationCompte.informationsCommercialesEmail.code) {
             formError.errors.informationsCommercialesEmail = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
         }

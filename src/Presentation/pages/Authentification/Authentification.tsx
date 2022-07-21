@@ -21,6 +21,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             onCiviliteSelected={controller.onCiviliteSelected}
             onChangeNom={controller.onChangeNom}
             onChangePrenom={controller.onChangePrenom}
+            onChangeNumeroTelephone={controller.onChangeNumeroTelephone}
             onParrainageChoixSelected={controller.onParrainageChoixSelected}
             onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
             informationsCommercialesEmail={state.informationsCommercialesEmail}
