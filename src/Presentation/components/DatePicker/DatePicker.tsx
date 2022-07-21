@@ -266,14 +266,14 @@ export default function DatePicker({
                     className={`${getCols()} mcf-rounded`}
                 />
                 <InputGroup.Append>
-                    <a
+                    <span
                         role="button"
                         onClick={hideShowCalendar}
                         onKeyDown={calendarIconKeyDown}
                         aria-hidden="true"
                         className="mcf-d--none mcf-d-md--block mcf-btn mcf-btn--link ">
                         <span className="icon icon-macif-mobile-calendrier mcf-text--black mcf-icon--2"/>
-                    </a>
+                    </span>
 
                 </InputGroup.Append>
                 <Form.Control.Feedback type="invalid">

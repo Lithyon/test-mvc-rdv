@@ -10,16 +10,27 @@ export interface InputProps {
     readonly type?: string;
     readonly maxLength?: number;
     readonly errorMessage?: string;
+    readonly autoComplete?: string;
 }
 
-export default function Input({id, label, onChange, value, message, type = "text", maxLength, errorMessage = ""}: InputProps) {
-    const [inputValue, setInputValue] = useState(value)
+export default function Input({
+                                  id,
+                                  label,
+                                  onChange,
+                                  value,
+                                  message,
+                                  type = "text",
+                                  maxLength,
+                                  errorMessage = "",
+                                  autoComplete = "off"
+                              }: InputProps) {
+    const [inputValue, setInputValue] = useState(value);
 
-    useEffect(() => onChange(inputValue), [inputValue, onChange])
+    useEffect(() => onChange(inputValue), [inputValue, onChange]);
 
     const handleChangeValue = (event: any) => {
         setInputValue(event.target.value);
-    }
+    };
 
     return <Form.Group controlId={id}>
         <Form.Label as="h3" className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">{label}</Form.Label>
@@ -29,11 +40,12 @@ export default function Input({id, label, onChange, value, message, type = "text
                       onChange={handleChangeValue}
                       value={inputValue}
                       maxLength={maxLength}
-                      className="mcf-w--auto"
-                      isInvalid={errorMessage !== ""}/>
+                      className="mcf-col-md-8"
+                      isInvalid={errorMessage !== ""}
+                      autoComplete={autoComplete}/>
         <Form.Control.Feedback type="invalid">
             <span className="icon icon-erreur"></span>
             {errorMessage}
         </Form.Control.Feedback>
-    </Form.Group>
+    </Form.Group>;
 }

@@ -20,6 +20,10 @@ import {SituationFamilialeServiceImpl} from "../../../Domain/Services/SituationF
 import SituationFamiliale from "../../../Domain/Model/SituationFamiliale/SituationFamiliale";
 import {IsLoadable} from "../../commons/IsLoadable";
 import SituationFamilialeModelViewBuilder from "./ModelView/SituationFamiliale/SituationFamilialeModelViewBuilder";
+import {ProfessionModelView} from "./ModelView/Profession/ProfessionModelView";
+import ProfessionModelViewBuilder from "./ModelView/Profession/ProfessionModelViewBuilder";
+import {ProfessionServiceImpl} from "../../../Domain/Services/Profession";
+import Profession from "../../../Domain/Model/Profession/Profession";
 
 enum AutoCompleteFieldCommuneEnum {
     NUMERO_CODE_POSTAL_MAX = 96000,
@@ -32,6 +36,7 @@ export interface AuthentificationModelView {
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
     readonly situationFamiliale: Array<SituationFamilialeModelView>,
+    readonly profession: Array<ProfessionModelView>,
     readonly parrainageChoix: Array<BooleanChoiceModelView>,
     readonly commune: CommuneModelView,
     readonly communes: Array<CommuneModelView>,
@@ -43,12 +48,14 @@ export interface AuthentificationModelView {
 interface AuthentificationControllerDependencies {
     readonly creationCompteService: CreationCompteServiceImpl,
     readonly situationFamilialeService: SituationFamilialeServiceImpl,
+    readonly professionService: ProfessionServiceImpl,
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> implements IsLoadable {
     private _state: AuthentificationModelView;
     private _communes: Array<Commune> = [];
     private _situationFamiliale?: Array<SituationFamiliale>;
+    private _profession?: Array<Profession>;
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
@@ -63,6 +70,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangeDateNaissance = this.onChangeDateNaissance.bind(this);
         this.onChangeSituationFamiliale = this.onChangeSituationFamiliale.bind(this);
+        this.onChangeProfession = this.onChangeProfession.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onCommuneSelected = this.onCommuneSelected.bind(this);
         this.onRechercheCommune = this.onRechercheCommune.bind(this);
@@ -76,6 +84,7 @@ export default class AuthentificationController extends BaseController<Authentif
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
             civilite: DefaultCivilite,
             situationFamiliale: [],
+            profession: [],
             parrainageChoix: DefaultBooleanChoice,
             commune: CommuneModelViewBuilder.buildEmpty(),
             communes: [],
@@ -97,9 +106,11 @@ export default class AuthentificationController extends BaseController<Authentif
 
     async onLoad() {
         this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
+        this._profession = await this.dependencies.professionService.getProfession();
         this._state = {
             ...this._state,
-            situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale)
+            situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale),
+            profession: this._profession.map(ProfessionModelViewBuilder.buildFromProfession)
         };
         this.raiseStateChanged();
     }
@@ -346,6 +357,21 @@ export default class AuthentificationController extends BaseController<Authentif
             formError: {
                 ...this._state.formError,
                 situationFamiliale: ""
+            }
+        };
+        this.raiseStateChanged();
+    }
+
+    onChangeProfession(profession: ProfessionModelView) {
+        this._state = {
+            ...this._state,
+            creationCompte: {
+                ...this._state.creationCompte,
+                profession
+            },
+            formError: {
+                ...this._state.formError,
+                profession: ""
             }
         };
         this.raiseStateChanged();

@@ -7,7 +7,7 @@ interface HighlightProps {
 export default function Highlight({controlId, labelFormat, recherche}: HighlightProps) {
     const defaultHighlight = (s: string) => <strong>{s}</strong>;
 
-    const regexRecherche = (v: string) => v.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+    const regexRecherche = (v: string) => v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 
     const highlightWord = (rechercheCourante: string, target: string): Array<string | JSX.Element> => {
         if (!rechercheCourante) {

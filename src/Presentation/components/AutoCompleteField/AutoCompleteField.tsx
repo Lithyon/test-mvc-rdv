@@ -57,7 +57,7 @@ export default function AutoCompleteField<T>({
         timeoutId = setTimeout(() => {
             onSearchChange(recherche);
         }, debounceMs);
-    }, [recherche]);
+    }, [recherche, debounceMs, onSearchChange]);
 
     const onTextChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSelectedItem(undefined);

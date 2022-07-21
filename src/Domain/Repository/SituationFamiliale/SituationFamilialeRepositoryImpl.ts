@@ -1,6 +1,7 @@
 import SituationFamilialeDAO from "../../Data/SituationFamiliale/SituationFamilialeDAO";
 import SituationFamiliale from "../../Model/SituationFamiliale/SituationFamiliale";
 import SituationFamilialeEntity from "../../Data/API/Entity/SituationFamilialeEntity";
+import CodeEntity from "../../Data/API/Entity/CodeEntity";
 
 export class SituationFamilialeRepositoryImpl {
     private readonly _dataSource: SituationFamilialeDAO;
@@ -17,9 +18,10 @@ export class SituationFamilialeRepositoryImpl {
 
     private _codificationsFilter(situationFamiliale: SituationFamilialeEntity) {
         const {codes} = situationFamiliale;
-        return codes.reduce((prev, curr) => {
-            prev.push(new SituationFamiliale(curr));
-            return prev;
-        }, new Array<SituationFamiliale>());
+        const tableauSituationFamiliale = new Array<SituationFamiliale>();
+        codes.forEach((code: CodeEntity) =>
+            tableauSituationFamiliale.push(new SituationFamiliale(code))
+        );
+        return tableauSituationFamiliale;
     }
 }

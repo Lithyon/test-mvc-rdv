@@ -4,7 +4,6 @@ import DemandeModelViewBuilder from "../Demande/DemandeModelViewBuilder";
 import CanalModelViewBuilder from "../Canal/CanalModelViewBuilder";
 import ChoixConnexionModelViewBuilder from "../ChoixConnexion/ChoixConnexionModelViewBuilder";
 import HeureDisponibleModelViewBuilder from "../Disponibilites/HeureDisponibleModelViewBuilder";
-import BooleanChoiceModelViewBuilder from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelViewBuilder";
 
 export default class RendezVousSelectionModelViewBuilder {
     static buildEmpty(): RendezVousSelectionModelView {
@@ -22,7 +21,6 @@ export default class RendezVousSelectionModelViewBuilder {
             heure: HeureDisponibleModelViewBuilder.buildEmpty(),
             jour: new Date(),
             nmCommu: "",
-            parrainageChoix: BooleanChoiceModelViewBuilder.buildEmpty(),
             noSocietaireParrain: "",
             noTel: "",
             precision: ""

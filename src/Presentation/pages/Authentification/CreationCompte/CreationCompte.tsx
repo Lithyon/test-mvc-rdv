@@ -15,6 +15,7 @@ import DatePicker from "../../../components/DatePicker";
 import {subYears} from "date-fns";
 import {SituationFamilialeModelView} from "../ModelView/SituationFamiliale/SituationFamilialeModelView";
 import SelectField from "../../../components/SelectField";
+import {ProfessionModelView} from "../ModelView/Profession/ProfessionModelView";
 
 export interface CreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -27,6 +28,7 @@ export interface CreationCompteProps {
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly communes: Array<CommuneModelView>;
     readonly situationFamiliale: Array<SituationFamilialeModelView>;
+    readonly profession: Array<ProfessionModelView>;
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
@@ -37,6 +39,7 @@ export interface CreationCompteProps {
     readonly onRechercheCommune: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly onChangeDateNaissance: Function;
+    readonly onChangeProfession: Function;
     readonly onChangeSituationFamiliale: Function;
     readonly onInformationsCommercialesEmailSelected: Function;
     readonly onInformationsCommercialesSmsSelected: Function;
@@ -51,6 +54,7 @@ export default function CreationCompteView({
                                                rendezVous,
                                                civilite,
                                                situationFamiliale,
+                                               profession,
                                                parrainageChoix,
                                                informationsCommercialesEmail,
                                                informationsCommercialesSms,
@@ -67,6 +71,7 @@ export default function CreationCompteView({
                                                onChangeParrainageNumeroSocietaire,
                                                onChangeDateNaissance,
                                                onChangeSituationFamiliale,
+                                               onChangeProfession,
                                                onInformationsCommercialesEmailSelected,
                                                onInformationsCommercialesSmsSelected,
                                                onInformationsCommercialesTelephoneSelected,
@@ -95,7 +100,7 @@ export default function CreationCompteView({
 
     return <>
         <Form className="mcf-mt--5">
-            <h2>Vos informations</h2>
+            <h1 id="vos-informations">Vos informations</h1>
 
             <p className="mcf-mb--6 mcf-ml--1">
                 Sauf mention contraire, tous les champs sont requis.
@@ -113,6 +118,7 @@ export default function CreationCompteView({
                    label="Nom"
                    onChange={onChangeNom}
                    value={dataSource.nom}
+                   autoComplete="family-name"
                    errorMessage={formError.nom}
             />
 
@@ -120,24 +126,8 @@ export default function CreationCompteView({
                    label="Prénom"
                    onChange={onChangePrenom}
                    value={dataSource.prenom}
+                   autoComplete="given-name"
                    errorMessage={formError.prenom}
-            />
-
-            <Input id="numeroTelephone"
-                   label="Numéro de téléphone"
-                   onChange={onChangeNumeroTelephone}
-                   value={dataSource.numeroTelephone}
-                   message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
-                   maxLength={10}
-                   errorMessage={formError.numeroTelephone}
-            />
-
-            <Input id="email"
-                   label="E-mail"
-                   onChange={onChangeEmail}
-                   value={dataSource.email}
-                   message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
-                   errorMessage={formError.email}
             />
 
             <AutoCompleteField
@@ -150,6 +140,25 @@ export default function CreationCompteView({
                 dataSource={communes}
                 onSelect={onCommuneSelected}
                 errorMessage={formError.commune}
+            />
+
+            <Input id="numeroTelephone"
+                   label="Numéro de téléphone"
+                   onChange={onChangeNumeroTelephone}
+                   value={dataSource.numeroTelephone}
+                   message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
+                   maxLength={10}
+                   autoComplete="tel"
+                   errorMessage={formError.numeroTelephone}
+            />
+
+            <Input id="email"
+                   label="E-mail"
+                   onChange={onChangeEmail}
+                   value={dataSource.email}
+                   message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
+                   autoComplete="email"
+                   errorMessage={formError.email}
             />
 
             <DatePicker
@@ -170,6 +179,14 @@ export default function CreationCompteView({
                 onChangeSelect={onChangeSituationFamiliale}
                 dataSource={situationFamiliale}
                 errorMessage={formError.situationFamiliale}
+            />
+
+            <SelectField
+                id="profession"
+                label="Profession"
+                onChangeSelect={onChangeProfession}
+                dataSource={profession}
+                errorMessage={formError.profession}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

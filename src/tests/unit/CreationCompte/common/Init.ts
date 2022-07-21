@@ -17,13 +17,18 @@ import CommuneEntity from "../../../../Domain/Data/API/Entity/CommuneEntity";
 import {SituationFamilialeServiceImpl} from "../../../../Domain/Services/SituationFamiliale";
 import {SituationFamilialeRepositoryImpl} from "../../../../Domain/Repository/SituationFamiliale";
 import SituationFamilialeEntity from "../../../../Domain/Data/API/Entity/SituationFamilialeEntity";
-import situationFamilialeStub from "../../../../../mocks/situationFamilialeStub";
+import situationFamilialeStub from "../../../../../mocks/ProfessionStub";
+import {ProfessionServiceImpl} from "../../../../Domain/Services/Profession";
+import {ProfessionRepositoryImpl} from "../../../../Domain/Repository/Profession";
+import ProfessionEntity from "../../../../Domain/Data/API/Entity/ProfessionEntity";
+import professionStub from "../../../../../mocks/SituationFamilialeStub";
 
 export function init(
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub,
     creationCompte: CreationCompteEntity = creationCompteStub,
-    situationFamiliale: SituationFamilialeEntity = situationFamilialeStub
+    situationFamiliale: SituationFamilialeEntity = situationFamilialeStub,
+    profession: ProfessionEntity = professionStub
 ) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
@@ -53,5 +58,12 @@ export function init(
     });
     const situationFamilialeService = new SituationFamilialeServiceImpl(situationFamilialeServiceRepo);
 
-    return new AuthentificationController({creationCompteService, situationFamilialeService});
+    const professionRepo = new ProfessionRepositoryImpl({
+        async getProfession(): Promise<ProfessionEntity> {
+            return profession;
+        }
+    });
+    const professionService = new ProfessionServiceImpl(professionRepo);
+
+    return new AuthentificationController({creationCompteService, situationFamilialeService, professionService});
 }

@@ -3,7 +3,6 @@ import DemandeModelView from "../Demande/DemandeModelView";
 import CanalModelView from "../Canal/CanalModelView";
 import HeureDisponibleModelView from "../Disponibilites/HeureDisponibleModelView";
 import ChoixConnexionModelView from "../ChoixConnexion/ChoixConnexionModelView";
-import {BooleanChoiceModelView} from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 
 export default interface RendezVousSelectionModelView {
     readonly proposerChoixHoraire: boolean;
@@ -16,7 +15,6 @@ export default interface RendezVousSelectionModelView {
     readonly demandeSelected: DemandeModelView;
     readonly cdBuro: string;
     readonly nmCommu: string;
-    readonly parrainageChoix: BooleanChoiceModelView;
     readonly noSocietaireParrain: string;
     readonly noTel: string;
     readonly precision: string;

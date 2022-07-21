@@ -7,4 +7,4 @@ import CommunesRepository from "../../Repository/Communes";
 export {CreationCompteServiceImpl};
 export {RendezVousServiceImpl};
 
-export default new CreationCompteServiceImpl(CreationCompteRepository, RendezVousRepository, CommunesRepository)
+export default new CreationCompteServiceImpl(CreationCompteRepository, RendezVousRepository, CommunesRepository);

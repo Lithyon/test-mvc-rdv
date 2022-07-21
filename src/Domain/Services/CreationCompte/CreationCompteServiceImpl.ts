@@ -96,6 +96,10 @@ export default class CreationCompteServiceImpl {
             formError.situationFamiliale = "Veuillez renseigner votre situation familiale";
         }
 
+        if (!creationCompte.profession.code) {
+            formError.profession = "Veuillez renseigner votre profession";
+        }
+
         if (!creationCompte.informationsCommercialesEmail.code) {
             formError.informationsCommercialesEmail =
                 "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";

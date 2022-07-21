@@ -3,6 +3,6 @@ export default class CiviliteModelViewBuilder {
         return {
             code: "",
             libelle: ""
-        }
+        };
     }
 }

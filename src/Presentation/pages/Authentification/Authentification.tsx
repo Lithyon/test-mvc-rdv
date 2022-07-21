@@ -22,6 +22,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             parrainageChoix={state.parrainageChoix}
             communes={state.communes}
             situationFamiliale={state.situationFamiliale}
+            profession={state.profession}
             informationsCommercialesEmail={state.informationsCommercialesEmail}
             informationsCommercialesSms={state.informationsCommercialesSms}
             informationsCommercialesTelephone={state.informationsCommercialesTelephone}
@@ -36,6 +37,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
             onChangeDateNaissance={controller.onChangeDateNaissance}
             onChangeSituationFamiliale={controller.onChangeSituationFamiliale}
+            onChangeProfession={controller.onChangeProfession}
             onInformationsCommercialesEmailSelected={controller.onInformationsCommercialesEmailSelected}
             onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}

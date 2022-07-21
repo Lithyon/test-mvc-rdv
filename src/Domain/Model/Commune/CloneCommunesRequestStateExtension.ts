@@ -6,7 +6,7 @@ function cloneCommunesRequestState(): CommunesRequestState {
         rechercheCommune: this.rechercheCommune,
         pageSize: this.pageSize,
         lieuDit: this.lieuDit,
-        ancienNom: this.ancienNom,
+        ancienNom: this.ancienNom
     };
 }
 

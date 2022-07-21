@@ -5,6 +5,10 @@ import {CiviliteModelView} from "../../../Presentation/pages/Authentification/Mo
 import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
 import {CommuneModelView} from "../../../Presentation/pages/Authentification/ModelView/Commune/CommuneModelView";
 import {subYears} from "date-fns";
+import {ProfessionModelView} from "../../../Presentation/pages/Authentification/ModelView/Profession/ProfessionModelView";
+import {
+    SituationFamilialeModelView
+} from "../../../Presentation/pages/Authentification/ModelView/SituationFamiliale/SituationFamilialeModelView";
 
 describe("Creation Compte", function () {
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire", function (done) {
@@ -17,7 +21,8 @@ describe("Creation Compte", function () {
         controller.onChangeNumeroTelephone("0102030405");
         controller.onChangeEmail("jesuisunrobot@macif.fr");
         controller.onChangeDateNaissance(dateNaissance);
-        controller.onChangeSituationFamiliale({libelle: "Célibataire", code: "C"});
+        controller.onChangeSituationFamiliale({libelle: "Célibataire", code: "C"} as SituationFamilialeModelView);
+        controller.onChangeProfession({libelle: "Apprenti", code: "XA"} as ProfessionModelView);
         controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
@@ -223,6 +228,19 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.situationFamiliale).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que la profession n'est pas renseignée", function (done) {
+        const expected = "Veuillez renseigner votre profession";
+
+        const controller = init();
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.profession).toBe(expected);
             done();
         });
 
