@@ -5,6 +5,7 @@ import CreationCompteRequestState from "./CreationCompteRequestState";
 function CloneCreationCompteRequestState(): CreationCompteRequestState {
     return {
         cdCivil: this.cdCivil,
+        nmPers: this.nmPers,
         informationMacifMail: this.informationMacifMail,
         informationMacifMessageVocal: this.informationMacifMessageVocal,
         informationMacifSms: this.informationMacifSms

@@ -3,6 +3,7 @@ import {BooleanChoiceModelView} from "../../../../commons/ModelView/BooleanChoic
 
 export interface CreationCompteModelView {
     readonly civilite: CiviliteModelView;
+    readonly nom: string;
     readonly parrainageChoix: BooleanChoiceModelView;
     readonly informationsCommercialesEmail: BooleanChoiceModelView;
     readonly informationsCommercialesSms: BooleanChoiceModelView;

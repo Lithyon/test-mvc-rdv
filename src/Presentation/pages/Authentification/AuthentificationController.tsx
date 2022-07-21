@@ -36,6 +36,7 @@ export default class AuthentificationController extends BaseController<Authentif
         const stateForm = window.history.state?.usr as RendezVousModelView;
         this.onCreationCompte = this.onCreationCompte.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
+        this.onChangeNom = this.onChangeNom.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onChangeParrainageNumeroSocietaire = this.onChangeParrainageNumeroSocietaire.bind(this);
         this.onInformationsCommercialesEmailSelected = this.onInformationsCommercialesEmailSelected.bind(this);
@@ -49,7 +50,7 @@ export default class AuthentificationController extends BaseController<Authentif
             informationsCommercialesEmail: DefaultBooleanChoice,
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
-            //TODO A REVOIR SI BESOIN
+            // TODO : A REVOIR SI BESOIN
             rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
         };
     }
@@ -142,6 +143,20 @@ export default class AuthentificationController extends BaseController<Authentif
             ...this._state,
             formError
         };
+        this.raiseStateChanged();
+    }
+
+    onChangeNom(nom: string) {
+        delete this._state.formError.errors.nom;
+
+        this._state = {
+            ...this._state,
+            creationCompte: {
+                ...this._state.creationCompte,
+                nom
+            }
+        };
+
         this.raiseStateChanged();
     }
 }

@@ -7,6 +7,7 @@ import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
 import {FormErrorModelView} from "../ModelView/FormError/FormErrorModelView";
 import {CreationCompteModelView} from "../ModelView/CreationCompte/CreationCompteModelView";
 import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
+import Input from "../../../components/Input";
 
 export interface CreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -15,6 +16,7 @@ export interface CreationCompteProps {
     readonly civilite: Array<CiviliteModelView>;
     readonly parrainageChoix: Array<BooleanChoiceModelView>;
     readonly onCiviliteSelected: Function;
+    readonly onChangeNom: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
@@ -33,6 +35,7 @@ export default function CreationCompteView({
                                                civilite,
                                                parrainageChoix,
                                                onCiviliteSelected,
+                                               onChangeNom,
                                                onParrainageChoixSelected,
                                                onChangeParrainageNumeroSocietaire,
                                                informationsCommercialesEmail,
@@ -60,6 +63,15 @@ export default function CreationCompteView({
                             id="civilite"
                             errorMessage={errors.civilite}
             />
+
+            {/* TODO : Trouver une solution pour gérer l'attribut autocomplete */}
+            <Input id="nom"
+                   label="Nom"
+                   onChange={onChangeNom}
+                   value={dataSource.nom}
+                   errorMessage={errors.nom}
+            />
+
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
                 <Parrainage dataSource={dataSource.parrainageChoix}
                             parrainageChoix={parrainageChoix}
@@ -74,7 +86,6 @@ export default function CreationCompteView({
                 La Macif et des entités de son groupe (Aéma Groupe) peuvent être amenées à vous informer sur leurs produits, services et
                 avantages pour être au plus proche de vos besoins et vous apporter des conseils personnalisés.
             </Form.Label>
-
 
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesEmailSelected}
                             choiceSelected={dataSource.informationsCommercialesEmail}

@@ -34,6 +34,10 @@ export default class CreationCompteServiceImpl {
             formError.errors.civilite = "Veuillez préciser votre civilité";
         }
 
+        if (creationCompte.nom.length === 0) {
+            formError.errors.nom = "Veuillez renseigner votre nom";
+        }
+
         if (!creationCompte.informationsCommercialesEmail.code) {
             formError.errors.informationsCommercialesEmail = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
         }
@@ -60,6 +64,4 @@ export default class CreationCompteServiceImpl {
 
         return formError;
     }
-
-
 }

@@ -9,6 +9,7 @@ describe("Creation Compte", function () {
         const expected = {};
         const controller = init();
         controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
+        controller.onChangeNom("Bobby");
 
         controller.onInformationsCommercialesEmailSelected({
             code: BooleanChoiceCode.OUI,
@@ -62,6 +63,20 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.errors.civilite).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le nom n'est pas renseigné", function (done) {
+        const expected = "Veuillez renseigner votre nom";
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.nom).toBe(expected);
             done();
         });
 
