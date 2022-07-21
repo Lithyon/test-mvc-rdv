@@ -6,32 +6,19 @@ import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
 
 describe("Creation Compte", function () {
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire", function (done) {
-        const expected = {};
         const controller = init();
+
         controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
         controller.onChangeNom("Bobby");
         controller.onChangePrenom("Bobby");
         controller.onChangeNumeroTelephone("0102030405");
         controller.onChangeEmail("jesuisunrobot@macif.fr");
-
-        controller.onInformationsCommercialesEmailSelected({
-            code: BooleanChoiceCode.OUI,
-            libelle: "Oui"
-        } as BooleanChoiceModelView);
-
-        controller.onInformationsCommercialesTelephoneSelected({
-            code: BooleanChoiceCode.OUI,
-            libelle: "Oui"
-        } as BooleanChoiceModelView);
-
-        controller.onInformationsCommercialesSmsSelected({
-            code: BooleanChoiceCode.OUI,
-            libelle: "Oui"
-        } as BooleanChoiceModelView);
+        controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.errors).toStrictEqual(expected);
+            expect(controller.formHasError()).toBeFalsy();
             done();
         });
 
@@ -47,7 +34,7 @@ describe("Creation Compte", function () {
             controller.subscribeStateChanged(() => {
                 controller.subscribeStateChanged(() => {
                     const actual = controller.state;
-                    expect(actual.formError.errors.noSocietaireParrain).toBe(expected);
+                    expect(actual.formError.noSocietaireParrain).toBe(expected);
                     done();
                 });
                 controller.onCreationCompte();
@@ -65,7 +52,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.civilite).toBe(expected);
+            expect(actual.formError.civilite).toBe(expected);
             done();
         });
 
@@ -79,7 +66,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.nom).toBe(expected);
+            expect(actual.formError.nom).toBe(expected);
             done();
         });
 
@@ -91,11 +78,11 @@ describe("Creation Compte", function () {
 
         const controller = init();
 
-        controller.onChangeNom("*/*/")
+        controller.onChangeNom("*/*/");
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.nom).toBe(expected);
+            expect(actual.formError.nom).toBe(expected);
             done();
         });
 
@@ -109,7 +96,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.prenom).toBe(expected);
+            expect(actual.formError.prenom).toBe(expected);
             done();
         });
 
@@ -121,66 +108,66 @@ describe("Creation Compte", function () {
 
         const controller = init();
 
-        controller.onChangePrenom("*/*/")
+        controller.onChangePrenom("*/*/");
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.prenom).toBe(expected);
+            expect(actual.formError.prenom).toBe(expected);
             done();
         });
 
         controller.onCreationCompte();
     });
 
-    it("doit vérifier que le numero de telephone n'est pas sélectionnée", function (done) {
+    it("doit vérifier que le numéro de téléphone n'est pas sélectionnée", function (done) {
         const expected = "Veuillez renseigner votre numéro de téléphone";
 
         const controller = init();
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.numeroTelephone).toBe(expected);
+            expect(actual.formError.numeroTelephone).toBe(expected);
             done();
         });
 
         controller.onCreationCompte();
     });
 
-    it("doit vérifier que le numero de telephone est mal renseigné", function (done) {
+    it("doit vérifier que le numéro de téléphone est mal renseigné", function (done) {
         const expected = "Le numéro de téléphone renseigné est incorrect";
 
         const controller = init();
         controller.onChangeNumeroTelephone("o102030405");
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.numeroTelephone).toBe(expected);
+            expect(actual.formError.numeroTelephone).toBe(expected);
             done();
         });
 
         controller.onCreationCompte();
     });
 
-    it("doit vérifier que l'email n'est pas renseigné", function (done) {
+    it("doit vérifier que l'adresse e-mail n'est pas renseignée", function (done) {
         const expected = "Veuillez renseigner votre adresse e-mail";
 
         const controller = init();
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.email).toBe(expected);
+            expect(actual.formError.email).toBe(expected);
             done();
         });
 
         controller.onCreationCompte();
     });
 
-    it("doit vérifier que l'email est mal renseigné", function (done) {
+    it("doit vérifier que l'adresse e-mail est mal renseignée", function (done) {
         const expected = "L'adresse e-mail est invalide";
 
         const controller = init();
-        controller.onChangeEmail("dfdfdfdsfs@gtgt")
+        controller.onChangeEmail("dfdfdfdsfs@gtgt");
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.email).toBe(expected);
+            expect(actual.formError.email).toBe(expected);
             done();
         });
 
@@ -194,7 +181,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.informationsCommercialesEmail).toBe(expected);
+            expect(actual.formError.informationsCommercialesEmail).toBe(expected);
             done();
         });
 
@@ -208,7 +195,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.informationsCommercialesSms).toBe(expected);
+            expect(actual.formError.informationsCommercialesSms).toBe(expected);
             done();
         });
 
@@ -222,7 +209,7 @@ describe("Creation Compte", function () {
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
-            expect(actual.formError.errors.informationsCommercialesTelephone).toBe(expected);
+            expect(actual.formError.informationsCommercialesTelephone).toBe(expected);
             done();
         });
 

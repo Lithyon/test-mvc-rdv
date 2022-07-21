@@ -32,6 +32,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             informationsCommercialesTelephone={state.informationsCommercialesTelephone}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
             onCreationCompte={controller.onCreationCompte}
+            formHasError={controller.formHasError}
         />
     </>;
 }

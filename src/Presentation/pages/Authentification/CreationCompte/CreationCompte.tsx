@@ -4,7 +4,7 @@ import {Button, Form} from "macif-components";
 import Parrainage from "./Parrainage/Parrainage";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
-import {FormErrorModelView} from "../ModelView/FormError/FormErrorModelView";
+import FormErrorModelView from "../ModelView/FormError/FormErrorModelView";
 import {CreationCompteModelView} from "../ModelView/CreationCompte/CreationCompteModelView";
 import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 import Input from "../../../components/Input";
@@ -29,10 +29,11 @@ export interface CreationCompteProps {
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesTelephoneSelected: Function;
     readonly onCreationCompte: Function;
+    readonly formHasError: Function;
 }
 
 export default function CreationCompteView({
-                                               formError: {errors},
+                                               formError,
                                                dataSource,
                                                rendezVous,
                                                civilite,
@@ -50,39 +51,43 @@ export default function CreationCompteView({
                                                onInformationsCommercialesSmsSelected,
                                                informationsCommercialesTelephone,
                                                onInformationsCommercialesTelephoneSelected,
-                                               onCreationCompte
+                                               onCreationCompte,
+                                               formHasError
                                            }: CreationCompteProps) {
     function handleCreationCompte() {
         onCreationCompte();
     }
 
+    const hasError = formHasError();
+
     return <>
         <Form className="mcf-mt--5">
             <h2>Vos informations</h2>
+
             <p className="mcf-mb--6 mcf-ml--1">
                 Sauf mention contraire, tous les champs sont requis.
             </p>
+
             <ChoiceSwitcher onChoiceSelected={onCiviliteSelected}
                             choiceSelected={dataSource.civilite}
                             dataSource={civilite}
                             label="Civilité"
                             id="civilite"
-                            errorMessage={errors.civilite}
+                            errorMessage={formError.civilite}
             />
 
-            {/* TODO : Trouver une solution pour gérer l'attribut autocomplete */}
             <Input id="nom"
                    label="Nom"
                    onChange={onChangeNom}
                    value={dataSource.nom}
-                   errorMessage={errors.nom}
+                   errorMessage={formError.nom}
             />
 
             <Input id="prenom"
                    label="Prénom"
                    onChange={onChangePrenom}
                    value={dataSource.prenom}
-                   errorMessage={errors.prenom}
+                   errorMessage={formError.prenom}
             />
 
             <Input id="numeroTelephone"
@@ -91,7 +96,7 @@ export default function CreationCompteView({
                    value={dataSource.numeroTelephone}
                    message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
                    maxLength={10}
-                   errorMessage={errors.numeroTelephone}
+                   errorMessage={formError.numeroTelephone}
             />
 
             <Input id="email"
@@ -99,7 +104,7 @@ export default function CreationCompteView({
                    onChange={onChangeEmail}
                    value={dataSource.email}
                    message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
-                   errorMessage={errors.email}
+                   errorMessage={formError.email}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
@@ -108,7 +113,7 @@ export default function CreationCompteView({
                             noSocietaireParrain={rendezVous.noSocietaireParrain}
                             onParrainageChoixSelected={onParrainageChoixSelected}
                             onChangeParrainageNumeroSocietaire={onChangeParrainageNumeroSocietaire}
-                            errorMessageNumeroSocietaire={errors.noSocietaireParrain}
+                            errorMessageNumeroSocietaire={formError.noSocietaireParrain}
                 />
             }
 
@@ -122,27 +127,28 @@ export default function CreationCompteView({
                             dataSource={informationsCommercialesEmail}
                             label="J'accepte de recevoir ces informations commerciales par e-mail ?"
                             id="informationsCommercialesEmail"
-                            errorMessage={errors.informationsCommercialesEmail}
+                            errorMessage={formError.informationsCommercialesEmail}
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesSmsSelected}
                             choiceSelected={dataSource.informationsCommercialesSms}
                             dataSource={informationsCommercialesSms}
                             label="J'accepte de recevoir ces informations commerciales par SMS ?"
                             id="informationsCommercialesSms"
-                            errorMessage={errors.informationsCommercialesSms}
+                            errorMessage={formError.informationsCommercialesSms}
             />
             <ChoiceSwitcher onChoiceSelected={onInformationsCommercialesTelephoneSelected}
                             choiceSelected={dataSource.informationsCommercialesTelephone}
                             dataSource={informationsCommercialesTelephone}
                             label="J'accepte de recevoir ces informations commerciales par message vocal ?"
                             id="informationsCommercialesTelephone"
-                            errorMessage={errors.informationsCommercialesTelephone}
+                            errorMessage={formError.informationsCommercialesTelephone}
             />
 
             <div className="mcf-d--flex mcf-justify-content--between">
                 <Button variant="outline--primary">Annuler</Button>
-                <Button variant="primary" onClick={handleCreationCompte} disabled={Object.keys(errors).length > 0}>Confirmer mon
-                    rendez-vous</Button>
+                <Button variant="primary" onClick={handleCreationCompte} disabled={hasError}>
+                    Confirmer mon rendez-vous
+                </Button>
             </div>
         </Form>
     </>;

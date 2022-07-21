@@ -27,7 +27,7 @@ export function Parrainage({
                         choiceSelected={dataSource}
                         dataSource={parrainageChoix}
                         label="Bénéficiez-vous d'un parrainage ?"
-                        labelInfo="(Facultatif)"
+                        optionalText="Facultatif"
                         id="choixParrainage"
         />
 

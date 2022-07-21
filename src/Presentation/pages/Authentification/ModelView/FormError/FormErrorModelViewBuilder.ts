@@ -1,7 +1,15 @@
 export default class FormErrorModelViewBuilder {
     static buildEmpty() {
         return {
-            errors: {}
-        }
+            civilite: "",
+            nom: "",
+            prenom: "",
+            numeroTelephone: "",
+            email: "",
+            noSocietaireParrain: "",
+            informationsCommercialesEmail: "",
+            informationsCommercialesSms: "",
+            informationsCommercialesTelephone: ""
+        };
     }
 }

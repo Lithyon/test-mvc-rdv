@@ -6,12 +6,11 @@ import {CiviliteModelView} from "./ModelView/Civilite/CiviliteModelView";
 import CreationCompteModelViewBuilder from "./ModelView/CreationCompte/CreationCompteModelViewBuilder";
 import CreationCompteServiceImpl from "../../../Domain/Services/CreationCompte/CreationCompteServiceImpl";
 import {FormErrorModelView} from "./ModelView/FormError/FormErrorModelView";
-import FormErrorModelViewBuilder from "./ModelView/FormError/FormErrorModelViewBuilder";
 import {DefaultCivilite} from "../../../Domain/Data/Enum/DefaultCivilite";
 import {DefaultBooleanChoice} from "../../../Domain/Data/Enum/BooleanChoice";
 import {BooleanChoiceModelView} from "../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
-import RendezVousSelectionModelViewBuilder
-    from "../RendezVous/ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
+import RendezVousSelectionModelViewBuilder from "../RendezVous/ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
+import FormErrorModelViewBuilder from "./ModelView/FormError/FormErrorModelViewBuilder";
 
 export interface AuthentificationModelView {
     readonly formError: FormErrorModelView,
@@ -34,6 +33,8 @@ export default class AuthentificationController extends BaseController<Authentif
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
         const stateForm = window.history.state?.usr as RendezVousModelView;
+
+        this.formHasError = this.formHasError.bind(this);
         this.onCreationCompte = this.onCreationCompte.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onChangeNom = this.onChangeNom.bind(this);
@@ -45,6 +46,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onInformationsCommercialesEmailSelected = this.onInformationsCommercialesEmailSelected.bind(this);
         this.onInformationsCommercialesSmsSelected = this.onInformationsCommercialesSmsSelected.bind(this);
         this.onInformationsCommercialesTelephoneSelected = this.onInformationsCommercialesTelephoneSelected.bind(this);
+
         this._state = {
             formError: FormErrorModelViewBuilder.buildEmpty(),
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
@@ -54,7 +56,7 @@ export default class AuthentificationController extends BaseController<Authentif
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
             // TODO : A REVOIR SI BESOIN
-            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
+            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty()
         };
     }
 
@@ -62,101 +64,110 @@ export default class AuthentificationController extends BaseController<Authentif
         return this._state;
     }
 
-    onCiviliteSelected(civilite: CiviliteModelView) {
-        delete this._state.formError.errors.civilite;
+    formHasError() {
+        return this.dependencies.creationCompteService.formHasError(this._state.formError);
+    }
 
+    onCiviliteSelected(civilite: CiviliteModelView) {
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 civilite
+            },
+            formError: {
+                ...this._state.formError,
+                civilite: ""
             }
         };
         this.raiseStateChanged();
     }
 
     onParrainageChoixSelected(parrainageChoix: BooleanChoiceModelView) {
-        delete this._state.formError.errors.noSocietaireParrain;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 parrainageChoix
+            },
+            formError: {
+                ...this._state.formError,
+                noSocietaireParrain: ""
             }
         };
         this.raiseStateChanged();
     }
 
     onChangeParrainageNumeroSocietaire(noSocietaireParrain: string) {
-        delete this._state.formError.errors.noSocietaireParrain;
-
         this._state = {
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
                 noSocietaireParrain
+            },
+            formError: {
+                ...this._state.formError,
+                noSocietaireParrain: ""
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesEmailSelected(informationsCommercialesEmail: BooleanChoiceModelView) {
-        delete this._state.formError.errors.informationsCommercialesEmail;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 informationsCommercialesEmail
+            },
+            formError: {
+                ...this._state.formError,
+                informationsCommercialesEmail: ""
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesSmsSelected(informationsCommercialesSms: BooleanChoiceModelView) {
-        delete this._state.formError.errors.informationsCommercialesSms;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 informationsCommercialesSms
+            },
+            formError: {
+                ...this._state.formError,
+                informationsCommercialesSms: ""
             }
         };
         this.raiseStateChanged();
     }
 
     onInformationsCommercialesTelephoneSelected(informationsCommercialesTelephone: BooleanChoiceModelView) {
-        delete this._state.formError.errors.informationsCommercialesTelephone;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 informationsCommercialesTelephone
+            },
+            formError: {
+                ...this._state.formError,
+                informationsCommercialesTelephone: ""
             }
         };
         this.raiseStateChanged();
     }
 
-    async onCreationCompte() {
-        const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous)
-        this._state = {
-            ...this._state,
-            formError
-        };
-        this.raiseStateChanged();
-    }
-
     onChangeNom(nom: string) {
-        delete this._state.formError.errors.nom;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 nom
+            },
+            formError: {
+                ...this._state.formError,
+                nom: ""
             }
         };
 
@@ -164,27 +175,30 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onChangePrenom(prenom: string) {
-        delete this._state.formError.errors.prenom;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 prenom
+            },
+            formError: {
+                ...this._state.formError,
+                prenom: ""
             }
         };
-
         this.raiseStateChanged();
     }
 
     onChangeNumeroTelephone(numeroTelephone: string) {
-        delete this._state.formError.errors.numeroTelephone;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 numeroTelephone
+            },
+            formError: {
+                ...this._state.formError,
+                numeroTelephone: ""
             }
         };
 
@@ -192,16 +206,28 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onChangeEmail(email: string) {
-        delete this._state.formError.errors.email;
-
         this._state = {
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
                 email
+            },
+            formError: {
+                ...this._state.formError,
+                email: ""
             }
         };
 
+        this.raiseStateChanged();
+    }
+
+    async onCreationCompte() {
+        const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
+
+        this._state = {
+            ...this._state,
+            formError
+        };
         this.raiseStateChanged();
     }
 }
