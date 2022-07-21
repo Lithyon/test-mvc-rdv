@@ -3,6 +3,7 @@ import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/Bo
 import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
 import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
 import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
+import {CommuneModelView} from "../../../Presentation/pages/Authentification/ModelView/Communes/CommuneModelView";
 
 describe("Creation Compte", function () {
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire", function (done) {
@@ -16,6 +17,14 @@ describe("Creation Compte", function () {
         controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onRechercheCommune("nom commune");
+        controller.onCommuneSelected({
+            nom: "nom_commune",
+            codePostal: "cp_commune",
+            lieuDit: false,
+            nomAcheminement: "",
+            ancienNom: ""
+        } as CommuneModelView);
 
         controller.subscribeStateChanged(() => {
             expect(controller.formHasError()).toBeFalsy();
@@ -214,6 +223,34 @@ describe("Creation Compte", function () {
         });
 
         controller.onCreationCompte();
+    });
+
+    it("doit informer que la commune n'est pas renseignée", function (done) {
+        const expected = "Veuillez renseigner le code postal ou la commune";
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.commune).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit informer que la commune saisie n'est pas dans les dom tom", function (done) {
+        const expected = "La commune doit être en France métropolitaine (département 01 à 95).";
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.commune).toBe(expected);
+            done();
+        });
+
+        controller.onRechercheCommune("200000");
     });
 });
 

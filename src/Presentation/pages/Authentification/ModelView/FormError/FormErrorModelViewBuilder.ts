@@ -1,4 +1,11 @@
 export default class FormErrorModelViewBuilder {
+    // static buildFromErrors(errors: FormErrorModelView) {
+    //     return Object.entries(errors).map((error) => {
+    //         const [, value] = error;
+    //         return value ?? error
+    //     });
+    // }
+
     static buildEmpty() {
         return {
             civilite: "",
@@ -7,6 +14,7 @@ export default class FormErrorModelViewBuilder {
             numeroTelephone: "",
             email: "",
             noSocietaireParrain: "",
+            commune: "",
             informationsCommercialesEmail: "",
             informationsCommercialesSms: "",
             informationsCommercialesTelephone: ""

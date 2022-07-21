@@ -3,18 +3,26 @@ import {BooleanChoiceCode} from "../../Data/Enum/BooleanChoice";
 import {CreationCompteModelView} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
 import RendezVousSelectionModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {RendezVousRepositoryImpl} from "../../Repository/RendezVous";
+import {CommunesRepositoryImpl} from "../../Repository/Communes";
 import {buildCreationCompteRequest} from "../../Builders/CreationCompteBuilder";
 import {buildCreerRendezVous} from "../../Builders/RendezVousBuilder";
 import FormErrorModelViewBuilder from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
 import FormErrorModelView from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
+import CommunesRequest from "../../Model/Communes/CommunesRequest";
 
 export default class CreationCompteServiceImpl {
-    private creationCompteRepo: CreationCompteRepositoryImpl;
-    private rendezVousRepo: RendezVousRepositoryImpl;
+    private _creationCompteRepo: CreationCompteRepositoryImpl;
+    private _rendezVousRepo: RendezVousRepositoryImpl;
+    private _communesRepo: CommunesRepositoryImpl;
 
-    constructor(_creationCompteRepo: CreationCompteRepositoryImpl, _rendezVousRepo: RendezVousRepositoryImpl) {
-        this.creationCompteRepo = _creationCompteRepo;
-        this.rendezVousRepo = _rendezVousRepo;
+    constructor(creationCompteRepo: CreationCompteRepositoryImpl, rendezVousRepo: RendezVousRepositoryImpl, communesRepo: CommunesRepositoryImpl) {
+        this._creationCompteRepo = creationCompteRepo;
+        this._rendezVousRepo = rendezVousRepo;
+        this._communesRepo = communesRepo;
+    }
+
+    getCommunes(request: CommunesRequest) {
+        return this._communesRepo.getCommunes(request);
     }
 
     private static verifierContenuNomEtPrenom(value: string): boolean {
@@ -22,20 +30,18 @@ export default class CreationCompteServiceImpl {
         return testRegex.length > 0;
     }
 
-    formHasError(formError: FormErrorModelView) {
-        return Object.values(formError).filter((v) => v !== "").length !== 0;
+    formHasError(formError: FormErrorModelView): boolean {
+        return Object.values(formError).filter((v: string) => v !== "").length !== 0;
     }
 
-    validationFormulaire(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView) {
+    validationFormulaire(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView): FormErrorModelView {
         const formError = FormErrorModelViewBuilder.buildEmpty();
 
-        if (creationCompte.parrainageChoix && creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI) {
-            if (rendezVous.noSocietaireParrain?.length > 0) {
-                const testRegex: RegExpMatchArray = rendezVous.noSocietaireParrain.match(/\W/) || [];
+        if (creationCompte.parrainageChoix && creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI && rendezVous.noSocietaireParrain?.length > 0) {
+            const testRegex: RegExpMatchArray = rendezVous.noSocietaireParrain.match(/\W/) || [];
 
-                if (testRegex.length > 0) {
-                    formError.noSocietaireParrain = "Le numéro de sociétaire ne doit pas contenir de caractères spéciaux";
-                }
+            if (testRegex.length > 0) {
+                formError.noSocietaireParrain = "Le numéro de sociétaire ne doit pas contenir de caractères spéciaux";
             }
         }
 
@@ -58,7 +64,6 @@ export default class CreationCompteServiceImpl {
         const regexTelephone: RegExpMatchArray = creationCompte.numeroTelephone.match(/^0\d{9}/) || [];
         if (creationCompte.numeroTelephone.length === 0) {
             formError.numeroTelephone = "Veuillez renseigner votre numéro de téléphone";
-
         } else if (regexTelephone.length === 0) {
             formError.numeroTelephone = "Le numéro de téléphone renseigné est incorrect";
         }
@@ -70,28 +75,35 @@ export default class CreationCompteServiceImpl {
             formError.email = "L'adresse e-mail est invalide";
         }
 
+        if (!creationCompte.commune.nom || creationCompte.commune.nom === "") {
+            formError.commune = "Veuillez renseigner le code postal ou la commune";
+        }
+
         if (!creationCompte.informationsCommercialesEmail.code) {
-            formError.informationsCommercialesEmail = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
+            formError.informationsCommercialesEmail =
+                "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par e-mail";
         }
 
         if (!creationCompte.informationsCommercialesSms.code) {
-            formError.informationsCommercialesSms = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par SMS";
+            formError.informationsCommercialesSms =
+                "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par SMS";
         }
 
         if (!creationCompte.informationsCommercialesTelephone.code) {
-            formError.informationsCommercialesTelephone = "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par message vocal";
+            formError.informationsCommercialesTelephone =
+                "Veuillez préciser si vous souhaitez recevoir des informations commerciales des entités du groupe MACIF par message vocal";
         }
 
         return formError;
     }
 
-    async creationCompte(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView) {
+    async creationCompte(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView): Promise<FormErrorModelView> {
         const formError = this.validationFormulaire(creationCompte, rendezVous);
 
         if (!this.formHasError(formError)) {
             // MODEL transfo en state request
-            await this.creationCompteRepo.creationCompte(buildCreationCompteRequest(creationCompte));
-            await this.rendezVousRepo.creerRendezVous(buildCreerRendezVous(rendezVous));
+            await this._creationCompteRepo.creationCompte(buildCreationCompteRequest(creationCompte));
+            await this._rendezVousRepo.creerRendezVous(buildCreerRendezVous(rendezVous));
         }
 
         return formError;

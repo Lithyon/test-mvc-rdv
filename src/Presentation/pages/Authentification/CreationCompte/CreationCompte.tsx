@@ -8,6 +8,10 @@ import FormErrorModelView from "../ModelView/FormError/FormErrorModelView";
 import {CreationCompteModelView} from "../ModelView/CreationCompte/CreationCompteModelView";
 import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 import Input from "../../../components/Input";
+import AutoCompleteField from "../../../components/AutoCompleteField/AutoCompleteField";
+import React from "react";
+import {CommunesModelView} from "../ModelView/Communes/CommunesModelView";
+import {CommuneModelView} from "../ModelView/Communes/CommuneModelView";
 
 export interface CreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -15,18 +19,21 @@ export interface CreationCompteProps {
     readonly rendezVous: RendezVousSelectionModelView;
     readonly civilite: Array<CiviliteModelView>;
     readonly parrainageChoix: Array<BooleanChoiceModelView>;
+    readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
+    readonly informationsCommercialesSms: Array<BooleanChoiceModelView>;
+    readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
+    readonly communes: CommunesModelView;
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
     readonly onChangeNumeroTelephone: Function;
     readonly onChangeEmail: Function;
     readonly onParrainageChoixSelected: Function;
+    readonly onCommuneSelected: Function;
+    readonly onRechercheCommune: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
-    readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesEmailSelected: Function;
-    readonly informationsCommercialesSms: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesSmsSelected: Function;
-    readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly onInformationsCommercialesTelephoneSelected: Function;
     readonly onCreationCompte: Function;
     readonly formHasError: Function;
@@ -38,18 +45,21 @@ export default function CreationCompteView({
                                                rendezVous,
                                                civilite,
                                                parrainageChoix,
+                                               informationsCommercialesEmail,
+                                               informationsCommercialesSms,
+                                               informationsCommercialesTelephone,
+                                               communes,
                                                onCiviliteSelected,
                                                onChangeNom,
                                                onChangePrenom,
                                                onChangeNumeroTelephone,
                                                onChangeEmail,
                                                onParrainageChoixSelected,
+                                               onCommuneSelected,
+                                               onRechercheCommune,
                                                onChangeParrainageNumeroSocietaire,
-                                               informationsCommercialesEmail,
                                                onInformationsCommercialesEmailSelected,
-                                               informationsCommercialesSms,
                                                onInformationsCommercialesSmsSelected,
-                                               informationsCommercialesTelephone,
                                                onInformationsCommercialesTelephoneSelected,
                                                onCreationCompte,
                                                formHasError
@@ -59,6 +69,20 @@ export default function CreationCompteView({
     }
 
     const hasError = formHasError();
+
+    function labelCommune(commune: CommuneModelView) {
+        if (commune.codePostal === "") {
+            return "";
+        } else {
+            if (commune.lieuDit) {
+                return `${commune.codePostal} ${commune.nomAcheminement} (${commune.nom})`;
+            } else if (commune.ancienNom) {
+                return `${commune.codePostal} ${commune.nom} (${commune.ancienNom})`;
+            } else {
+                return `${commune.codePostal || ""} ${commune.nom}`;
+            }
+        }
+    }
 
     return <>
         <Form className="mcf-mt--5">
@@ -105,6 +129,19 @@ export default function CreationCompteView({
                    value={dataSource.email}
                    message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
                    errorMessage={formError.email}
+            />
+
+            <AutoCompleteField
+                id="autocomplete-commune"
+                name="commune"
+                label="Commune de résidence"
+                placeholder="Ex : 75001, Paris"
+                autoComplete="address-level2"
+                labelFormat={labelCommune}
+                onSearchChange={onRechercheCommune}
+                dataSource={communes.communes}
+                onSelect={onCommuneSelected}
+                errorMessage={formError.commune}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

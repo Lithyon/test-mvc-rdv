@@ -11,8 +11,13 @@ import RendezVousRequestEntity from "../../../../Domain/Data/API/Entity/RendezVo
 import RendezVousEntity from "../../../../Domain/Data/API/Entity/RendezVousEntity";
 import disponibilitesStub from "../../../../../mocks/DisponibilitesStub";
 import rendezVousStub from "../../../../../mocks/RendezVousStub";
+import {CommunesRepositoryImpl} from "../../../../Domain/Repository/Communes";
+import CommunesRequestEntity from "../../../../Domain/Data/API/Entity/CommunesRequestEntity";
+import CommunesEntity from "../../../../Domain/Data/API/Entity/CommunesEntity";
+import communesStub from "../../../../../mocks/CommunesStub";
 
 export function init(
+    communes: CommunesEntity = communesStub,
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub,
     creationCompte: CreationCompteEntity = creationCompteStub
@@ -30,7 +35,12 @@ export function init(
             return rendezVous;
         }
     })
-    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository);
+    const communesRepository = new CommunesRepositoryImpl({
+        async getCommunes(_request: CommunesRequestEntity): Promise<CommunesEntity> {
+            return communes;
+        }
+    });
+    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository);
 
     return new AuthentificationController({creationCompteService});
 }

@@ -47,9 +47,7 @@ interface RendezVousControllerDependencies {
     readonly authentificationService: AuthentificationServiceImpl
 }
 
-export default class RendezVousController
-    extends BaseController<RendezVousModelView>
-    implements IsLoadable {
+export default class RendezVousController extends BaseController<RendezVousModelView> implements IsLoadable {
     private _domaines?: Array<Domaine>;
     private _demandes?: Array<Demande>;
     private _canal?: Array<Canal>;
