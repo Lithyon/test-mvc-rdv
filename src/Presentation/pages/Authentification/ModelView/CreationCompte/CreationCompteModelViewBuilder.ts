@@ -6,6 +6,7 @@ export default class CreationCompteModelViewBuilder {
         return {
             civilite: CiviliteModelViewBuilder.buildEmpty(),
             nom: "",
+            prenom: "",
             parrainageChoix: BooleanChoiceModelViewBuilder.buildEmpty(),
             informationsCommercialesEmail: BooleanChoiceModelViewBuilder.buildEmpty(),
             informationsCommercialesSms: BooleanChoiceModelViewBuilder.buildEmpty(),

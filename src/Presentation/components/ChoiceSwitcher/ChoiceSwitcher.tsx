@@ -32,7 +32,7 @@ export default function ChoiceSwitcher<T extends Choice>({
     return show && dataSource.length > 0 ? (
         <Form.Group controlId={id}>
             <Form.Label as="h3" id={id} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
-                {label} {labelInfo && <Form.Text muted>{labelInfo}</Form.Text>}
+                {label} {labelInfo && <Form.Text className="mcf-text--small-1" muted>{labelInfo}</Form.Text>}
             </Form.Label>
 
             <Form.SwitcherGroup

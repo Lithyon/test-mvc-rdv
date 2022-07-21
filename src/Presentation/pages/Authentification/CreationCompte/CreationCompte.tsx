@@ -17,6 +17,7 @@ export interface CreationCompteProps {
     readonly parrainageChoix: Array<BooleanChoiceModelView>;
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
+    readonly onChangePrenom: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
@@ -36,6 +37,7 @@ export default function CreationCompteView({
                                                parrainageChoix,
                                                onCiviliteSelected,
                                                onChangeNom,
+                                               onChangePrenom,
                                                onParrainageChoixSelected,
                                                onChangeParrainageNumeroSocietaire,
                                                informationsCommercialesEmail,
@@ -70,6 +72,13 @@ export default function CreationCompteView({
                    onChange={onChangeNom}
                    value={dataSource.nom}
                    errorMessage={errors.nom}
+            />
+
+            <Input id="prenom"
+                   label="Prénom"
+                   onChange={onChangePrenom}
+                   value={dataSource.prenom}
+                   errorMessage={errors.prenom}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

@@ -16,6 +16,11 @@ export default class CreationCompteServiceImpl {
         this.rendezVousRepo = _rendezVousRepo;
     }
 
+    private verifierContenuNomEtPrenom(value: string): boolean {
+        const testRegex: RegExpMatchArray = value.match(/\W|\d/) || [];
+        return testRegex.length > 0;
+    }
+
     validationFormulaire(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView) {
         // TODO Voir avec Antoine pour opti
         const formError: FormErrorModelView = {errors: {}};
@@ -36,6 +41,14 @@ export default class CreationCompteServiceImpl {
 
         if (creationCompte.nom.length === 0) {
             formError.errors.nom = "Veuillez renseigner votre nom";
+        } else if (this.verifierContenuNomEtPrenom(creationCompte.nom)) {
+            formError.errors.nom = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
+        }
+
+        if (creationCompte.prenom.length === 0) {
+            formError.errors.prenom = "Veuillez renseigner votre prénom";
+        } else if (this.verifierContenuNomEtPrenom(creationCompte.prenom)) {
+            formError.errors.prenom = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
         }
 
         if (!creationCompte.informationsCommercialesEmail.code) {

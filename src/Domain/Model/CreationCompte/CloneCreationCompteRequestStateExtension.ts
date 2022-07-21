@@ -6,6 +6,7 @@ function CloneCreationCompteRequestState(): CreationCompteRequestState {
     return {
         cdCivil: this.cdCivil,
         nmPers: this.nmPers,
+        znPrenPers: this.znPrenPers,
         informationMacifMail: this.informationMacifMail,
         informationMacifMessageVocal: this.informationMacifMessageVocal,
         informationMacifSms: this.informationMacifSms

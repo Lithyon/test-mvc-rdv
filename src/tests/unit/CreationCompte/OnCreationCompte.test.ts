@@ -10,6 +10,7 @@ describe("Creation Compte", function () {
         const controller = init();
         controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
         controller.onChangeNom("Bobby");
+        controller.onChangePrenom("Bobby");
 
         controller.onInformationsCommercialesEmailSelected({
             code: BooleanChoiceCode.OUI,
@@ -31,8 +32,8 @@ describe("Creation Compte", function () {
             expect(actual.formError.errors).toStrictEqual(expected);
             done();
         });
-        controller.onCreationCompte();
 
+        controller.onCreationCompte();
     });
 
     it("doit vérifier que le numéro sociétaire est en erreur à cause des caractères spéciaux", function (done) {
@@ -77,6 +78,52 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.errors.nom).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le nom contient des caractères spéciaux", function (done) {
+        const expected = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
+
+        const controller = init();
+
+        controller.onChangeNom("*/*/")
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.nom).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le prénom n'est pas renseigné", function (done) {
+        const expected = "Veuillez renseigner votre prénom";
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.prenom).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que le prénom contient des caractères spéciaux", function (done) {
+        const expected = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
+
+        const controller = init();
+
+        controller.onChangePrenom("*/*/")
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.prenom).toBe(expected);
             done();
         });
 
