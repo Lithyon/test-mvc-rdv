@@ -3,17 +3,20 @@ import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/Bo
 import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
 import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
 import {CiviliteCode} from "../../../Domain/Data/Enum/DefaultCivilite";
-import {CommuneModelView} from "../../../Presentation/pages/Authentification/ModelView/Communes/CommuneModelView";
+import {CommuneModelView} from "../../../Presentation/pages/Authentification/ModelView/Commune/CommuneModelView";
+import {subYears} from "date-fns";
 
 describe("Creation Compte", function () {
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire", function (done) {
         const controller = init();
+        const dateNaissance = new Date(1990, 1, 1);
 
         controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
         controller.onChangeNom("Bobby");
         controller.onChangePrenom("Bobby");
         controller.onChangeNumeroTelephone("0102030405");
         controller.onChangeEmail("jesuisunrobot@macif.fr");
+        controller.onChangeDateNaissance(dateNaissance);
         controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
@@ -177,6 +180,35 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.email).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que la date de naissance n'est pas renseignée", function (done) {
+        const expected = "La date saisie est incorrecte (JJ/MM/AAAA)";
+
+        const controller = init();
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.dateNaissance).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que la date de naissance est mal renseignée", function (done) {
+        const date18ans = subYears(new Date(), 18);
+        const expected = "La date doit être comprise entre 01/01/1900 et " + date18ans.toLocaleDateString();
+        const dateNaissance = new Date();
+
+        const controller = init();
+        controller.onChangeDateNaissance(dateNaissance)
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.dateNaissance).toBe(expected);
             done();
         });
 

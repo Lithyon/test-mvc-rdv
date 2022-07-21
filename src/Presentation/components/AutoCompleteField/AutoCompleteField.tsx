@@ -1,11 +1,10 @@
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
 import {Dropdown, Form} from "macif-components";
 import Highlight from "./Highlight";
 import useManagedState from "../../hooks/useManagedState";
 
 interface AutoCompleteFieldProps<T> {
     readonly id: string;
-    readonly name: string;
     readonly label: string;
     readonly onSelect: Function;
     readonly onSearchChange: Function;
@@ -22,14 +21,14 @@ interface AutoCompleteFieldProps<T> {
 enum KeyboardKeysEnum {
     UPARROW = "ArrowUp",
     DOWNARROW = "ArrowDown",
-    ENTER = "Enter"
+    ENTER = "Enter",
+    ESCAPE = "Escape"
 }
 
 let timeoutId: ReturnType<typeof setTimeout>;
 
 export default function AutoCompleteField<T>({
                                                  id,
-                                                 name,
                                                  label,
                                                  onSelect,
                                                  onSearchChange,
@@ -50,22 +49,21 @@ export default function AutoCompleteField<T>({
     const [activeItem, setActiveItem] = useManagedState(firstItem);
     const [idItemSurbrillance, setIdItemSurbrillance] = useState("");
 
-    const updateSearch = (value: string) => {
-        setRecherche(value);
+    useEffect(() => {
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
 
         timeoutId = setTimeout(() => {
-            onSearchChange(value);
+            onSearchChange(recherche);
         }, debounceMs);
-    }
+    }, [recherche]);
 
     const onTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSelectedItem("");
-        onSelect("");
+        setSelectedItem(undefined);
+        onSelect(undefined);
 
-        updateSearch(event.target.value);
+        setRecherche(event.target.value);
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -102,6 +100,17 @@ export default function AutoCompleteField<T>({
                     setActiveItem(undefined);
                     setIdItemSurbrillance("");
                     break;
+                case KeyboardKeysEnum.ESCAPE:
+                    event.preventDefault();
+
+                    setFocus(false);
+                    setSelectedItem("");
+                    onSelect("");
+
+                    setActiveItem(undefined);
+                    setIdItemSurbrillance("");
+
+                    break;
                 default:
                     break;
             }
@@ -120,15 +129,13 @@ export default function AutoCompleteField<T>({
 
             <Form.Control as="input"
                           type={type}
-                          name={name}
                           maxLength={100}
                           isInvalid={errorMessage !== ""}
                           placeholder={placeholder}
                           value={selectedItem ? labelFormat(selectedItem) : recherche}
+                          onFocus={() => setFocus(true)}
                           onChange={onTextChange}
                           onKeyDown={handleKeyDown}
-                          onFocus={() => setFocus(true)}
-                          onBlur={() => setFocus(false)}
                           autoComplete={autoComplete}
                           aria-expanded={show}
                           aria-owns={`${id}-dropdown`}
@@ -136,8 +143,7 @@ export default function AutoCompleteField<T>({
                           aria-describedby="champ-recherche champ-recherche-erreur"
             />
 
-            <div id={`${id}-dropdown`}
-                 className={`mcf-dropdown__menu${show ? " show" : ""}`}>
+            <div id={`${id}-dropdown`} className={`mcf-dropdown__menu${show ? " show" : ""}`}>
                 {dataSource.map((item: T, index: number) => (
                     <Dropdown.Item
                         id={`${index}_dropdown_menu`}
@@ -146,9 +152,10 @@ export default function AutoCompleteField<T>({
                         onClick={() => {
                             setSelectedItem(item);
                             onSelect(item);
+                            setFocus(false);
                         }}
                     >
-                        <Highlight labelFormat={labelFormat(item)} recherche={recherche}/>
+                        <Highlight controlId={`${index}_dropdown_menu`} labelFormat={labelFormat(item)} recherche={recherche}/>
                     </Dropdown.Item>
                 ))}
             </div>

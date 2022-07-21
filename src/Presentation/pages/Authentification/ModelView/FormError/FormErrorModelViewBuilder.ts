@@ -13,6 +13,7 @@ export default class FormErrorModelViewBuilder {
             prenom: "",
             numeroTelephone: "",
             email: "",
+            dateNaissance: "",
             noSocietaireParrain: "",
             commune: "",
             informationsCommercialesEmail: "",

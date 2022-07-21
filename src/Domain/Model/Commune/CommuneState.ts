@@ -10,7 +10,7 @@ interface DepartementState {
     region: RegionState;
 }
 
-interface CommuneState {
+export default interface CommuneState {
     codeInsee: string;
     codePostal: string;
     ancienNom: string;
@@ -20,8 +20,4 @@ interface CommuneState {
     nom: string;
     nomAcheminement: string;
     pays: string;
-}
-
-export default interface CommunesState {
-    communes: Array<CommuneState>;
 }

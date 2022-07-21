@@ -13,11 +13,9 @@ import disponibilitesStub from "../../../../../mocks/DisponibilitesStub";
 import rendezVousStub from "../../../../../mocks/RendezVousStub";
 import {CommunesRepositoryImpl} from "../../../../Domain/Repository/Communes";
 import CommunesRequestEntity from "../../../../Domain/Data/API/Entity/CommunesRequestEntity";
-import CommunesEntity from "../../../../Domain/Data/API/Entity/CommunesEntity";
-import communesStub from "../../../../../mocks/CommunesStub";
+import CommuneEntity from "../../../../Domain/Data/API/Entity/CommuneEntity";
 
 export function init(
-    communes: CommunesEntity = communesStub,
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub,
     creationCompte: CreationCompteEntity = creationCompteStub
@@ -36,8 +34,8 @@ export function init(
         }
     })
     const communesRepository = new CommunesRepositoryImpl({
-        async getCommunes(_request: CommunesRequestEntity): Promise<CommunesEntity> {
-            return communes;
+        async getCommunes(_request: CommunesRequestEntity): Promise<Array<CommuneEntity>> {
+            return [];
         }
     });
     const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository);

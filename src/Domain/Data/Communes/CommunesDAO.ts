@@ -1,6 +1,6 @@
-import CommunesEntity from "../API/Entity/CommunesEntity";
 import CommunesRequestEntity from "../API/Entity/CommunesRequestEntity";
+import CommuneEntity from "../API/Entity/CommuneEntity";
 
 export default interface CommunesDAO {
-    getCommunes(request: CommunesRequestEntity): Promise<CommunesEntity>;
+    getCommunes(request: CommunesRequestEntity): Promise<Array<CommuneEntity>>;
 }

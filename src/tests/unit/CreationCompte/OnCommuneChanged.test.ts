@@ -26,18 +26,6 @@ describe("Creation de compte - renseignement de la commune", function () {
             done();
         });
 
-        controller.onRechercheCommune("commune");
-    });
-
-    it("ne doit pas retourner d'erreur de saisie d'une commune", function (done) {
-        const controller = init();
-
-        controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.commune).toBeUndefined();
-            done();
-        });
-
-        controller.onRechercheCommune("La Rochelle");
+        controller.onRechercheCommune("ma super belle communne");
     });
 });

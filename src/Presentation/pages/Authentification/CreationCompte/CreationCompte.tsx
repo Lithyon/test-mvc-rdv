@@ -10,8 +10,9 @@ import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/B
 import Input from "../../../components/Input";
 import AutoCompleteField from "../../../components/AutoCompleteField/AutoCompleteField";
 import React from "react";
-import {CommunesModelView} from "../ModelView/Communes/CommunesModelView";
-import {CommuneModelView} from "../ModelView/Communes/CommuneModelView";
+import {CommuneModelView} from "../ModelView/Commune/CommuneModelView";
+import DatePicker from "../../../components/DatePicker";
+import {subYears} from "date-fns";
 
 export interface CreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -22,7 +23,7 @@ export interface CreationCompteProps {
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
     readonly informationsCommercialesSms: Array<BooleanChoiceModelView>;
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
-    readonly communes: CommunesModelView;
+    readonly communes: Array<CommuneModelView>;
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
@@ -32,6 +33,7 @@ export interface CreationCompteProps {
     readonly onCommuneSelected: Function;
     readonly onRechercheCommune: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
+    readonly onChangeDateNaissance: Function;
     readonly onInformationsCommercialesEmailSelected: Function;
     readonly onInformationsCommercialesSmsSelected: Function;
     readonly onInformationsCommercialesTelephoneSelected: Function;
@@ -58,6 +60,7 @@ export default function CreationCompteView({
                                                onCommuneSelected,
                                                onRechercheCommune,
                                                onChangeParrainageNumeroSocietaire,
+                                               onChangeDateNaissance,
                                                onInformationsCommercialesEmailSelected,
                                                onInformationsCommercialesSmsSelected,
                                                onInformationsCommercialesTelephoneSelected,
@@ -133,15 +136,26 @@ export default function CreationCompteView({
 
             <AutoCompleteField
                 id="autocomplete-commune"
-                name="commune"
                 label="Commune de résidence"
                 placeholder="Ex : 75001, Paris"
                 autoComplete="address-level2"
                 labelFormat={labelCommune}
                 onSearchChange={onRechercheCommune}
-                dataSource={communes.communes}
+                dataSource={communes}
                 onSelect={onCommuneSelected}
                 errorMessage={formError.commune}
+            />
+
+            <DatePicker
+                id="dateDeNaissance"
+                minDate={new Date(1900, 0, 1)}
+                maxDate={subYears(new Date(), 18)}
+                label="Date de naissance"
+                md={2}
+                xs={9}
+                placeholder="JJ/MM/AAAA"
+                onChangeDate={onChangeDateNaissance}
+                errorMessage={formError.dateNaissance}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

@@ -31,6 +31,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             onCommuneSelected={controller.onCommuneSelected}
             onRechercheCommune={controller.onRechercheCommune}
             onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
+            onChangeDateNaissance={controller.onChangeDateNaissance}
             onInformationsCommercialesEmailSelected={controller.onInformationsCommercialesEmailSelected}
             onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}

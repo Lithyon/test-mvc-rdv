@@ -11,12 +11,10 @@ import {DefaultBooleanChoice} from "../../../Domain/Data/Enum/BooleanChoice";
 import {BooleanChoiceModelView} from "../../commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 import RendezVousSelectionModelViewBuilder from "../RendezVous/ModelView/RendezVous/RendezVousSelectionModelViewBuilder";
 import FormErrorModelViewBuilder from "./ModelView/FormError/FormErrorModelViewBuilder";
-import {CommunesModelView} from "./ModelView/Communes/CommunesModelView";
-import CommunesModelViewBuilder from "./ModelView/Communes/CommunesModelViewBuilder";
-import CommuneModelViewBuilder from "./ModelView/Communes/CommuneModelViewBuilder";
-import Communes from "../../../Domain/Model/Communes/Communes";
-import {CommuneModelView} from "./ModelView/Communes/CommuneModelView";
-import CommunesRequest from "../../../Domain/Model/Communes/CommunesRequest";
+import {CommuneModelView} from "./ModelView/Commune/CommuneModelView";
+import CommuneModelViewBuilder from "./ModelView/Commune/CommuneModelViewBuilder";
+import Commune from "../../../Domain/Model/Commune/Commune";
+import CommunesRequest from "../../../Domain/Model/Commune/CommunesRequest";
 
 enum AutoCompleteFieldCommuneEnum {
     NUMERO_CODE_POSTAL_MAX = 96000,
@@ -30,7 +28,7 @@ export interface AuthentificationModelView {
     readonly civilite: Array<CiviliteModelView>,
     readonly parrainageChoix: Array<BooleanChoiceModelView>,
     readonly commune: CommuneModelView,
-    readonly communes: CommunesModelView,
+    readonly communes: Array<CommuneModelView>,
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesSms: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
@@ -42,7 +40,7 @@ interface AuthentificationControllerDependencies {
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> {
     private _state: AuthentificationModelView;
-    private _communes?: Communes;
+    private _communes: Array<Commune> = [];
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
@@ -55,6 +53,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onChangePrenom = this.onChangePrenom.bind(this);
         this.onChangeNumeroTelephone = this.onChangeNumeroTelephone.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangeDateNaissance = this.onChangeDateNaissance.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onCommuneSelected = this.onCommuneSelected.bind(this);
         this.onRechercheCommune = this.onRechercheCommune.bind(this);
@@ -69,7 +68,7 @@ export default class AuthentificationController extends BaseController<Authentif
             civilite: DefaultCivilite,
             parrainageChoix: DefaultBooleanChoice,
             commune: CommuneModelViewBuilder.buildEmpty(),
-            communes: CommunesModelViewBuilder.buildEmpty(),
+            communes: [],
             informationsCommercialesEmail: DefaultBooleanChoice,
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
@@ -248,31 +247,35 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     async onRechercheCommune(rechercheCommune: string) {
-        let buildCommunes = CommunesModelViewBuilder.buildEmpty();
         let errorMessage = "";
+        let communes: CommuneModelView[] = [];
 
-        if (rechercheCommune !== "") {
-            if (this.communeEstUnDomTom(rechercheCommune)) {
-                this._communes = await this.dependencies.creationCompteService.getCommunes(new CommunesRequest({
-                    rechercheCommune,
-                    lieuDit: true,
-                    ancienNom: true,
-                    pageSize: 10
-                }));
+        try {
+            if (rechercheCommune !== "") {
+                if (this.communeEstUnDomTom(rechercheCommune)) {
+                    this._communes = await this.dependencies.creationCompteService.getCommunes(new CommunesRequest({
+                        rechercheCommune,
+                        lieuDit: true,
+                        ancienNom: true,
+                        pageSize: 10
+                    }));
 
-                buildCommunes = CommunesModelViewBuilder.buildFromCommunes(this._communes);
+                    communes = this._communes.map(CommuneModelViewBuilder.buildFromCommune);
 
-                if (buildCommunes.communes.length === 0) {
-                    errorMessage = "La commune que vous avez saisie est inconnue. Veuillez à nouveau saisir un code postal ou un nom de commune.";
+                    if (this._communes.length === 0) {
+                        errorMessage = "La commune que vous avez saisie est inconnue. Veuillez à nouveau saisir un code postal ou un nom de commune.";
+                    }
+                } else {
+                    errorMessage = "La commune doit être en France métropolitaine (département 01 à 95).";
                 }
-            } else {
-                errorMessage = "La commune doit être en France métropolitaine (département 01 à 95).";
             }
+        } catch (error) {
+            errorMessage = "Une erreur est survenue lors de la récupération des communes.";
         }
 
         this._state = {
             ...this._state,
-            communes: buildCommunes,
+            communes,
             formError: {
                 ...this._state.formError,
                 commune: errorMessage
@@ -295,6 +298,22 @@ export default class AuthentificationController extends BaseController<Authentif
             }
         };
 
+        this.raiseStateChanged();
+    }
+
+    onChangeDateNaissance(dateNaissance: Date) {
+
+        this._state = {
+            ...this._state,
+            creationCompte: {
+                ...this._state.creationCompte,
+                dateNaissance
+            },
+            formError: {
+                ...this._state.formError,
+                dateNaissance: ""
+            }
+        };
         this.raiseStateChanged();
     }
 

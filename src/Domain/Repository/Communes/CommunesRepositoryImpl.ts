@@ -1,6 +1,6 @@
 import CommunesDAO from "../../Data/Communes/CommunesDAO";
-import CommunesRequest from "../../Model/Communes/CommunesRequest";
-import Communes from "../../Model/Communes/Communes";
+import CommunesRequest from "../../Model/Commune/CommunesRequest";
+import Commune from "../../Model/Commune/Commune";
 
 export class CommunesRepositoryImpl {
     private _dataSource: CommunesDAO;
@@ -10,6 +10,12 @@ export class CommunesRepositoryImpl {
     }
 
     async getCommunes(request: CommunesRequest) {
-        return new Communes(await this._dataSource.getCommunes(request.state));
+        const communes = await this._dataSource.getCommunes(request.state);
+
+        if (communes?.length > 0) {
+            return communes.map(commune => new Commune(commune));
+        } else {
+            return [];
+        }
     }
 }

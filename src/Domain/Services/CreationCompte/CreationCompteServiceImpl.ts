@@ -8,7 +8,8 @@ import {buildCreationCompteRequest} from "../../Builders/CreationCompteBuilder";
 import {buildCreerRendezVous} from "../../Builders/RendezVousBuilder";
 import FormErrorModelViewBuilder from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
 import FormErrorModelView from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
-import CommunesRequest from "../../Model/Communes/CommunesRequest";
+import CommunesRequest from "../../Model/Commune/CommunesRequest";
+import {isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
 
 export default class CreationCompteServiceImpl {
     private _creationCompteRepo: CreationCompteRepositoryImpl;
@@ -73,6 +74,18 @@ export default class CreationCompteServiceImpl {
             formError.email = "Veuillez renseigner votre adresse e-mail";
         } else if (regexEmail.length === 0) {
             formError.email = "L'adresse e-mail est invalide";
+        }
+
+        if (isEqual(creationCompte.dateNaissance, new Date(0))) {
+            formError.dateNaissance = "La date saisie est incorrecte (JJ/MM/AAAA)";
+        } else {
+            const dateInferieureA1900 = isBefore(creationCompte.dateNaissance, new Date(1900, 0, 1));
+            const date18ans = subYears(new Date(), 18);
+            const utilisateurPlusDe18Ans = isAfter(creationCompte.dateNaissance, subMonths(date18ans, 18));
+
+            if (dateInferieureA1900 || utilisateurPlusDe18Ans) {
+                formError.dateNaissance = "La date doit être comprise entre 01/01/1900 et " + date18ans.toLocaleDateString();
+            }
         }
 
         if (!creationCompte.commune.nom || creationCompte.commune.nom === "") {

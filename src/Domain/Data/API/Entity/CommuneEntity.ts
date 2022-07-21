@@ -10,7 +10,7 @@ interface DepartementEntity {
     region: RegionEntity;
 }
 
-interface CommuneEntity {
+export default interface CommuneEntity {
     codeInsee: string;
     codePostal: string;
     ancienNom: string;
@@ -20,8 +20,4 @@ interface CommuneEntity {
     nom: string;
     nomAcheminement: string;
     pays: string;
-}
-
-export default interface CommunesEntity {
-    communes: Array<CommuneEntity>;
 }

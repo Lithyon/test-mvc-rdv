@@ -1,6 +1,6 @@
 import CiviliteModelViewBuilder from "../Civilite/CiviliteModelViewBuilder";
 import BooleanChoiceModelViewBuilder from "../../../../commons/ModelView/BooleanChoice/BooleanChoiceModelViewBuilder";
-import CommuneModelViewBuilder from "../Communes/CommuneModelViewBuilder";
+import CommuneModelViewBuilder from "../Commune/CommuneModelViewBuilder";
 
 export default class CreationCompteModelViewBuilder {
     static buildEmpty() {
@@ -10,6 +10,7 @@ export default class CreationCompteModelViewBuilder {
             prenom: "",
             numeroTelephone: "",
             email: "",
+            dateNaissance: new Date(0),
             parrainageChoix: BooleanChoiceModelViewBuilder.buildEmpty(),
             commune: CommuneModelViewBuilder.buildEmpty(),
             informationsCommercialesEmail: BooleanChoiceModelViewBuilder.buildEmpty(),
