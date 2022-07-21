@@ -6,6 +6,7 @@ export default interface FormErrorModelView {
     readonly civilite: string;
     readonly numeroTelephone: string;
     readonly dateNaissance: string;
+    readonly situationFamiliale: string;
     readonly noSocietaireParrain: string;
     readonly informationsCommercialesSms: string;
     readonly informationsCommercialesEmail: string;

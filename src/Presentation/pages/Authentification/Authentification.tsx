@@ -2,6 +2,7 @@ import AuthentificationController from "./AuthentificationController";
 import BandeauModification from "./BandeauModification/BandeauModification";
 import useAttachController from "../../hooks/useAttachController";
 import CreationCompte from "./CreationCompte";
+import useInitContexte from "../../hooks/useInitContexte";
 
 interface AuthentificationProps {
     readonly controller: AuthentificationController;
@@ -9,6 +10,7 @@ interface AuthentificationProps {
 
 export default function Authentification({controller}: AuthentificationProps) {
     const state = useAttachController(controller);
+    useInitContexte(controller);
 
     return <>
         <BandeauModification dataSource={state.rendezVous}/>
@@ -19,6 +21,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             civilite={state.civilite}
             parrainageChoix={state.parrainageChoix}
             communes={state.communes}
+            situationFamiliale={state.situationFamiliale}
             informationsCommercialesEmail={state.informationsCommercialesEmail}
             informationsCommercialesSms={state.informationsCommercialesSms}
             informationsCommercialesTelephone={state.informationsCommercialesTelephone}
@@ -32,6 +35,7 @@ export default function Authentification({controller}: AuthentificationProps) {
             onRechercheCommune={controller.onRechercheCommune}
             onChangeParrainageNumeroSocietaire={controller.onChangeParrainageNumeroSocietaire}
             onChangeDateNaissance={controller.onChangeDateNaissance}
+            onChangeSituationFamiliale={controller.onChangeSituationFamiliale}
             onInformationsCommercialesEmailSelected={controller.onInformationsCommercialesEmailSelected}
             onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}

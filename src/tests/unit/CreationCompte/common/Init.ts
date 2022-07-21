@@ -14,11 +14,16 @@ import rendezVousStub from "../../../../../mocks/RendezVousStub";
 import {CommunesRepositoryImpl} from "../../../../Domain/Repository/Communes";
 import CommunesRequestEntity from "../../../../Domain/Data/API/Entity/CommunesRequestEntity";
 import CommuneEntity from "../../../../Domain/Data/API/Entity/CommuneEntity";
+import {SituationFamilialeServiceImpl} from "../../../../Domain/Services/SituationFamiliale";
+import {SituationFamilialeRepositoryImpl} from "../../../../Domain/Repository/SituationFamiliale";
+import SituationFamilialeEntity from "../../../../Domain/Data/API/Entity/SituationFamilialeEntity";
+import situationFamilialeStub from "../../../../../mocks/situationFamilialeStub";
 
 export function init(
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub,
-    creationCompte: CreationCompteEntity = creationCompteStub
+    creationCompte: CreationCompteEntity = creationCompteStub,
+    situationFamiliale: SituationFamilialeEntity = situationFamilialeStub
 ) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
@@ -32,13 +37,21 @@ export function init(
         async creerRendezVous(_request: RendezVousRequestEntity): Promise<RendezVousEntity> {
             return rendezVous;
         }
-    })
+    });
     const communesRepository = new CommunesRepositoryImpl({
         async getCommunes(_request: CommunesRequestEntity): Promise<Array<CommuneEntity>> {
             return [];
         }
     });
+
     const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository);
 
-    return new AuthentificationController({creationCompteService});
+    const situationFamilialeServiceRepo = new SituationFamilialeRepositoryImpl({
+        async getSituationFamiliale(): Promise<SituationFamilialeEntity> {
+            return situationFamiliale;
+        }
+    });
+    const situationFamilialeService = new SituationFamilialeServiceImpl(situationFamilialeServiceRepo);
+
+    return new AuthentificationController({creationCompteService, situationFamilialeService});
 }

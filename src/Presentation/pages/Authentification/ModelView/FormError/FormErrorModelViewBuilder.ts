@@ -14,6 +14,7 @@ export default class FormErrorModelViewBuilder {
             numeroTelephone: "",
             email: "",
             dateNaissance: "",
+            situationFamiliale: "",
             noSocietaireParrain: "",
             commune: "",
             informationsCommercialesEmail: "",

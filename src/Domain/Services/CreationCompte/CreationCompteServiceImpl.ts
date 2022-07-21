@@ -12,9 +12,9 @@ import CommunesRequest from "../../Model/Commune/CommunesRequest";
 import {isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
 
 export default class CreationCompteServiceImpl {
-    private _creationCompteRepo: CreationCompteRepositoryImpl;
-    private _rendezVousRepo: RendezVousRepositoryImpl;
-    private _communesRepo: CommunesRepositoryImpl;
+    private readonly _creationCompteRepo: CreationCompteRepositoryImpl;
+    private readonly _rendezVousRepo: RendezVousRepositoryImpl;
+    private readonly _communesRepo: CommunesRepositoryImpl;
 
     constructor(creationCompteRepo: CreationCompteRepositoryImpl, rendezVousRepo: RendezVousRepositoryImpl, communesRepo: CommunesRepositoryImpl) {
         this._creationCompteRepo = creationCompteRepo;
@@ -90,6 +90,10 @@ export default class CreationCompteServiceImpl {
 
         if (!creationCompte.commune.nom || creationCompte.commune.nom === "") {
             formError.commune = "Veuillez renseigner le code postal ou la commune";
+        }
+
+        if (!creationCompte.situationFamiliale.code) {
+            formError.situationFamiliale = "Veuillez renseigner votre situation familiale";
         }
 
         if (!creationCompte.informationsCommercialesEmail.code) {

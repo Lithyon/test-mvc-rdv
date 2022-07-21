@@ -15,6 +15,11 @@ import {CommuneModelView} from "./ModelView/Commune/CommuneModelView";
 import CommuneModelViewBuilder from "./ModelView/Commune/CommuneModelViewBuilder";
 import Commune from "../../../Domain/Model/Commune/Commune";
 import CommunesRequest from "../../../Domain/Model/Commune/CommunesRequest";
+import {SituationFamilialeModelView} from "./ModelView/SituationFamiliale/SituationFamilialeModelView";
+import {SituationFamilialeServiceImpl} from "../../../Domain/Services/SituationFamiliale";
+import SituationFamiliale from "../../../Domain/Model/SituationFamiliale/SituationFamiliale";
+import {IsLoadable} from "../../commons/IsLoadable";
+import SituationFamilialeModelViewBuilder from "./ModelView/SituationFamiliale/SituationFamilialeModelViewBuilder";
 
 enum AutoCompleteFieldCommuneEnum {
     NUMERO_CODE_POSTAL_MAX = 96000,
@@ -26,6 +31,7 @@ export interface AuthentificationModelView {
     readonly creationCompte: CreationCompteModelView,
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
+    readonly situationFamiliale: Array<SituationFamilialeModelView>,
     readonly parrainageChoix: Array<BooleanChoiceModelView>,
     readonly commune: CommuneModelView,
     readonly communes: Array<CommuneModelView>,
@@ -36,11 +42,13 @@ export interface AuthentificationModelView {
 
 interface AuthentificationControllerDependencies {
     readonly creationCompteService: CreationCompteServiceImpl,
+    readonly situationFamilialeService: SituationFamilialeServiceImpl,
 }
 
-export default class AuthentificationController extends BaseController<AuthentificationModelView> {
+export default class AuthentificationController extends BaseController<AuthentificationModelView> implements IsLoadable {
     private _state: AuthentificationModelView;
     private _communes: Array<Commune> = [];
+    private _situationFamiliale?: Array<SituationFamiliale>;
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
@@ -54,6 +62,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onChangeNumeroTelephone = this.onChangeNumeroTelephone.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangeDateNaissance = this.onChangeDateNaissance.bind(this);
+        this.onChangeSituationFamiliale = this.onChangeSituationFamiliale.bind(this);
         this.onParrainageChoixSelected = this.onParrainageChoixSelected.bind(this);
         this.onCommuneSelected = this.onCommuneSelected.bind(this);
         this.onRechercheCommune = this.onRechercheCommune.bind(this);
@@ -66,6 +75,7 @@ export default class AuthentificationController extends BaseController<Authentif
             formError: FormErrorModelViewBuilder.buildEmpty(),
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
             civilite: DefaultCivilite,
+            situationFamiliale: [],
             parrainageChoix: DefaultBooleanChoice,
             commune: CommuneModelViewBuilder.buildEmpty(),
             communes: [],
@@ -83,6 +93,15 @@ export default class AuthentificationController extends BaseController<Authentif
 
     formHasError() {
         return this.dependencies.creationCompteService.formHasError(this._state.formError);
+    }
+
+    async onLoad() {
+        this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
+        this._state = {
+            ...this._state,
+            situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale)
+        };
+        this.raiseStateChanged();
     }
 
     onCiviliteSelected(civilite: CiviliteModelView) {
@@ -312,6 +331,21 @@ export default class AuthentificationController extends BaseController<Authentif
             formError: {
                 ...this._state.formError,
                 dateNaissance: ""
+            }
+        };
+        this.raiseStateChanged();
+    }
+
+    onChangeSituationFamiliale(situationFamiliale: SituationFamilialeModelView) {
+        this._state = {
+            ...this._state,
+            creationCompte: {
+                ...this._state.creationCompte,
+                situationFamiliale
+            },
+            formError: {
+                ...this._state.formError,
+                situationFamiliale: ""
             }
         };
         this.raiseStateChanged();

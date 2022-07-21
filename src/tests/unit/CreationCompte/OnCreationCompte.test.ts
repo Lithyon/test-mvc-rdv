@@ -17,6 +17,7 @@ describe("Creation Compte", function () {
         controller.onChangeNumeroTelephone("0102030405");
         controller.onChangeEmail("jesuisunrobot@macif.fr");
         controller.onChangeDateNaissance(dateNaissance);
+        controller.onChangeSituationFamiliale({libelle: "Célibataire", code: "C"});
         controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
@@ -209,6 +210,19 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.dateNaissance).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que la situation familiale n'est pas renseignée", function (done) {
+        const expected = "Veuillez renseigner votre situation familiale";
+
+        const controller = init();
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.situationFamiliale).toBe(expected);
             done();
         });
 

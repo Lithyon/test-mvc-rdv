@@ -13,6 +13,8 @@ import React from "react";
 import {CommuneModelView} from "../ModelView/Commune/CommuneModelView";
 import DatePicker from "../../../components/DatePicker";
 import {subYears} from "date-fns";
+import {SituationFamilialeModelView} from "../ModelView/SituationFamiliale/SituationFamilialeModelView";
+import SelectField from "../../../components/SelectField";
 
 export interface CreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -24,6 +26,7 @@ export interface CreationCompteProps {
     readonly informationsCommercialesSms: Array<BooleanChoiceModelView>;
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>;
     readonly communes: Array<CommuneModelView>;
+    readonly situationFamiliale: Array<SituationFamilialeModelView>;
     readonly onCiviliteSelected: Function;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
@@ -34,6 +37,7 @@ export interface CreationCompteProps {
     readonly onRechercheCommune: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly onChangeDateNaissance: Function;
+    readonly onChangeSituationFamiliale: Function;
     readonly onInformationsCommercialesEmailSelected: Function;
     readonly onInformationsCommercialesSmsSelected: Function;
     readonly onInformationsCommercialesTelephoneSelected: Function;
@@ -46,6 +50,7 @@ export default function CreationCompteView({
                                                dataSource,
                                                rendezVous,
                                                civilite,
+                                               situationFamiliale,
                                                parrainageChoix,
                                                informationsCommercialesEmail,
                                                informationsCommercialesSms,
@@ -61,6 +66,7 @@ export default function CreationCompteView({
                                                onRechercheCommune,
                                                onChangeParrainageNumeroSocietaire,
                                                onChangeDateNaissance,
+                                               onChangeSituationFamiliale,
                                                onInformationsCommercialesEmailSelected,
                                                onInformationsCommercialesSmsSelected,
                                                onInformationsCommercialesTelephoneSelected,
@@ -156,6 +162,14 @@ export default function CreationCompteView({
                 placeholder="JJ/MM/AAAA"
                 onChangeDate={onChangeDateNaissance}
                 errorMessage={formError.dateNaissance}
+            />
+
+            <SelectField
+                id="situationFamiliale"
+                label="Situation familiale"
+                onChangeSelect={onChangeSituationFamiliale}
+                dataSource={situationFamiliale}
+                errorMessage={formError.situationFamiliale}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&
