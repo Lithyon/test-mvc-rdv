@@ -8,17 +8,16 @@ import RendezVousEntity from "../API/Entity/RendezVousEntity";
 
 const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-rendezvous-rest`;
 
-export default class RendezVousDAOImpl
-    implements RendezVousDAO {
-    async creerRendezVous(request: RendezVousRequestEntity) {
+export default class RendezVousDAOImpl implements RendezVousDAO {
+    async creerRendezVous(request: RendezVousRequestEntity): Promise<RendezVousEntity> {
         const {data, messages} = await RequestBuilder
-            .post<ResponseEntity<RendezVousEntity>>(`${BASE_URL}/v3/rendezvous/agence/creer`)
+            .post<ResponseEntity<RendezVousEntity>>(`${BASE_URL}/v3/rendezvous/creer`)
             .appendHeader("Content-Type", "application/JSON")
             .body(request)
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }
@@ -34,7 +33,7 @@ export default class RendezVousDAOImpl
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }

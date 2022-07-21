@@ -12,7 +12,7 @@ export default class DomaineDAOImpl implements DomaineDAO {
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }

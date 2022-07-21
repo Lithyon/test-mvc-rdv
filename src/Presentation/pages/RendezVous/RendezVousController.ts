@@ -35,7 +35,6 @@ import PagesDetails from "../PagesDetails";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {NavigateFunction} from "react-router-dom";
 import RendezVousModelViewBuilder from "./ModelView/RendezVous/RendezVousModelViewBuilder";
-import {getCookie} from "../../../Domain/Data/API/Commons/Cookie";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -284,7 +283,8 @@ export default class RendezVousController extends BaseController<RendezVousModel
     }
 
     async onValidationFormulaire(navigate: NavigateFunction) {
-        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT || getCookie("mfsauth")) {
+        if (this._state.rendezVous.choixConnexionSelected.code === ChoixConnexionCode.NO_ACCOUNT
+            || this.dependencies.authentificationService.estConnecte()) {
             this.redirectionVersAuthentification(navigate);
         } else {
             await this.redirectionMireDeConnexion();

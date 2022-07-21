@@ -2,9 +2,6 @@ import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
 import React, {useEffect, useMemo, useState} from "react";
 import {add, isAfter, isBefore, sub} from "date-fns";
-import {LoadingObservable} from "../../../commons/LoadingObservable";
-import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
-import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
 import useErrorObservable from "../../../hooks/useErrorObservable";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
@@ -15,7 +12,7 @@ export interface JourSwitcherProps {
     readonly onChoiceSelected: Function,
     readonly dataSource: DisponibilitesModelView,
     readonly onClick: Function,
-    readonly onLoadDisponibilitesObserver: LoadingObservable,
+    readonly isOver: boolean,
     readonly hasErrorDisponibilitesObserver: ErrorObservable
 }
 
@@ -24,7 +21,7 @@ export default function JourSwitcher({
                                          onChoiceSelected,
                                          dataSource,
                                          onClick,
-                                         onLoadDisponibilitesObserver,
+                                         isOver,
                                          hasErrorDisponibilitesObserver
                                      }: JourSwitcherProps) {
     const {disponibilites} = dataSource;
@@ -35,8 +32,6 @@ export default function JourSwitcher({
     const [disabledNext, setDisabledNext] = useState(true);
     const [dejaNavigue, setDejaNavigue] = useState(false);
 
-
-    const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver);
 
     const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = useMemo(() => disponibilites.map(() => React.createRef<HTMLLabelElement>()), [disponibilites]);

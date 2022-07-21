@@ -1,17 +1,13 @@
 import CreationCompteRepositoryImpl from "../../Repository/CreationCompte/CreationCompteRepositoryImpl";
 import {BooleanChoiceCode} from "../../Data/Enum/BooleanChoice";
-import {
-    CreationCompteModelView
-} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
-import RendezVousSelectionModelView
-    from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
+import {CreationCompteModelView} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
+import RendezVousSelectionModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {RendezVousRepositoryImpl} from "../../Repository/RendezVous";
 import {CommunesRepositoryImpl} from "../../Repository/Communes";
-import FormErrorModelViewBuilder
-    from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
+import FormErrorModelViewBuilder from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
 import FormErrorModelView from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
 import CommunesRequest from "../../Model/Commune/CommunesRequest";
-import {isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
+import {format, isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
 import CreationCompteRequest from "../../Model/CreationCompte/CreationCompteRequest";
 import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 
@@ -35,17 +31,25 @@ export default class CreationCompteServiceImpl {
         return testRegex.length > 0;
     }
 
+    private static verifierEmail(value: string): boolean {
+        const testRegex: RegExpMatchArray = value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/) || [];
+        return testRegex.length === 0;
+    }
+
+    private static verifierTelephone(value: string): boolean {
+        const testRegex: RegExpMatchArray = value.match(/^0\d{9}/) || [];
+        return testRegex.length === 0;
+    }
+
     formHasError(formError: FormErrorModelView): boolean {
         return Object.values(formError).filter((v: string) => v !== "").length !== 0;
     }
 
-    validationFormulaire(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView): FormErrorModelView {
+    validationFormulaireCreationCompte(creationCompte: CreationCompteModelView, noSocietaireParrain: string): FormErrorModelView {
         const formError = FormErrorModelViewBuilder.buildEmpty();
 
-        if (creationCompte.parrainageChoix &&
-            creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI &&
-            rendezVous.noSocietaireParrain?.length > 0) {
-            const testRegex: RegExpMatchArray = rendezVous.noSocietaireParrain.match(/\W/) || [];
+        if (creationCompte.parrainageChoix && creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI && noSocietaireParrain?.length > 0) {
+            const testRegex: RegExpMatchArray = noSocietaireParrain.match(/\W/) || [];
 
             if (testRegex.length > 0) {
                 formError.noSocietaireParrain = "Le numéro de sociétaire ne doit pas contenir de caractères spéciaux";
@@ -68,33 +72,30 @@ export default class CreationCompteServiceImpl {
             formError.prenom = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
         }
 
-        const regexTelephone: RegExpMatchArray = creationCompte.numeroTelephone.match(/^0\d{9}/) || [];
         if (creationCompte.numeroTelephone.length === 0) {
             formError.numeroTelephone = "Veuillez renseigner votre numéro de téléphone";
-        } else if (regexTelephone.length === 0) {
+        } else if (CreationCompteServiceImpl.verifierTelephone(creationCompte.numeroTelephone)) {
             formError.numeroTelephone = "Le numéro de téléphone renseigné est incorrect";
         }
 
-        const regexEmail: RegExpMatchArray = creationCompte.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/) || [];
         if (creationCompte.email.length === 0) {
             formError.email = "Veuillez renseigner votre adresse e-mail";
-        } else if (regexEmail.length === 0) {
+        } else if (CreationCompteServiceImpl.verifierEmail(creationCompte.email)) {
             formError.email = "L'adresse e-mail est invalide";
         }
 
         if (isEqual(creationCompte.dateNaissance, new Date(0))) {
             formError.dateNaissance = "La date saisie est incorrecte (JJ/MM/AAAA)";
         } else {
-            const dateInferieureA1900 = isBefore(creationCompte.dateNaissance, new Date(1900, 0, 1));
             const date18ans = subYears(new Date(), 18);
-            const utilisateurPlusDe18Ans = isAfter(creationCompte.dateNaissance, subMonths(date18ans, 18));
 
-            if (dateInferieureA1900 || utilisateurPlusDe18Ans) {
-                formError.dateNaissance = "La date doit être comprise entre 01/01/1900 et " + date18ans.toLocaleDateString();
+            if (isBefore(creationCompte.dateNaissance, new Date(1900, 0, 1))
+                || isAfter(creationCompte.dateNaissance, subMonths(date18ans, 18))) {
+                formError.dateNaissance = `La date doit être comprise entre 01/01/1900 et ${date18ans.toLocaleDateString()}`;
             }
         }
 
-        if (!creationCompte.commune.nom || creationCompte.commune.nom === "") {
+        if (!creationCompte.commune || !creationCompte.commune.nom || creationCompte.commune.nom === "") {
             formError.commune = "Veuillez renseigner le code postal ou la commune";
         }
 
@@ -125,7 +126,7 @@ export default class CreationCompteServiceImpl {
     }
 
     async creationCompte(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView): Promise<FormErrorModelView> {
-        const formError = this.validationFormulaire(creationCompte, rendezVous);
+        const formError = this.validationFormulaireCreationCompte(creationCompte, rendezVous.noSocietaireParrain);
 
         if (!this.formHasError(formError)) {
             await this._creationCompteRepo.creationCompte(new CreationCompteRequest({
@@ -134,7 +135,22 @@ export default class CreationCompteServiceImpl {
                 znPrenPers: creationCompte.prenom,
                 informationMacifMail: creationCompte.informationsCommercialesEmail.code === "O",
                 informationMacifMessageVocal: creationCompte.informationsCommercialesTelephone.code === "O",
-                informationMacifSms: creationCompte.informationsCommercialesSms.code === "O"
+                informationMacifSms: creationCompte.informationsCommercialesSms.code === "O",
+                dtNaisPers: format(creationCompte.dateNaissance, "yyyy-MM-dd"),
+                noTeleLigne: creationCompte.numeroTelephone,
+                cdProfPers: creationCompte.profession.code,
+                cdSituatFamil: creationCompte.situationFamiliale.code,
+                znAdrEmail: creationCompte.email,
+                commune: {
+                    nom: creationCompte.commune.nom,
+                    codePostal: creationCompte.commune.codePostal,
+                    lieuDit: creationCompte.commune.lieuDit,
+                    nomAcheminement: creationCompte.commune.nomAcheminement,
+                    ancienNom: creationCompte.commune.ancienNom,
+                    codeInsee: creationCompte.commune.codeInsee,
+                    departement: creationCompte.commune.departement,
+                    pays: creationCompte.commune.pays
+                }
             }));
 
             await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({
@@ -149,7 +165,7 @@ export default class CreationCompteServiceImpl {
                 nmCommu: rendezVous.nmCommu,
                 noSocietaireParrain: rendezVous.noSocietaireParrain,
                 noTel: rendezVous.noTel,
-                precision: rendezVous.precision,
+                precision: rendezVous.precision
             }));
         }
 

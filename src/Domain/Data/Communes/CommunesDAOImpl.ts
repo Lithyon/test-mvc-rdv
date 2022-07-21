@@ -13,7 +13,7 @@ export default class CommunesDAOImpl implements CommunesDAO {
             .fetchJson();
 
         if (messages) {
-            messages.map((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }

@@ -4,6 +4,7 @@ import {RequestBuilder} from "../API/Commons/RequestBuilder";
 import {ResponseEntity} from "../API/Entity/ResponseEntity";
 import RendezVousModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 import {getNavId} from "../API/Commons/GetNavId";
+import {getCookie} from "../API/Commons/Cookie";
 
 const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-authentification-rest`;
 
@@ -40,7 +41,7 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }
@@ -68,11 +69,15 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }
 
         return data;
+    }
+
+    estConnecte(): boolean {
+        return !!getCookie("mfsauth");
     }
 }

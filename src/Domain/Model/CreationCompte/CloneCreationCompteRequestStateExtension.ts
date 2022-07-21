@@ -1,15 +1,21 @@
 import Prototype from "../Commun/Prototype";
 import CreationCompteRequestState from "./CreationCompteRequestState";
 
-
 function CloneCreationCompteRequestState(): CreationCompteRequestState {
+    const that = this as CreationCompteRequestState;
     return {
-        cdCivil: this.cdCivil,
-        nmPers: this.nmPers,
-        znPrenPers: this.znPrenPers,
-        informationMacifMail: this.informationMacifMail,
-        informationMacifMessageVocal: this.informationMacifMessageVocal,
-        informationMacifSms: this.informationMacifSms
+        cdCivil: that.cdCivil,
+        nmPers: that.nmPers,
+        znPrenPers: that.znPrenPers,
+        informationMacifMail: that.informationMacifMail,
+        informationMacifMessageVocal: that.informationMacifMessageVocal,
+        informationMacifSms: that.informationMacifSms,
+        dtNaisPers: that.dtNaisPers,
+        noTeleLigne: that.noTeleLigne,
+        cdProfPers: that.cdProfPers,
+        cdSituatFamil: that.cdSituatFamil,
+        znAdrEmail: that.znAdrEmail,
+        commune: that.commune
     };
 }
 

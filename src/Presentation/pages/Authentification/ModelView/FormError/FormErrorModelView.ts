@@ -12,4 +12,6 @@ export default interface FormErrorModelView {
     readonly informationsCommercialesSms: string;
     readonly informationsCommercialesEmail: string;
     readonly informationsCommercialesTelephone: string;
+    readonly autreChoix: string;
+    readonly choixContact: string;
 }

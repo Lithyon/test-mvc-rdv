@@ -113,14 +113,14 @@ export default function PriseRendezVous({
                               value={dataSource.precision}/>
                     <JourSwitcher choiceSelected={dataSource.jour} onChoiceSelected={onJourSelected}
                                   dataSource={disponibilites} onClick={loadDisponibilites}
-                                  onLoadDisponibilitesObserver={onLoadDisponibilitesObserver}
+                                  isOver={!!isOver}
                                   hasErrorDisponibilitesObserver={hasErrorDisponibilitesObserver}/>
                     {!disponibilites.aucuneDisponibilite ?
                         <>
                             <HeureSwitcher onChoiceSelected={onHeureSelected} choiceSelected={dataSource.heure}
                                            dataSource={disponibilites.disponibilites} jourSelected={dataSource.jour}
                                            proposerChoixHoraire={dataSource.proposerChoixHoraire}
-                                           onLoadDisponibilitesObserver={onLoadDisponibilitesObserver} canalSelected={dataSource.canalSelected}/>
+                                           isOver={!!isOver} canalSelected={dataSource.canalSelected}/>
 
                             {dataSource.afficherChoixConnexion && choixConnexion.length > 0 &&
                                 <>

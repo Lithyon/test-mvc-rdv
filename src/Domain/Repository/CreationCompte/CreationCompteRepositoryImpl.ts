@@ -3,7 +3,7 @@ import CreationCompte from "../../Model/CreationCompte/CreationCompte";
 import CreationCompteDAO from "../../Data/CreationCompte/CreationCompteDAO";
 
 export default class CreationCompteRepositoryImpl {
-    private _dataSource: CreationCompteDAO;
+    private readonly _dataSource: CreationCompteDAO;
 
     constructor(datasource: CreationCompteDAO) {
         this._dataSource = datasource;

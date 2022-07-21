@@ -1,9 +1,6 @@
 import JourDisponibleModelView from "../ModelView/Disponibilites/JourDisponibleModelView";
 import {Card, Form} from "macif-components";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
-import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
-import useLoaderObservable from "../../../hooks/useLoaderObservable";
-import {LoadingObservable} from "../../../commons/LoadingObservable";
 import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
 import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibleModelView";
 import CanalModelView from "../ModelView/Canal/CanalModelView";
@@ -14,7 +11,7 @@ export interface HeureSwitcherProps {
     readonly jourSelected: Date;
     readonly dataSource: Array<JourDisponibleModelView>;
     readonly proposerChoixHoraire: boolean;
-    readonly onLoadDisponibilitesObserver: LoadingObservable,
+    readonly isOver: boolean;
     readonly canalSelected: CanalModelView;
 }
 
@@ -24,13 +21,11 @@ export default function HeureSwitcher({
                                           dataSource,
                                           jourSelected,
                                           proposerChoixHoraire,
-                                          onLoadDisponibilitesObserver,
+                                          isOver,
                                           canalSelected
                                       }: HeureSwitcherProps) {
     const disponibilitesMatin = dataSource.find(item => item.jour === jourSelected)?.disponibilitesMatin || [];
     const disponibilitesApresMidi = dataSource.find(item => item.jour === jourSelected)?.disponibilitesApresMidi || [];
-
-    const {isOver}: LoadWaitingIsOver = useLoaderObservable(onLoadDisponibilitesObserver);
 
     const dureeRendezVous: string = canalSelected.code === CanalCode.TELEPHONE ? "15" : "30";
 

@@ -8,15 +8,15 @@ import DisponibilitesEntity from "../../../../Domain/Data/API/Entity/Disponibili
 import disponibilitesStub from "../../../../../mocks/DisponibilitesStub";
 import RendezVousEntity from "../../../../Domain/Data/API/Entity/RendezVousEntity";
 import rendezVousStub from "../../../../../mocks/RendezVousStub";
-import {DomaineRepositoryImpl} from "../../../../Domain/Repository/Domaine/DomaineRepositoryImpl";
+import {DomaineRepositoryImpl} from "../../../../Domain/Repository/Domaine";
 import DomaineServiceImpl from "../../../../Domain/Services/Domaine/DomaineServiceImpl";
-import {DemandeRepositoryImpl} from "../../../../Domain/Repository/Demande/DemandeRepositoryImpl";
+import {DemandeRepositoryImpl} from "../../../../Domain/Repository/Demande";
 import DemandeServiceImpl from "../../../../Domain/Services/Demande/DemandeServiceImpl";
 import CanalRepositoryImpl from "../../../../Domain/Repository/Canal/CanalRepositoryImpl";
 import CanalServiceImpl from "../../../../Domain/Services/Canal/CanalServiceImpl";
-import {PointAccueilRepositoryImpl} from "../../../../Domain/Repository/PointAccueil/PointAccueilRepositoryImpl";
+import {PointAccueilRepositoryImpl} from "../../../../Domain/Repository/PointAccueil";
 import PointAccueilServiceImpl from "../../../../Domain/Services/PointAccueil/PointAccueilServiceImpl";
-import {RendezVousRepositoryImpl} from "../../../../Domain/Repository/RendezVous/RendezVousRepositoryImpl";
+import {RendezVousRepositoryImpl} from "../../../../Domain/Repository/RendezVous";
 import DisponibilitesRequestEntity from "../../../../Domain/Data/API/Entity/DisponibilitesRequestEntity";
 import RendezVousRequestEntity from "../../../../Domain/Data/API/Entity/RendezVousRequestEntity";
 import RendezVousServiceImpl from "../../../../Domain/Services/RendezVous/RendezVousServiceImpl";
@@ -85,6 +85,9 @@ export function init(
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const authentificationRepository = new AuthentificationRepositoryImpl({
+        estConnecte() {
+            return false;
+        },
         async initialiseConnexion(urlRedirection: string, uuid: string) {},
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";

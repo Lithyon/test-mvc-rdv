@@ -11,11 +11,11 @@ interface DepartementState {
 }
 
 export default interface CommuneState {
+    id?: string;
     codeInsee: string;
     codePostal: string;
     ancienNom: string;
     departement: DepartementState;
-    id: string;
     lieuDit: boolean;
     nom: string;
     nomAcheminement: string;

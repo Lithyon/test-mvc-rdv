@@ -22,19 +22,34 @@ import {ProfessionServiceImpl} from "../../../../Domain/Services/Profession";
 import {ProfessionRepositoryImpl} from "../../../../Domain/Repository/Profession";
 import ProfessionEntity from "../../../../Domain/Data/API/Entity/ProfessionEntity";
 import professionStub from "../../../../../mocks/SituationFamilialeStub";
+import {ContactRepositoryImpl} from "../../../../Domain/Repository/Contact";
+import ContactEntity from "../../../../Domain/Data/API/Entity/ContactEntity";
+import {ContactServiceImpl} from "../../../../Domain/Services/Contact";
+import contactStub from "../../../../../mocks/ContactStub";
+import {RendezVousServiceImpl} from "../../../../Domain/Services/RendezVous";
+import {AuthentificationRepositoryImpl} from "../../../../Domain/Repository/Authentification";
+import RendezVousModelView from "../../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 
 export function init(
     disponibilites: DisponibilitesEntity = disponibilitesStub,
     rendezVous: RendezVousEntity = rendezVousStub,
     creationCompte: CreationCompteEntity = creationCompteStub,
     situationFamiliale: SituationFamilialeEntity = situationFamilialeStub,
-    profession: ProfessionEntity = professionStub
+    profession: ProfessionEntity = professionStub,
+    contact: ContactEntity = contactStub
 ) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
             return creationCompte;
         }
     });
+
+    const communesRepository = new CommunesRepositoryImpl({
+        async getCommunes(_request: CommunesRequestEntity): Promise<Array<CommuneEntity>> {
+            return [];
+        }
+    });
+
     const rendezVousRepository = new RendezVousRepositoryImpl({
         async getDisponibilites(_request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
             return disponibilites;
@@ -43,11 +58,7 @@ export function init(
             return rendezVous;
         }
     });
-    const communesRepository = new CommunesRepositoryImpl({
-        async getCommunes(_request: CommunesRequestEntity): Promise<Array<CommuneEntity>> {
-            return [];
-        }
-    });
+    const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository);
 
@@ -65,5 +76,23 @@ export function init(
     });
     const professionService = new ProfessionServiceImpl(professionRepo);
 
-    return new AuthentificationController({creationCompteService, situationFamilialeService, professionService});
+    const contactRepo = new ContactRepositoryImpl({
+        async getContact(): Promise<ContactEntity> {
+            return contact;
+        }
+    });
+
+    const authentificationRepo = new AuthentificationRepositoryImpl({
+        estConnecte() {
+            return true;
+        },
+        async initialiseConnexion(urlRedirection: string, uuid: string) {},
+        async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
+            return "uuidSauvegardeDonneesUtilisateur";
+        }
+    });
+
+    const contactService = new ContactServiceImpl(contactRepo, authentificationRepo);
+
+    return new AuthentificationController({rendezVousService, creationCompteService, situationFamilialeService, professionService, contactService});
 }

@@ -15,4 +15,8 @@ export default class AuthentificationRepositoryImpl {
 
         this._authentificationDAO.initialiseConnexion(urlRedirection, uuidDonnesUtilisateur);
     }
+
+    estConnecte() {
+        return this._authentificationDAO.estConnecte();
+    }
 }

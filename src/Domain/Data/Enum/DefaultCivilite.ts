@@ -1,8 +1,8 @@
 import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
 
 export enum CiviliteCode {
-    MONSIEUR = "MONSIEUR",
-    MADAME = "MADAME"
+    MONSIEUR = "2",
+    MADAME = "1"
 }
 
 export const DefaultCivilite: Array<CiviliteModelView> = [

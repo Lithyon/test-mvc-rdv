@@ -11,4 +11,8 @@ export default class AuthentificationServiceImpl {
     authentificationUtilisateur(state: RendezVousModelView, urlRedirection: string) {
         return this.authentificationRepo.authentificationUtilisateur(state, urlRedirection);
     }
+
+    estConnecte() {
+        return this.authentificationRepo.estConnecte();
+    }
 }

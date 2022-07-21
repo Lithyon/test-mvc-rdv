@@ -26,7 +26,6 @@ describe("Creation Compte", function () {
         controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
         controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
-        controller.onRechercheCommune("nom commune");
         controller.onCommuneSelected({
             nom: "nom_commune",
             codePostal: "cp_commune",

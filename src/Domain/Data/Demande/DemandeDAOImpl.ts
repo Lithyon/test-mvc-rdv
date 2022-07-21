@@ -12,7 +12,7 @@ export default class DemandeDAOImpl implements DemandeDAO {
             .fetchJson();
 
         if (messages) {
-            messages.forEach((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error);
             });
         }

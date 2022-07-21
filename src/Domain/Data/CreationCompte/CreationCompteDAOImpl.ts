@@ -15,7 +15,7 @@ export default class CreationCompteDAOImpl implements CreationCompteDAO {
             .fetchJson();
 
         if (messages) {
-            messages.map((error: any) => {
+            messages.forEach((error: string) => {
                 throw new Error(error)
             });
         }

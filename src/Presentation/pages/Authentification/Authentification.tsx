@@ -1,17 +1,35 @@
-import AuthentificationController from "./AuthentificationController";
+import AuthentificationController, {AuthentificationModelView} from "./AuthentificationController";
 import BandeauModification from "./BandeauModification/BandeauModification";
 import useAttachController from "../../hooks/useAttachController";
 import CreationCompte from "./CreationCompte";
 import useInitContexte from "../../hooks/useInitContexte";
+import PourVousJoindre from "./PourVousJoindre/PourVousJoindre";
 
 interface AuthentificationProps {
     readonly controller: AuthentificationController;
 }
 
-export default function Authentification({controller}: AuthentificationProps) {
-    const state = useAttachController(controller);
-    useInitContexte(controller);
+interface BandeauProps {
+    readonly state: AuthentificationModelView;
+    readonly controller: AuthentificationController;
+}
 
+function BandeauPourVousJoindre({state, controller}: BandeauProps) {
+    return <>
+        <BandeauModification dataSource={state.rendezVous}/>
+        <PourVousJoindre dataSource={state.pourVousJoindre}
+                         canalSelected={state.rendezVous.canalSelected}
+                         onChoixPourVousJoindreSelected={controller.onChoixContactSelected}
+                         onTelephonePourVousJoindreChanged={controller.onTelephonePourVousJoindreChanged}
+                         onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
+                         onValidationRendezVous={controller.onValidationRendezVous}
+                         formError={state.formErrorPourVousJoindre}
+                         formHasError={controller.verificationErreursPourVousJoindre}
+        />
+    </>
+}
+
+function BandeauCreationCompte({state, controller}: BandeauProps) {
     return <>
         <BandeauModification dataSource={state.rendezVous}/>
         <CreationCompte
@@ -45,4 +63,16 @@ export default function Authentification({controller}: AuthentificationProps) {
             formHasError={controller.formHasError}
         />
     </>;
+}
+
+export default function Authentification({controller}: AuthentificationProps) {
+
+    const state = useAttachController(controller);
+    useInitContexte(controller);
+
+    if (state.estConnecte) {
+        return <BandeauPourVousJoindre state={state} controller={controller} />;
+    }
+
+    return <BandeauCreationCompte state={state} controller={controller} />;
 }

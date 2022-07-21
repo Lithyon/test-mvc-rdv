@@ -24,6 +24,16 @@ import {ProfessionModelView} from "./ModelView/Profession/ProfessionModelView";
 import ProfessionModelViewBuilder from "./ModelView/Profession/ProfessionModelViewBuilder";
 import {ProfessionServiceImpl} from "../../../Domain/Services/Profession";
 import Profession from "../../../Domain/Model/Profession/Profession";
+import {PourVousJoindreModelView} from "./ModelView/PourVousJoindre/PourVousJoindreModelView";
+import PourVousJoindreModelViewBuilder from "./ModelView/PourVousJoindre/PourVousJoindreModelViewBuilder";
+import {ChoixContactModelView} from "./ModelView/PourVousJoindre/ChoixContactModelView";
+import {ContactServiceImpl} from "../../../Domain/Services/Contact";
+import Contact from "../../../Domain/Model/Contact/Contact";
+import ContactModelViewBuilder from "./ModelView/Contact/ContactModelViewBuilder";
+import ContactModelView from "./ModelView/Contact/ContactModelView";
+import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
+import FormErrorPourVousJoindreModelView from "./ModelView/FormError/FormErrorPourVousJoindreModelView";
+import FormErrorPourVousJoindreModelViewBuilder from "./ModelView/FormError/FormErrorPourVousJoindreModelViewBuilder";
 
 enum AutoCompleteFieldCommuneEnum {
     NUMERO_CODE_POSTAL_MAX = 96000,
@@ -31,7 +41,9 @@ enum AutoCompleteFieldCommuneEnum {
 }
 
 export interface AuthentificationModelView {
+    readonly estConnecte: boolean,
     readonly formError: FormErrorModelView,
+    readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView,
     readonly creationCompte: CreationCompteModelView,
     readonly rendezVous: RendezVousSelectionModelView,
     readonly civilite: Array<CiviliteModelView>,
@@ -43,12 +55,16 @@ export interface AuthentificationModelView {
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesSms: Array<BooleanChoiceModelView>,
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
+    readonly pourVousJoindre: PourVousJoindreModelView,
+    readonly infosContact: ContactModelView,
 }
 
 interface AuthentificationControllerDependencies {
+    readonly rendezVousService: RendezVousServiceImpl,
     readonly creationCompteService: CreationCompteServiceImpl,
     readonly situationFamilialeService: SituationFamilialeServiceImpl,
     readonly professionService: ProfessionServiceImpl,
+    readonly contactService: ContactServiceImpl
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> implements IsLoadable {
@@ -56,13 +72,16 @@ export default class AuthentificationController extends BaseController<Authentif
     private _communes: Array<Commune> = [];
     private _situationFamiliale?: Array<SituationFamiliale>;
     private _profession?: Array<Profession>;
+    private _infosContact?: Contact;
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
         const stateForm = window.history.state?.usr as RendezVousModelView;
 
         this.formHasError = this.formHasError.bind(this);
+        this.verificationErreursPourVousJoindre = this.verificationErreursPourVousJoindre.bind(this);
         this.onCreationCompte = this.onCreationCompte.bind(this);
+        this.onValidationRendezVous = this.onValidationRendezVous.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onChangeNom = this.onChangeNom.bind(this);
         this.onChangePrenom = this.onChangePrenom.bind(this);
@@ -78,9 +97,15 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onInformationsCommercialesEmailSelected = this.onInformationsCommercialesEmailSelected.bind(this);
         this.onInformationsCommercialesSmsSelected = this.onInformationsCommercialesSmsSelected.bind(this);
         this.onInformationsCommercialesTelephoneSelected = this.onInformationsCommercialesTelephoneSelected.bind(this);
+        this.onChoixContactSelected = this.onChoixContactSelected.bind(this);
+        this.onTelephonePourVousJoindreChanged = this.onTelephonePourVousJoindreChanged.bind(this);
+        this.onEmailPourVousJoindreChanged = this.onEmailPourVousJoindreChanged.bind(this);
+        this.onLoadPourVousJoindre = this.onLoadPourVousJoindre.bind(this);
 
         this._state = {
+            estConnecte: false,
             formError: FormErrorModelViewBuilder.buildEmpty(),
+            formErrorPourVousJoindre: FormErrorPourVousJoindreModelViewBuilder.buildEmpty(),
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
             civilite: DefaultCivilite,
             situationFamiliale: [],
@@ -91,8 +116,9 @@ export default class AuthentificationController extends BaseController<Authentif
             informationsCommercialesEmail: DefaultBooleanChoice,
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
-            // TODO : A REVOIR SI BESOIN
-            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty()
+            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
+            pourVousJoindre: PourVousJoindreModelViewBuilder.buildEmpty(),
+            infosContact: ContactModelViewBuilder.buildEmpty()
         };
     }
 
@@ -104,13 +130,40 @@ export default class AuthentificationController extends BaseController<Authentif
         return this.dependencies.creationCompteService.formHasError(this._state.formError);
     }
 
+    verificationErreursPourVousJoindre() {
+        return this.dependencies.rendezVousService.formHasError(this._state.formErrorPourVousJoindre);
+    }
+
     async onLoad() {
+        let estConnecte = false;
+
         this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
         this._profession = await this.dependencies.professionService.getProfession();
+
+        try {
+            await this.onLoadPourVousJoindre();
+            estConnecte = true;
+        } catch (e) {
+        }
+
         this._state = {
             ...this._state,
+            estConnecte,
             situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale),
             profession: this._profession.map(ProfessionModelViewBuilder.buildFromProfession)
+        };
+        this.raiseStateChanged();
+    }
+
+    async onLoadPourVousJoindre() {
+        this._infosContact = new Contact(await this.dependencies.contactService.getContact());
+
+        const infosContact = ContactModelViewBuilder.buildFromContact(this._infosContact);
+
+        this._state = {
+            ...this._state,
+            infosContact,
+            pourVousJoindre: PourVousJoindreModelViewBuilder.buildFromPourVousJoindre(infosContact)
         };
         this.raiseStateChanged();
     }
@@ -268,7 +321,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    communeEstUnDomTom(rechercheCommune: string): boolean {
+    communeEstValide(rechercheCommune: string): boolean {
         const codePostal = parseInt(rechercheCommune, 10);
 
         return rechercheCommune.length < AutoCompleteFieldCommuneEnum.TAILLE_MAX_CODE_POSTAL
@@ -280,9 +333,9 @@ export default class AuthentificationController extends BaseController<Authentif
         let errorMessage = "";
         let communes: CommuneModelView[] = [];
 
-        try {
-            if (rechercheCommune !== "") {
-                if (this.communeEstUnDomTom(rechercheCommune)) {
+        if (rechercheCommune !== "") {
+            if (this.communeEstValide(rechercheCommune)) {
+                try {
                     this._communes = await this.dependencies.creationCompteService.getCommunes(new CommunesRequest({
                         rechercheCommune,
                         lieuDit: true,
@@ -290,17 +343,19 @@ export default class AuthentificationController extends BaseController<Authentif
                         pageSize: 10
                     }));
 
+                    console.log("Données du serveur : ", this._communes);
+
                     communes = this._communes.map(CommuneModelViewBuilder.buildFromCommune);
 
                     if (this._communes.length === 0) {
                         errorMessage = "La commune que vous avez saisie est inconnue. Veuillez à nouveau saisir un code postal ou un nom de commune.";
                     }
-                } else {
-                    errorMessage = "La commune doit être en France métropolitaine (département 01 à 95).";
+                } catch (error) {
+                    errorMessage = "Une erreur est survenue lors de la récupération des communes.";
                 }
+            } else {
+                errorMessage = "La commune doit être en France métropolitaine (département 01 à 95).";
             }
-        } catch (error) {
-            errorMessage = "Une erreur est survenue lors de la récupération des communes.";
         }
 
         this._state = {
@@ -377,12 +432,71 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
+    onChoixContactSelected(choixContact: ChoixContactModelView) {
+        this._state = {
+            ...this._state,
+            pourVousJoindre: {
+                ...this._state.pourVousJoindre,
+                choixContact,
+                noTel: "",
+                adresseMail: ""
+            },
+            formErrorPourVousJoindre: {
+                ...this._state.formErrorPourVousJoindre,
+                choixContact: "",
+                email: "",
+                numeroTelephone: ""
+            }
+        };
+        this.raiseStateChanged();
+    }
+
+    onEmailPourVousJoindreChanged(adresseMail: string) {
+        this._state = {
+            ...this._state,
+            pourVousJoindre: {
+                ...this._state.pourVousJoindre,
+                adresseMail
+            },
+            formErrorPourVousJoindre: {
+                ...this._state.formErrorPourVousJoindre,
+                email: ""
+            }
+        };
+        this.raiseStateChanged();
+    }
+
+    onTelephonePourVousJoindreChanged(noTel: string) {
+        this._state = {
+            ...this._state,
+            pourVousJoindre: {
+                ...this._state.pourVousJoindre,
+                noTel
+            },
+            formErrorPourVousJoindre: {
+                ...this._state.formErrorPourVousJoindre,
+                numeroTelephone: ""
+            }
+        };
+        this.raiseStateChanged();
+    }
+
     async onCreationCompte() {
         const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
 
         this._state = {
             ...this._state,
             formError
+        };
+        this.raiseStateChanged();
+    }
+
+    async onValidationRendezVous() {
+        const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(this._state.rendezVous, this._state.pourVousJoindre);
+
+        this._state = {
+            ...this._state,
+            formErrorPourVousJoindre
         };
         this.raiseStateChanged();
     }
