@@ -12,6 +12,7 @@ describe("Creation Compte", function () {
         controller.onChangeNom("Bobby");
         controller.onChangePrenom("Bobby");
         controller.onChangeNumeroTelephone("0102030405");
+        controller.onChangeEmail("jesuisunrobot@macif.fr");
 
         controller.onInformationsCommercialesEmailSelected({
             code: BooleanChoiceCode.OUI,
@@ -153,6 +154,33 @@ describe("Creation Compte", function () {
         controller.subscribeStateChanged(() => {
             const actual = controller.state;
             expect(actual.formError.errors.numeroTelephone).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que l'email n'est pas renseigné", function (done) {
+        const expected = "Veuillez renseigner votre adresse e-mail";
+
+        const controller = init();
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.email).toBe(expected);
+            done();
+        });
+
+        controller.onCreationCompte();
+    });
+
+    it("doit vérifier que l'email est mal renseigné", function (done) {
+        const expected = "L'adresse e-mail est invalide";
+
+        const controller = init();
+        controller.onChangeEmail("dfdfdfdsfs@gtgt")
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.formError.errors.email).toBe(expected);
             done();
         });
 

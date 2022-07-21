@@ -19,6 +19,7 @@ export interface CreationCompteProps {
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
     readonly onChangeNumeroTelephone: Function;
+    readonly onChangeEmail: Function;
     readonly onParrainageChoixSelected: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly informationsCommercialesEmail: Array<BooleanChoiceModelView>;
@@ -40,6 +41,7 @@ export default function CreationCompteView({
                                                onChangeNom,
                                                onChangePrenom,
                                                onChangeNumeroTelephone,
+                                               onChangeEmail,
                                                onParrainageChoixSelected,
                                                onChangeParrainageNumeroSocietaire,
                                                informationsCommercialesEmail,
@@ -90,6 +92,14 @@ export default function CreationCompteView({
                    message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
                    maxLength={10}
                    errorMessage={errors.numeroTelephone}
+            />
+
+            <Input id="email"
+                   label="E-mail"
+                   onChange={onChangeEmail}
+                   value={dataSource.email}
+                   message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
+                   errorMessage={errors.email}
             />
 
             {DEMANDES_AVEC_PARRAINAGE.includes(rendezVous.demandeSelected.code) &&

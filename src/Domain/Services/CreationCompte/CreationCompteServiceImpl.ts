@@ -51,12 +51,19 @@ export default class CreationCompteServiceImpl {
             formError.errors.prenom = "Veuillez saisir en premier une lettre alphabétique, les chiffres et caractères spéciaux ne sont pas autorisés";
         }
 
-        const regexTelephone: RegExpMatchArray = creationCompte?.numeroTelephone.match(/^0\d{9}/) || [];
+        const regexTelephone: RegExpMatchArray = creationCompte.numeroTelephone.match(/^0\d{9}/) || [];
         if (creationCompte.numeroTelephone.length === 0) {
             formError.errors.numeroTelephone = "Veuillez renseigner votre numéro de téléphone";
 
         } else if (regexTelephone.length === 0) {
             formError.errors.numeroTelephone = "Le numéro de téléphone renseigné est incorrect";
+        }
+
+        const regexEmail: RegExpMatchArray = creationCompte.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/) || [];
+        if(creationCompte.email.length === 0) {
+            formError.errors.email = "Veuillez renseigner votre adresse e-mail";
+        } else if ( regexEmail.length === 0) {
+            formError.errors.email = "L'adresse e-mail est invalide";
         }
 
         if (!creationCompte.informationsCommercialesEmail.code) {
