@@ -1,15 +1,19 @@
 import CreationCompteRepositoryImpl from "../../Repository/CreationCompte/CreationCompteRepositoryImpl";
 import {BooleanChoiceCode} from "../../Data/Enum/BooleanChoice";
-import {CreationCompteModelView} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
-import RendezVousSelectionModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
+import {
+    CreationCompteModelView
+} from "../../../Presentation/pages/Authentification/ModelView/CreationCompte/CreationCompteModelView";
+import RendezVousSelectionModelView
+    from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {RendezVousRepositoryImpl} from "../../Repository/RendezVous";
 import {CommunesRepositoryImpl} from "../../Repository/Communes";
-import {buildCreationCompteRequest} from "../../Builders/CreationCompteBuilder";
-import {buildCreerRendezVous} from "../../Builders/RendezVousBuilder";
-import FormErrorModelViewBuilder from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
+import FormErrorModelViewBuilder
+    from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
 import FormErrorModelView from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
 import CommunesRequest from "../../Model/Commune/CommunesRequest";
 import {isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
+import CreationCompteRequest from "../../Model/CreationCompte/CreationCompteRequest";
+import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 
 export default class CreationCompteServiceImpl {
     private readonly _creationCompteRepo: CreationCompteRepositoryImpl;
@@ -38,7 +42,9 @@ export default class CreationCompteServiceImpl {
     validationFormulaire(creationCompte: CreationCompteModelView, rendezVous: RendezVousSelectionModelView): FormErrorModelView {
         const formError = FormErrorModelViewBuilder.buildEmpty();
 
-        if (creationCompte.parrainageChoix && creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI && rendezVous.noSocietaireParrain?.length > 0) {
+        if (creationCompte.parrainageChoix &&
+            creationCompte.parrainageChoix.code === BooleanChoiceCode.OUI &&
+            rendezVous.noSocietaireParrain?.length > 0) {
             const testRegex: RegExpMatchArray = rendezVous.noSocietaireParrain.match(/\W/) || [];
 
             if (testRegex.length > 0) {
@@ -122,9 +128,29 @@ export default class CreationCompteServiceImpl {
         const formError = this.validationFormulaire(creationCompte, rendezVous);
 
         if (!this.formHasError(formError)) {
-            // MODEL transfo en state request
-            await this._creationCompteRepo.creationCompte(buildCreationCompteRequest(creationCompte));
-            await this._rendezVousRepo.creerRendezVous(buildCreerRendezVous(rendezVous));
+            await this._creationCompteRepo.creationCompte(new CreationCompteRequest({
+                cdCivil: creationCompte.civilite.code,
+                nmPers: creationCompte.nom,
+                znPrenPers: creationCompte.prenom,
+                informationMacifMail: creationCompte.informationsCommercialesEmail.code === "O",
+                informationMacifMessageVocal: creationCompte.informationsCommercialesTelephone.code === "O",
+                informationMacifSms: creationCompte.informationsCommercialesSms.code === "O"
+            }));
+
+            await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({
+                adresseMail: rendezVous.adresseMail,
+                canalRendezVous: rendezVous.canalSelected.code,
+                cdBuro: rendezVous.cdBuro,
+                cdDemande: rendezVous.demandeSelected.code,
+                cdDomaine: rendezVous.domaineSelected.code,
+                estFilleul: rendezVous.estFilleul,
+                heure: rendezVous.heure.code,
+                jour: rendezVous.jour,
+                nmCommu: rendezVous.nmCommu,
+                noSocietaireParrain: rendezVous.noSocietaireParrain,
+                noTel: rendezVous.noTel,
+                precision: rendezVous.precision,
+            }));
         }
 
         return formError;
