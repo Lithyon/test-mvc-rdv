@@ -9,7 +9,7 @@ const rendezVousRequestStub: RendezVousRequestEntity = {
     cdDomaine: "01",
     estFilleul: false,
     heure: 1,
-    jour: new Date(),
+    jour: "2022-01-01",
     nmCommu: "NIORT",
     noSocietaireParrain: "",
     noTel: "",

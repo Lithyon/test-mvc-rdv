@@ -2,27 +2,28 @@ import Prototype from "../Commun/Prototype";
 import PointAccueilState from "./PointAccueilState";
 
 function clonePointAccueilState(): PointAccueilState {
+    const that = this as PointAccueilState;
     return {
-        cdBuro: this.cdBuro,
-        cdNatuVoie: this.cdNatuVoie,
-        cdNoVoie: this.cdNoVoie,
-        cdPost: this.cdPost,
-        cdRegio: this.cdRegio,
-        horairesOuvertureFermetures: this.horairesOuvertureFermetures,
-        liBuro: this.liBuro,
-        liNatuVoie: this.liNatuVoie,
-        liNoVoie: this.liNoVoie,
-        nmCommu: this.nmCommu,
-        nmLieuDit: this.nmLieuDit,
-        nmVoie: this.nmVoie,
-        noAppart: this.noAppart,
-        noBat: this.noBat,
-        noEntree: this.noEntree,
-        noEsca: this.noEsca,
-        noTeleLigne: this.noTeleLigne,
-        noVoie: this.noVoie,
-        typeEquipementAccessibilites: this.typeEquipementAccessibilites,
-        znLocalisSite: this.znLocalisSite
+        cdBuro: that.cdBuro,
+        cdNatuVoie: that.cdNatuVoie,
+        cdNoVoie: that.cdNoVoie,
+        cdPost: that.cdPost,
+        cdRegio: that.cdRegio,
+        horairesOuvertureFermetures: that.horairesOuvertureFermetures,
+        liBuro: that.liBuro,
+        liNatuVoie: that.liNatuVoie,
+        liNoVoie: that.liNoVoie,
+        nmCommu: that.nmCommu,
+        nmLieuDit: that.nmLieuDit,
+        nmVoie: that.nmVoie,
+        noAppart: that.noAppart,
+        noBat: that.noBat,
+        noEntree: that.noEntree,
+        noEsca: that.noEsca,
+        noTeleLigne: that.noTeleLigne,
+        noVoie: that.noVoie,
+        typeEquipementAccessibilites: that.typeEquipementAccessibilites,
+        znLocalisSite: that.znLocalisSite
     };
 }
 

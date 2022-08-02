@@ -2,12 +2,13 @@ import Prototype from "../Commun/Prototype";
 import DisponibilitesRequestState from "./DisponibilitesRequestState";
 
 function cloneDisponibilitesRequestState(): DisponibilitesRequestState {
+    const that = this as DisponibilitesRequestState;
     return {
-        canalRendezVous: this.canalRendezVous,
-        cdBuro: this.cdBuro,
-        cdDemande: this.cdDemande,
-        cdDomaine: this.cdDomaine,
-        dtDebut: this.dtDebut,
+        canalRendezVous: that.canalRendezVous,
+        cdBuro: that.cdBuro,
+        cdDemande: that.cdDemande,
+        cdDomaine: that.cdDomaine,
+        dtDebut: that.dtDebut,
     };
 }
 

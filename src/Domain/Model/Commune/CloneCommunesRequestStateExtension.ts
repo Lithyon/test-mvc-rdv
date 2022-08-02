@@ -2,11 +2,12 @@ import Prototype from "../Commun/Prototype";
 import CommunesRequestState from "./CommunesRequestState";
 
 function cloneCommunesRequestState(): CommunesRequestState {
+    const that = this as CommunesRequestState;
     return {
-        rechercheCommune: this.rechercheCommune,
-        pageSize: this.pageSize,
-        lieuDit: this.lieuDit,
-        ancienNom: this.ancienNom
+        rechercheCommune: that.rechercheCommune,
+        pageSize: that.pageSize,
+        lieuDit: that.lieuDit,
+        ancienNom: that.ancienNom
     };
 }
 

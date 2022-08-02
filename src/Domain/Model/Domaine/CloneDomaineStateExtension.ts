@@ -2,9 +2,10 @@ import Prototype from "../Commun/Prototype";
 import DomaineState from "./DomaineState";
 
 function cloneDomaineState(): DomaineState {
+    const that = this as DomaineState;
     return {
-        code: this.code,
-        libelle: this.libelle
+        code: that.code,
+        libelle: that.libelle
     };
 }
 

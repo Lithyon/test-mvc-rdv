@@ -1,10 +1,9 @@
 import {init} from "./common/Init";
-import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 
 describe('Prise de rendez vous - OnJourSelected', function () {
 
     it("doit renseigner le jour sélectionné pour la prise de rendez vous", function (done) {
-        const expected = rendezVousRequestStub.jour;
+        const expected = new Date(0);
 
         const controller = init();
 

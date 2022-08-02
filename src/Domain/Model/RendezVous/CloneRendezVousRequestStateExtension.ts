@@ -2,19 +2,20 @@ import Prototype from "../Commun/Prototype";
 import RendezVousRequestState from "./RendezVousRequestState";
 
 function cloneRendezVousRequestState(): RendezVousRequestState {
+    const that = this as RendezVousRequestState;
     return {
-        adresseMail: this.adresseMail,
-        canalRendezVous: this.canalSelected,
-        cdBuro: this.cdBuro,
-        cdDemande: this.cdDemande,
-        cdDomaine: this.cdDomaine,
-        estFilleul: this.estFilleul,
-        heure: this.heure,
-        jour: this.jour,
-        nmCommu: this.nmCommu,
-        noSocietaireParrain: this.noSocietaireParrain,
-        noTel: this.noTel,
-        precision: this.precision
+        adresseMail: that.adresseMail,
+        canalRendezVous: that.canalRendezVous,
+        cdBuro: that.cdBuro,
+        cdDemande: that.cdDemande,
+        cdDomaine: that.cdDomaine,
+        estFilleul: that.estFilleul,
+        heure: that.heure,
+        jour: that.jour,
+        nmCommu: that.nmCommu,
+        noSocietaireParrain: that.noSocietaireParrain,
+        noTel: that.noTel,
+        precision: that.precision
     };
 }
 

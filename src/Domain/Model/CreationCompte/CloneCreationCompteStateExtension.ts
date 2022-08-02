@@ -2,8 +2,9 @@ import Prototype from "../Commun/Prototype";
 import CreationCompteState from "./CreationCompteState";
 
 function cloneCreationCompteState(): CreationCompteState {
+    const that = this as CreationCompteState;
     return {
-        listeRejets: this.listeRejets
+        listeRejets: that.listeRejets
     };
 }
 

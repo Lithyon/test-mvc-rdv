@@ -10,6 +10,7 @@ import {AutreChoixCode} from "../../Data/Enum/AutreChoix";
 import {CanalCode} from "../../Data/Enum/Canal";
 import CanalModelView from "../../../Presentation/pages/RendezVous/ModelView/Canal/CanalModelView";
 import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
+import {format} from "date-fns";
 
 export default class RendezVousServiceImpl {
     private readonly rendezVousRepo: RendezVousRepositoryImpl;
@@ -92,7 +93,7 @@ export default class RendezVousServiceImpl {
                 cdDomaine: rendezVous.domaineSelected.code,
                 estFilleul: rendezVous.estFilleul,
                 heure: rendezVous.heure.code,
-                jour: rendezVous.jour,
+                jour: format(rendezVous.jour, "yyyy-MM-dd"),
                 nmCommu: rendezVous.nmCommu,
                 noSocietaireParrain: rendezVous.noSocietaireParrain,
                 precision: rendezVous.precision

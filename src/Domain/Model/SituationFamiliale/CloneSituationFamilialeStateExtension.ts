@@ -2,9 +2,10 @@ import Prototype from "../Commun/Prototype";
 import SituationFamilialeState from "./SituationFamilialeState";
 
 function cloneSituationFamilialeState(): SituationFamilialeState {
+    const that = this as SituationFamilialeState;
     return {
-        code: this.code,
-        libelle: this.libelle
+        code: that.code,
+        libelle: that.libelle
     };
 }
 

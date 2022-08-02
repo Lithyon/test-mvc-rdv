@@ -2,8 +2,9 @@ import Prototype from "../Commun/Prototype";
 import RendezVousState from "./RendezVousState";
 
 function cloneRendezVousState(): RendezVousState {
+    const that = this as RendezVousState;
     return {
-        listeRejets: this.listeRejets
+        listeRejets: that.listeRejets
     };
 }
 

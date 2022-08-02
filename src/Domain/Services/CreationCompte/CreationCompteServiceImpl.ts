@@ -161,7 +161,7 @@ export default class CreationCompteServiceImpl {
                 cdDomaine: rendezVous.domaineSelected.code,
                 estFilleul: rendezVous.estFilleul,
                 heure: rendezVous.heure.code,
-                jour: rendezVous.jour,
+                jour: format(rendezVous.jour, "yyyy-MM-dd"),
                 nmCommu: rendezVous.nmCommu,
                 noSocietaireParrain: rendezVous.noSocietaireParrain,
                 noTel: rendezVous.noTel,

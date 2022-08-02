@@ -153,37 +153,40 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     async onLoad() {
-        let estConnecte = false;
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
             this._profession = await this.dependencies.professionService.getProfession();
-            await this.onLoadPourVousJoindre();
-            estConnecte = true;
             this._state = {
                 ...this._state,
-                estConnecte,
                 situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale),
                 profession: this._profession.map(ProfessionModelViewBuilder.buildFromProfession)
             };
-        } catch (e: any) {
-            if (e.message !== "Utilisateur non connecté") {
-                this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
-            }
+
+            await this.onLoadPourVousJoindre();
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
         this._onLoadAuthentificationObserver.raiseAdvancementEvent({isOver: true});
         this.raiseStateChanged();
     }
 
     async onLoadPourVousJoindre() {
-        this._infosContact = new Contact(await this.dependencies.contactService.getContact());
+        try {
+            this._infosContact = new Contact(await this.dependencies.contactService.getContact());
+            const infosContact = ContactModelViewBuilder.buildFromContact(this._infosContact);
 
-        const infosContact = ContactModelViewBuilder.buildFromContact(this._infosContact);
-        this._state = {
-            ...this._state,
-            infosContact,
-            pourVousJoindre: PourVousJoindreModelViewBuilder.buildFromPourVousJoindre(infosContact)
-        };
+            this._state = {
+                ...this._state,
+                infosContact,
+                estConnecte: true,
+                pourVousJoindre: PourVousJoindreModelViewBuilder.buildFromPourVousJoindre(infosContact)
+            };
+        } catch (e: any) {
+            if (e.message !== "Utilisateur non connecté") {
+                this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+            }
+        }
         this.raiseStateChanged();
     }
 

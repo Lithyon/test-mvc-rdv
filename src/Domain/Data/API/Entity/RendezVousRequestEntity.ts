@@ -8,7 +8,7 @@ export default interface RendezVousRequestEntity {
     cdDomaine: string;
     estFilleul: boolean;
     heure: number;
-    jour: Date;
+    jour: string;
     nmCommu: string;
     noSocietaireParrain: string;
     noTel: string;

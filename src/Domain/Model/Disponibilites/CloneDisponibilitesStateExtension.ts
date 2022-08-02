@@ -2,9 +2,10 @@ import Prototype from "../Commun/Prototype";
 import DisponibilitesState from "./DisponibilitesState";
 
 function cloneDisponibilitesState(): DisponibilitesState {
+    const that = this as DisponibilitesState;
     return {
-        disponibilites: this.disponibilites,
-        aucuneDisponibilite: this.aucuneDisponibilite
+        disponibilites: that.disponibilites,
+        aucuneDisponibilite: that.aucuneDisponibilite
     };
 }
 

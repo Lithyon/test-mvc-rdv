@@ -2,10 +2,11 @@ import Prototype from "../Commun/Prototype";
 import CanalState from "./CanalState";
 
 function cloneCanalState(): CanalState {
+    const that = this as CanalState;
     return {
-        code: this.code,
-        libelle: this.libelle,
-        isNew: this.isNew
+        code: that.code,
+        libelle: that.libelle,
+        isNew: that.isNew
     };
 }
 
