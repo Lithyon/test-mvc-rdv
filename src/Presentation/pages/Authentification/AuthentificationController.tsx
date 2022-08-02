@@ -34,6 +34,10 @@ import ContactModelView from "./ModelView/Contact/ContactModelView";
 import {RendezVousServiceImpl} from "../../../Domain/Services/RendezVous";
 import FormErrorPourVousJoindreModelView from "./ModelView/FormError/FormErrorPourVousJoindreModelView";
 import FormErrorPourVousJoindreModelViewBuilder from "./ModelView/FormError/FormErrorPourVousJoindreModelViewBuilder";
+import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
+import {LoadingObservable} from "../../commons/LoadingObservable";
+import ErrorObservableImpl from "../../commons/Impl/ErrorObservableImpl";
+import {ErrorObservable} from "../../commons/ErrorObservable";
 
 enum AutoCompleteFieldCommuneEnum {
     NUMERO_CODE_POSTAL_MAX = 96000,
@@ -68,11 +72,13 @@ interface AuthentificationControllerDependencies {
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> implements IsLoadable {
-    private _state: AuthentificationModelView;
     private _communes: Array<Commune> = [];
     private _situationFamiliale?: Array<SituationFamiliale>;
     private _profession?: Array<Profession>;
     private _infosContact?: Contact;
+    private readonly _onLoadAuthentificationObserver: LoadingObservableImpl;
+    private readonly _hasErrorObserver: ErrorObservableImpl;
+
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
@@ -101,6 +107,8 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onTelephonePourVousJoindreChanged = this.onTelephonePourVousJoindreChanged.bind(this);
         this.onEmailPourVousJoindreChanged = this.onEmailPourVousJoindreChanged.bind(this);
         this.onLoadPourVousJoindre = this.onLoadPourVousJoindre.bind(this);
+        this._onLoadAuthentificationObserver = new LoadingObservableImpl();
+        this._hasErrorObserver = new ErrorObservableImpl();
 
         this._state = {
             estConnecte: false,
@@ -122,8 +130,18 @@ export default class AuthentificationController extends BaseController<Authentif
         };
     }
 
+    private _state: AuthentificationModelView;
+
     get state(): AuthentificationModelView {
         return this._state;
+    }
+
+    get onLoadAuthentificationObserver(): LoadingObservable {
+        return this._onLoadAuthentificationObserver;
+    }
+
+    get hasErrorObserver(): ErrorObservable {
+        return this._hasErrorObserver;
     }
 
     formHasError() {
@@ -136,22 +154,24 @@ export default class AuthentificationController extends BaseController<Authentif
 
     async onLoad() {
         let estConnecte = false;
-
-        this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
-        this._profession = await this.dependencies.professionService.getProfession();
-
         try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            this._situationFamiliale = await this.dependencies.situationFamilialeService.getSituationFamiliale();
+            this._profession = await this.dependencies.professionService.getProfession();
             await this.onLoadPourVousJoindre();
             estConnecte = true;
-        } catch (e) {
+            this._state = {
+                ...this._state,
+                estConnecte,
+                situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale),
+                profession: this._profession.map(ProfessionModelViewBuilder.buildFromProfession)
+            };
+        } catch (e: any) {
+            if (e.message !== "Utilisateur non connecté") {
+                this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+            }
         }
-
-        this._state = {
-            ...this._state,
-            estConnecte,
-            situationFamiliale: this._situationFamiliale.map(SituationFamilialeModelViewBuilder.buildFromSituationFamiliale),
-            profession: this._profession.map(ProfessionModelViewBuilder.buildFromProfession)
-        };
+        this._onLoadAuthentificationObserver.raiseAdvancementEvent({isOver: true});
         this.raiseStateChanged();
     }
 
@@ -159,7 +179,6 @@ export default class AuthentificationController extends BaseController<Authentif
         this._infosContact = new Contact(await this.dependencies.contactService.getContact());
 
         const infosContact = ContactModelViewBuilder.buildFromContact(this._infosContact);
-
         this._state = {
             ...this._state,
             infosContact,
@@ -343,8 +362,6 @@ export default class AuthentificationController extends BaseController<Authentif
                         pageSize: 10
                     }));
 
-                    console.log("Données du serveur : ", this._communes);
-
                     communes = this._communes.map(CommuneModelViewBuilder.buildFromCommune);
 
                     if (this._communes.length === 0) {
@@ -482,22 +499,33 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     async onCreationCompte() {
-        const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
 
-        this._state = {
-            ...this._state,
-            formError
-        };
-        this.raiseStateChanged();
+            this._state = {
+                ...this._state,
+                formError
+            };
+            this.raiseStateChanged();
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
     }
 
     async onValidationRendezVous() {
-        const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(this._state.rendezVous, this._state.pourVousJoindre);
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
+                this._state.rendezVous, this._state.pourVousJoindre);
 
-        this._state = {
-            ...this._state,
-            formErrorPourVousJoindre
-        };
-        this.raiseStateChanged();
+            this._state = {
+                ...this._state,
+                formErrorPourVousJoindre
+            };
+            this.raiseStateChanged();
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
     }
 }

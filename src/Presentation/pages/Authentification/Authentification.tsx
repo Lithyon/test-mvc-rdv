@@ -4,6 +4,13 @@ import useAttachController from "../../hooks/useAttachController";
 import CreationCompte from "./CreationCompte";
 import useInitContexte from "../../hooks/useInitContexte";
 import PourVousJoindre from "./PourVousJoindre/PourVousJoindre";
+import React from "react";
+import LoadWaitingIsOver from "../../commons/LoadingEvent/LoadWaitingIsOver";
+import useLoaderObservable from "../../hooks/useLoaderObservable";
+import DisplayError from "../../components/DisplayError";
+import ErrorIsTriggered from "../../commons/ErrorEvent/ErrorIsTriggered";
+import useErrorObservable from "../../hooks/useErrorObservable";
+import {Loader} from "macif-components";
 
 interface AuthentificationProps {
     readonly controller: AuthentificationController;
@@ -26,7 +33,7 @@ function BandeauPourVousJoindre({state, controller}: BandeauProps) {
                          formError={state.formErrorPourVousJoindre}
                          formHasError={controller.verificationErreursPourVousJoindre}
         />
-    </>
+    </>;
 }
 
 function BandeauCreationCompte({state, controller}: BandeauProps) {
@@ -69,10 +76,16 @@ export default function Authentification({controller}: AuthentificationProps) {
 
     const state = useAttachController(controller);
     useInitContexte(controller);
-
-    if (state.estConnecte) {
-        return <BandeauPourVousJoindre state={state} controller={controller} />;
+    const {hasError}: ErrorIsTriggered = useErrorObservable(controller.hasErrorObserver);
+    const {isOver}: LoadWaitingIsOver = useLoaderObservable(controller.onLoadAuthentificationObserver);
+    if (hasError) {
+        return <DisplayError/>;
     }
-
-    return <BandeauCreationCompte state={state} controller={controller} />;
+    if (!isOver) {
+        return <Loader ball className="mcf-mx--auto"/>;
+    }
+    if (isOver && state.estConnecte) {
+        return <BandeauPourVousJoindre state={state} controller={controller}/>;
+    }
+    return <BandeauCreationCompte state={state} controller={controller}/>;
 }
