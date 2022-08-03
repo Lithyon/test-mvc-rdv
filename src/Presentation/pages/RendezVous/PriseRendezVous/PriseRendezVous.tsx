@@ -97,7 +97,9 @@ export default function PriseRendezVous({
                     meilleures solutions d’assurance
                     pour votre activité.
                 </p>
-                <Button variant="light">Demander mon rendez-vous Pro</Button>
+                <Button variant="light"
+                        href="/assurance/professionnels-et-entreprises/demande-de-rendez-vous-pour-les-professionnels-et-les-entreprises">Demander
+                    mon rendez-vous Pro</Button>
             </Alert>}
             <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
                             choiceSelected={dataSource.canalSelected}
