@@ -22,13 +22,9 @@ export default class CreationCompteServiceImpl {
         this._communesRepo = communesRepo;
     }
 
-    getCommunes(request: CommunesRequest) {
-        return this._communesRepo.getCommunes(request);
-    }
-
     private static verifierContenuNomEtPrenom(value: string): boolean {
-        const testRegex: RegExpMatchArray = value.match(/\W|\d/) || [];
-        return testRegex.length > 0;
+        const testRegex: RegExpMatchArray = value.match(/^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{1}[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ\s-]+$/) || [];
+        return testRegex.length === 0;
     }
 
     private static verifierEmail(value: string): boolean {
@@ -39,6 +35,10 @@ export default class CreationCompteServiceImpl {
     private static verifierTelephone(value: string): boolean {
         const testRegex: RegExpMatchArray = value.match(/^0\d{9}/) || [];
         return testRegex.length === 0;
+    }
+
+    getCommunes(request: CommunesRequest) {
+        return this._communesRepo.getCommunes(request);
     }
 
     formHasError(formError: FormErrorModelView): boolean {
