@@ -78,8 +78,8 @@ export function init(
         async getDisponibilites(request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
             return disponibilites;
         },
-        async creerRendezVous(request: RendezVousRequestEntity): Promise<RendezVousEntity> {
-            return rendezVous;
+        async creerRendezVous(request: RendezVousRequestEntity): Promise<void> {
+            return Promise.resolve();
         }
     })
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);

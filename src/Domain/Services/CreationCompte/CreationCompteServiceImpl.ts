@@ -10,16 +10,20 @@ import CommunesRequest from "../../Model/Commune/CommunesRequest";
 import {format, isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
 import CreationCompteRequest from "../../Model/CreationCompte/CreationCompteRequest";
 import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
+import {IdentiteRepositoryImpl} from "../../Repository/Identite";
 
 export default class CreationCompteServiceImpl {
     private readonly _creationCompteRepo: CreationCompteRepositoryImpl;
     private readonly _rendezVousRepo: RendezVousRepositoryImpl;
     private readonly _communesRepo: CommunesRepositoryImpl;
+    private readonly _identiteRepo: IdentiteRepositoryImpl;
 
-    constructor(creationCompteRepo: CreationCompteRepositoryImpl, rendezVousRepo: RendezVousRepositoryImpl, communesRepo: CommunesRepositoryImpl) {
+    constructor(creationCompteRepo: CreationCompteRepositoryImpl, rendezVousRepo: RendezVousRepositoryImpl, communesRepo: CommunesRepositoryImpl,
+                identiteRepo: IdentiteRepositoryImpl) {
         this._creationCompteRepo = creationCompteRepo;
         this._rendezVousRepo = rendezVousRepo;
         this._communesRepo = communesRepo;
+        this._identiteRepo = identiteRepo;
     }
 
     private static verifierContenuNomEtPrenom(value: string): boolean {
@@ -129,7 +133,7 @@ export default class CreationCompteServiceImpl {
         const formError = this.validationFormulaireCreationCompte(creationCompte, rendezVous.noSocietaireParrain);
 
         if (!this.formHasError(formError)) {
-            await this._creationCompteRepo.creationCompte(new CreationCompteRequest({
+            const creationCompteResult = await this._creationCompteRepo.creationCompte(new CreationCompteRequest({
                 cdCivil: creationCompte.civilite.code,
                 nmPers: creationCompte.nom,
                 znPrenPers: creationCompte.prenom,
@@ -153,20 +157,26 @@ export default class CreationCompteServiceImpl {
                 }
             }));
 
-            await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({
-                adresseMail: rendezVous.adresseMail,
-                canalRendezVous: rendezVous.canalSelected.code,
-                cdBuro: rendezVous.cdBuro,
-                cdDemande: rendezVous.demandeSelected.code,
-                cdDomaine: rendezVous.domaineSelected.code,
-                estFilleul: rendezVous.estFilleul,
-                heure: rendezVous.heure.code,
-                jour: format(rendezVous.jour, "yyyy-MM-dd"),
-                nmCommu: rendezVous.nmCommu,
-                noSocietaireParrain: rendezVous.noSocietaireParrain,
-                noTel: rendezVous.noTel,
-                precision: rendezVous.precision
-            }));
+            if (creationCompteResult.state.idCreationCompte) {
+                await this._creationCompteRepo.sauvegardeResultatCreationCompte(creationCompteResult.state.idCreationCompte);
+
+                await this._identiteRepo.getIdentite();
+
+                await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({
+                    adresseMail: creationCompte.email,
+                    canalRendezVous: rendezVous.canalSelected.code,
+                    cdBuro: rendezVous.cdBuro,
+                    cdDemande: rendezVous.demandeSelected.code,
+                    cdDomaine: rendezVous.domaineSelected.code,
+                    estFilleul: rendezVous.estFilleul,
+                    heure: rendezVous.heure.code,
+                    jour: format(rendezVous.jour, "yyyy-MM-dd"),
+                    nmCommu: rendezVous.nmCommu,
+                    noSocietaireParrain: rendezVous.noSocietaireParrain,
+                    noTel: creationCompte.numeroTelephone,
+                    precision: rendezVous.precision
+                }));
+            }
         }
 
         return formError;

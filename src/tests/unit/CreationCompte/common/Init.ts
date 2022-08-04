@@ -29,6 +29,8 @@ import contactStub from "../../../../../mocks/ContactStub";
 import {RendezVousServiceImpl} from "../../../../Domain/Services/RendezVous";
 import {AuthentificationRepositoryImpl} from "../../../../Domain/Repository/Authentification";
 import RendezVousModelView from "../../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
+import IdentiteEntity from "../../../../Domain/Data/API/Entity/IdentiteEntity";
+import {IdentiteRepositoryImpl} from "../../../../Domain/Repository/Identite";
 
 export function init(
     disponibilites: DisponibilitesEntity = disponibilitesStub,
@@ -41,6 +43,9 @@ export function init(
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
             return creationCompte;
+        },
+        sauvegardeResultatCreationCompte(_request: string): Promise<void> {
+            return Promise.resolve();
         }
     });
 
@@ -50,17 +55,23 @@ export function init(
         }
     });
 
+    const identiteRepository = new IdentiteRepositoryImpl({
+        async getIdentite(): Promise<IdentiteEntity> {
+            return {} as IdentiteEntity;
+        }
+    });
+
     const rendezVousRepository = new RendezVousRepositoryImpl({
         async getDisponibilites(_request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
             return disponibilites;
         },
-        async creerRendezVous(_request: RendezVousRequestEntity): Promise<RendezVousEntity> {
-            return rendezVous;
+        async creerRendezVous(_request: RendezVousRequestEntity): Promise<void> {
+            return Promise.resolve();
         }
     });
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
-    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository);
+    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository, identiteRepository);
 
     const situationFamilialeServiceRepo = new SituationFamilialeRepositoryImpl({
         async getSituationFamiliale(): Promise<SituationFamilialeEntity> {

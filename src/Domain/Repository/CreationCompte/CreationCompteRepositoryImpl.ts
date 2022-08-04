@@ -12,4 +12,8 @@ export default class CreationCompteRepositoryImpl {
     async creationCompte(creationCompte: CreationCompteRequest) {
         return new CreationCompte(await this._dataSource.creationCompte(creationCompte.state));
     }
+
+    async sauvegardeResultatCreationCompte(requestParam: string) {
+        return this._dataSource.sauvegardeResultatCreationCompte(requestParam);
+    }
 }

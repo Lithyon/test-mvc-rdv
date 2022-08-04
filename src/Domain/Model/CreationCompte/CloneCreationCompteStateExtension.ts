@@ -4,7 +4,7 @@ import CreationCompteState from "./CreationCompteState";
 function cloneCreationCompteState(): CreationCompteState {
     const that = this as CreationCompteState;
     return {
-        listeRejets: that.listeRejets
+        idCreationCompte: that.idCreationCompte
     };
 }
 

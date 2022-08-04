@@ -368,7 +368,8 @@ export default class AuthentificationController extends BaseController<Authentif
                     communes = this._communes.map(CommuneModelViewBuilder.buildFromCommune);
 
                     if (this._communes.length === 0) {
-                        errorMessage = "La commune que vous avez saisie est inconnue. Veuillez à nouveau saisir un code postal ou un nom de commune.";
+                        errorMessage =
+                            "La commune que vous avez saisie est inconnue. Veuillez à nouveau saisir un code postal ou un nom de commune.";
                     }
                 } catch (error) {
                     errorMessage = "Une erreur est survenue lors de la récupération des communes.";

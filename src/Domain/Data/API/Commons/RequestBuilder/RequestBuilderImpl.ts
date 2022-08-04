@@ -17,7 +17,7 @@ export class RequestBuilderImpl<TRESPONSEBODY> {
             "X-Code-Cible": "5",
             "X-No-Struct": "324",
             "X-Code-Langue": "fr-FR",
-            "X-Action-Id": this.generateActionId(),
+            "X-Action-Id": this.generateActionId()
         });
 
         if (this._navId !== undefined && this._navId !== "undefined" && this._navId !== "") {
@@ -60,20 +60,23 @@ export class RequestBuilderImpl<TRESPONSEBODY> {
         return this;
     }
 
-    async fetchJson(): Promise<TRESPONSEBODY> {
+    onlyFetch(): Promise<Response> {
         const isWritable = this.isWritable;
 
         if (isWritable && !this._body) {
             throw new Error("Body must be initiliazed");
         }
 
-        const response = await fetch(this._uri, {
+        return fetch(this._uri, {
             method: this._method,
             headers: this._headers,
             body: isWritable ? this._body : undefined,
             credentials: "include"
         });
+    }
 
+    async fetchJson(): Promise<TRESPONSEBODY> {
+        const response = await this.onlyFetch();
         return response.json();
     }
 }

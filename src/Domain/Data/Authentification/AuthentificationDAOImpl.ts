@@ -5,6 +5,7 @@ import {ResponseEntity} from "../API/Entity/ResponseEntity";
 import RendezVousModelView from "../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 import {getNavId} from "../API/Commons/GetNavId";
 import {getCookie} from "../API/Commons/Cookie";
+import {CookieKeysEnum} from "../Enum/CookieKeysEnum";
 
 const BASE_URL = `${window.servicesRestBaseUrl || ""}/internet-authentification-rest`;
 
@@ -78,6 +79,6 @@ export default class AuthentificationDAOImpl implements AuthentificationDAO {
     }
 
     estConnecte(): boolean {
-        return !!getCookie("mfsauth");
+        return !!getCookie(CookieKeysEnum.MFS_AUTH);
     }
 }

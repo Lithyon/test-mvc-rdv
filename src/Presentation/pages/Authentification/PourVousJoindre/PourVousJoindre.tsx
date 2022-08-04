@@ -70,6 +70,7 @@ export default function PourVousJoindre({
                        onChange={onTelephonePourVousJoindreChanged}
                        message="Veuillez renseigner le numéro sur lequel vous souhaitez être joint"
                        value={dataSource.noTel}
+                       maxLength={10}
                        errorMessage={formError.numeroTelephone}
                 />}
 
