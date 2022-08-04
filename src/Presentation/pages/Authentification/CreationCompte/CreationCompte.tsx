@@ -156,7 +156,7 @@ export default function CreationCompteView({
                    label="E-mail"
                    onChange={onChangeEmail}
                    value={dataSource.email}
-                   message="Votre e-mail vous servir d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
+                   message="Votre e-mail vous servira d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
                    autoComplete="email"
                    errorMessage={formError.email}
             />
