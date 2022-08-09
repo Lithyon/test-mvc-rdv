@@ -34,7 +34,9 @@ export default function JourSwitcher({
 
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDisponibilitesObserver);
 
-    const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = useMemo(() => disponibilites.map(() => React.createRef<HTMLLabelElement>()), [disponibilites]);
+    const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = useMemo(() => disponibilites.map(
+        () => React.createRef<HTMLLabelElement>()), [disponibilites]
+    );
 
     useEffect(() => {
         if (disponibilites.length > 0) {

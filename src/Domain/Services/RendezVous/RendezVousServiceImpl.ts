@@ -25,7 +25,7 @@ export default class RendezVousServiceImpl {
     }
 
     private static verifierTelephone(value: string): boolean {
-        const testRegex: RegExpMatchArray = value.match(/^0\d{9}/) || [];
+        const testRegex: RegExpMatchArray = value.match(/^0[1-9]{1}[0-9]{8}$/) || [];
         return testRegex.length === 0;
     }
 
