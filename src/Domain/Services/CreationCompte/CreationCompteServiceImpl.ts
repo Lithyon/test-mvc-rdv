@@ -7,7 +7,7 @@ import {CommunesRepositoryImpl} from "../../Repository/Communes";
 import FormErrorModelViewBuilder from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelViewBuilder";
 import FormErrorModelView from "../../../Presentation/pages/Authentification/ModelView/FormError/FormErrorModelView";
 import CommunesRequest from "../../Model/Commune/CommunesRequest";
-import {format, isAfter, isBefore, isEqual, subMonths, subYears} from "date-fns";
+import {format, isAfter, isBefore, isEqual, subYears} from "date-fns";
 import CreationCompteRequest from "../../Model/CreationCompte/CreationCompteRequest";
 import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 import {IdentiteRepositoryImpl} from "../../Repository/Identite";
@@ -37,7 +37,7 @@ export default class CreationCompteServiceImpl {
     }
 
     private static verifierTelephone(value: string): boolean {
-        const testRegex: RegExpMatchArray = value.match(/^0\d{9}/) || [];
+        const testRegex: RegExpMatchArray = value.match(/^0[1-9]{1}[0-9]{8}$/) || [];
         return testRegex.length === 0;
     }
 
@@ -94,7 +94,7 @@ export default class CreationCompteServiceImpl {
             const date18ans = subYears(new Date(), 18);
 
             if (isBefore(creationCompte.dateNaissance, new Date(1900, 0, 1))
-                || isAfter(creationCompte.dateNaissance, subMonths(date18ans, 18))) {
+                || isAfter(creationCompte.dateNaissance, date18ans)) {
                 formError.dateNaissance = `La date doit être comprise entre 01/01/1900 et ${date18ans.toLocaleDateString()}`;
             }
         }
@@ -158,8 +158,6 @@ export default class CreationCompteServiceImpl {
             }));
 
             if (creationCompteResult.state.idCreationCompte) {
-                await this._creationCompteRepo.sauvegardeResultatCreationCompte(creationCompteResult.state.idCreationCompte);
-
                 await this._identiteRepo.getIdentite();
 
                 await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({

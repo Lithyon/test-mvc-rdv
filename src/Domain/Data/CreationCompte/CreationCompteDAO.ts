@@ -3,5 +3,4 @@ import CreationCompteRequestEntity from "../API/Entity/CreationCompteRequestEnti
 
 export default interface CreationCompteDAO {
     creationCompte(creationCompteRequestEntity: CreationCompteRequestEntity): Promise<CreationCompteEntity>;
-    sauvegardeResultatCreationCompte(requestParam: string): Promise<void>;
 }

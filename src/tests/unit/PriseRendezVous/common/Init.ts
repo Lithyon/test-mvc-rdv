@@ -88,7 +88,9 @@ export function init(
         estConnecte() {
             return false;
         },
-        async initialiseConnexion(urlRedirection: string, uuid: string) {},
+        async initialiseConnexion(urlRedirection: string, uuid: string): Promise<void> {
+            return Promise.resolve();
+        },
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";
         }

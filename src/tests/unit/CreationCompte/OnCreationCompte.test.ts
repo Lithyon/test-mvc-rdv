@@ -313,7 +313,7 @@ describe("Creation Compte", function () {
             done();
         });
 
-        controller.onRechercheCommune("200000");
+        controller.onRechercheCommune("96000");
     });
 });
 

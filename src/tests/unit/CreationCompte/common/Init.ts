@@ -43,9 +43,6 @@ export function init(
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
             return creationCompte;
-        },
-        sauvegardeResultatCreationCompte(_request: string): Promise<void> {
-            return Promise.resolve();
         }
     });
 
@@ -71,7 +68,12 @@ export function init(
     });
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
-    const creationCompteService = new CreationCompteServiceImpl(creationCompteRepository, rendezVousRepository, communesRepository, identiteRepository);
+    const creationCompteService = new CreationCompteServiceImpl(
+        creationCompteRepository,
+        rendezVousRepository,
+        communesRepository,
+        identiteRepository
+    );
 
     const situationFamilialeServiceRepo = new SituationFamilialeRepositoryImpl({
         async getSituationFamiliale(): Promise<SituationFamilialeEntity> {
@@ -97,7 +99,9 @@ export function init(
         estConnecte() {
             return true;
         },
-        async initialiseConnexion(urlRedirection: string, uuid: string) {},
+        async initialiseConnexion(urlRedirection: string, uuid: string): Promise<void> {
+            return Promise.resolve();
+        },
         async sauvegardeDonneesUtilisateur(state: RendezVousModelView): Promise<string> {
             return "uuidSauvegardeDonneesUtilisateur";
         }
@@ -105,5 +109,11 @@ export function init(
 
     const contactService = new ContactServiceImpl(contactRepo, authentificationRepo);
 
-    return new AuthentificationController({rendezVousService, creationCompteService, situationFamilialeService, professionService, contactService});
+    return new AuthentificationController({
+        rendezVousService,
+        creationCompteService,
+        situationFamilialeService,
+        professionService,
+        contactService
+    });
 }

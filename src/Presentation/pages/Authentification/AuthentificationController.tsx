@@ -39,10 +39,7 @@ import {LoadingObservable} from "../../commons/LoadingObservable";
 import ErrorObservableImpl from "../../commons/Impl/ErrorObservableImpl";
 import {ErrorObservable} from "../../commons/ErrorObservable";
 
-enum AutoCompleteFieldCommuneEnum {
-    NUMERO_CODE_POSTAL_MAX = 96000,
-    TAILLE_MAX_CODE_POSTAL = 5
-}
+const NUMERO_CODE_POSTAL_MAX = "96000";
 
 export interface AuthentificationModelView {
     readonly estConnecte: boolean,
@@ -78,7 +75,6 @@ export default class AuthentificationController extends BaseController<Authentif
     private _infosContact?: Contact;
     private readonly _onLoadAuthentificationObserver: LoadingObservableImpl;
     private readonly _hasErrorObserver: ErrorObservableImpl;
-
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
@@ -285,7 +281,7 @@ export default class AuthentificationController extends BaseController<Authentif
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                nom
+                nom: nom.trim()
             },
             formError: {
                 ...this._state.formError,
@@ -301,7 +297,7 @@ export default class AuthentificationController extends BaseController<Authentif
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                prenom
+                prenom: prenom.trim()
             },
             formError: {
                 ...this._state.formError,
@@ -332,7 +328,7 @@ export default class AuthentificationController extends BaseController<Authentif
             ...this._state,
             creationCompte: {
                 ...this._state.creationCompte,
-                email
+                email: email.trim()
             },
             formError: {
                 ...this._state.formError,
@@ -344,11 +340,20 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     communeEstValide(rechercheCommune: string): boolean {
-        const codePostal = parseInt(rechercheCommune, 10);
+        const matchCodePostal = rechercheCommune.match(/^\d{1,5}/) || [];
 
-        return rechercheCommune.length < AutoCompleteFieldCommuneEnum.TAILLE_MAX_CODE_POSTAL
-            || codePostal < AutoCompleteFieldCommuneEnum.NUMERO_CODE_POSTAL_MAX
-            || isNaN(codePostal);
+        if (matchCodePostal[0]) {
+            const codePostal = parseInt(matchCodePostal[0], 10);
+            const debutCodePostalMax = parseInt(NUMERO_CODE_POSTAL_MAX.substring(0, codePostal.toString().length), 10);
+
+            if (codePostal.toString().length < 5) {
+                return codePostal <= debutCodePostalMax;
+            }
+
+            return codePostal < debutCodePostalMax;
+        }
+
+        return true;
     }
 
     async onRechercheCommune(rechercheCommune: string) {
@@ -477,7 +482,7 @@ export default class AuthentificationController extends BaseController<Authentif
             ...this._state,
             pourVousJoindre: {
                 ...this._state.pourVousJoindre,
-                adresseMail
+                adresseMail: adresseMail.trim()
             },
             formErrorPourVousJoindre: {
                 ...this._state.formErrorPourVousJoindre,
