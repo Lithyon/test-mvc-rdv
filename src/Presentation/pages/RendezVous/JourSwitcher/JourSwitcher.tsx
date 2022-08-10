@@ -41,8 +41,9 @@ export default function JourSwitcher({
     useEffect(() => {
         if (disponibilites.length > 0) {
             const dtJour = new Date();
-            const dispoDebut = sub(new Date(disponibilites[0].jour), {days: 6});
-            const dispoFin = new Date(disponibilites[disponibilites.length - 1].jour);
+            dtJour.setHours(0, 0, 0, 0);
+            const dispoDebut = sub(new Date(disponibilites[0].jour), {days: 7});
+            const dispoFin = add(new Date(disponibilites[disponibilites.length - 1].jour), {days: 1});
             const dtMax = add(dtJour, {months: 3});
 
             setDatePrev(dispoDebut);
