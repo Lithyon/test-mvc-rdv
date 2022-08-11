@@ -37,6 +37,7 @@ export interface PriseRendezVousProps {
     readonly onChoixConnexionSelected: (value: ChoixConnexionModelView) => void;
     readonly choixConnexion: Array<ChoixConnexionModelView>;
     readonly onValidationFormulaire: Function;
+    readonly estConnecte: boolean;
 }
 
 export default function PriseRendezVous({
@@ -56,7 +57,8 @@ export default function PriseRendezVous({
                                             hasErrorDisponibilitesObserver,
                                             onChoixConnexionSelected,
                                             choixConnexion,
-                                            onValidationFormulaire
+                                            onValidationFormulaire,
+                                            estConnecte
                                         }: PriseRendezVousProps) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -127,13 +129,17 @@ export default function PriseRendezVous({
 
                             {dataSource.afficherChoixConnexion && choixConnexion.length > 0 &&
                                 <>
-                                    <h3>Vos informations</h3>
+                                    {!estConnecte &&
+                                        <>
+                                            <h3>Vos informations</h3>
+                                            <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
+                                                            choiceSelected={dataSource.choixConnexionSelected}
+                                                            dataSource={choixConnexion} nbSwitchers={2}
+                                                            label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
+                                                            id="hasAccount"/>
 
-                                    <ChoiceSwitcher onChoiceSelected={onChoixConnexionSelected} show={dataSource.afficherChoixConnexion}
-                                                    choiceSelected={dataSource.choixConnexionSelected}
-                                                    dataSource={choixConnexion} nbSwitchers={2}
-                                                    label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
-                                                    id="hasAccount"/>
+                                        </>
+                                    }
                                     {dataSource.choixConnexionSelected.code !== "" &&
                                         <Row className="mcf-justify-content--between">
                                             <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="2">

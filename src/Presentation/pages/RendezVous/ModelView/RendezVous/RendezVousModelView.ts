@@ -13,5 +13,6 @@ export default interface RendezVousModelView {
     readonly choixConnexion: Array<ChoixConnexionModelView>;
     readonly disponibilites: DisponibilitesModelView;
     readonly rendezVous: RendezVousSelectionModelView;
+    readonly estConnecte: boolean;
     readonly pointAccueil: BandeauPointAccueilModelView;
 }

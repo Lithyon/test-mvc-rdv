@@ -31,7 +31,7 @@ export default function ModaleConfirmation({
         <Modal.Footer>
             <Button
                 variant="primary"
-                href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
+                href="/sites/maciffr/assurance/particuliers/vos-espaces-macif/espace-assurance/messagerie">
                 Accéder à mon espace personnel
             </Button>
         </Modal.Footer>

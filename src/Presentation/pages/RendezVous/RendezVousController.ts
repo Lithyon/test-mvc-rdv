@@ -86,6 +86,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
             disponibilites: DisponibilitesModelViewBuilder.buildEmpty(),
             rendezVous: RendezVousSelectionModelViewBuilder.buildEmpty(),
             pointAccueil: BandeauPointAccueilModelViewBuilder.buildEmpty(),
+            estConnecte: this.dependencies.authentificationService.estConnecte()
         };
     }
 
@@ -268,6 +269,15 @@ export default class RendezVousController extends BaseController<RendezVousModel
                 heure: heureSelected
             }
         };
+        if (this._state.estConnecte) {
+            this._state = {
+                ...this._state,
+                rendezVous: {
+                    ...this._state.rendezVous,
+                    choixConnexionSelected: ChoixConnexionModelViewBuilder.buildConnected()
+                }
+            };
+        }
         this.raiseStateChanged();
     }
 

@@ -31,10 +31,10 @@ import {AuthentificationRepositoryImpl} from "../../../../Domain/Repository/Auth
 import RendezVousModelView from "../../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 import IdentiteEntity from "../../../../Domain/Data/API/Entity/IdentiteEntity";
 import {IdentiteRepositoryImpl} from "../../../../Domain/Repository/Identite";
-import {CodeMessageApplicatif} from "../../../../Domain/Data/Enum/CodeMessageApplicatif";
 import AuthentificationEntity from "../../../../Domain/Data/API/Entity/AuthentificationEntity";
 import authentificationStub from "../../../../../mocks/AuthentificationStub";
 import {AuthentificationServiceImpl} from "../../../../Domain/Services/Authentification";
+import {CodeMessageApplicatif} from "../../../../Domain/Data/Enum/CodeMessageApplicatif";
 
 interface InitDependencies {
     disponibilites: DisponibilitesEntity;

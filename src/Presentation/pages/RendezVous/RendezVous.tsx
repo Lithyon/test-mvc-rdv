@@ -38,22 +38,23 @@ export default function RendezVous({controller}: RendezVousProps) {
         <>
             <BandeauPointAccueil dataSource={state.pointAccueil}/>
             <PriseRendezVous dataSource={state.rendezVous}
-                                demandes={state.demandes}
-                                domaines={state.domaines}
-                                canal={state.canal}
-                                onDomaineSelected={controller.onDomaineSelected}
-                                onDemandeSelected={controller.onDemandeSelected}
-                                onCanalSelected={controller.onCanalSelected}
-                                onPrecisionChanged={controller.onPrecisionChanged}
-                                disponibilites={state.disponibilites}
-                                onJourSelected={controller.onJourSelected}
-                                loadDisponibilites={controller.loadDisponibilites}
-                                onHeureSelected={controller.onHeureSelected}
-                                onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
-                                hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
-                                choixConnexion={state.choixConnexion}
-                                onChoixConnexionSelected={controller.onChoixConnexionSelected}
-                                onValidationFormulaire={controller.onValidationFormulaire}/>
+                             demandes={state.demandes}
+                             domaines={state.domaines}
+                             canal={state.canal}
+                             onDomaineSelected={controller.onDomaineSelected}
+                             onDemandeSelected={controller.onDemandeSelected}
+                             onCanalSelected={controller.onCanalSelected}
+                             onPrecisionChanged={controller.onPrecisionChanged}
+                             disponibilites={state.disponibilites}
+                             onJourSelected={controller.onJourSelected}
+                             loadDisponibilites={controller.loadDisponibilites}
+                             onHeureSelected={controller.onHeureSelected}
+                             onLoadDisponibilitesObserver={controller.onLoadDisponibilitesObserver}
+                             hasErrorDisponibilitesObserver={controller.hasErrorDisponibilitesObserver}
+                             choixConnexion={state.choixConnexion}
+                             onChoixConnexionSelected={controller.onChoixConnexionSelected}
+                             onValidationFormulaire={controller.onValidationFormulaire}
+                             estConnecte={state.estConnecte}/>
         </>
     );
 }

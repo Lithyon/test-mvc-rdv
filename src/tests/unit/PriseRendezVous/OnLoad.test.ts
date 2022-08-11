@@ -1,5 +1,5 @@
 import pointAccueilStub from "../../../../mocks/PointAccueilStub";
-import {init} from "./common/Init";
+import {defaultDependenciesInitPriseRendezVous, init} from "./common/Init";
 import domaineStub from "../../../../mocks/DomaineStub";
 import rendezVousRequestStub from "../../../../mocks/RendezVousRequestStub";
 import {canauxSansVisioStub, canauxStub} from "../../../../mocks/CanauxStub";
@@ -282,7 +282,7 @@ describe('Prise de rendez vous - OnLoad', function () {
     it("doit afficher deux canaux de prise de rendez-vous sur trois", (done) => {
         const expected = canauxSansVisioStub;
 
-        const controller = init(eligibilitesSansVisioStub);
+        const controller = init({...defaultDependenciesInitPriseRendezVous, eligibilites: eligibilitesSansVisioStub});
 
         controller.subscribeStateChanged(() => {
             const actual = controller.state;

@@ -32,32 +32,47 @@ import {AuthentificationServiceImpl} from "../../../../Domain/Services/Authentif
 import AuthentificationEntity from "../../../../Domain/Data/API/Entity/AuthentificationEntity";
 import authentificationStub from "../../../../../mocks/AuthentificationStub";
 
-export function init(
-    eligibilites: EligibiliteEntity = eligibilitesStub,
-    demande: DemandeEntity = demandeStub,
-    domaine: DomaineEntity = domaineStub,
-    pointAccueil: PointAccueilEntity = pointAccueilStub,
-    disponibilites: DisponibilitesEntity = disponibilitesStub,
-    rendezVous: RendezVousEntity = rendezVousStub,
-    authentification: AuthentificationEntity = authentificationStub) {
+interface InitDependencies {
+    eligibilites: EligibiliteEntity;
+    demande: DemandeEntity;
+    domaine: DomaineEntity;
+    pointAccueil: PointAccueilEntity;
+    disponibilites: DisponibilitesEntity;
+    rendezVous: RendezVousEntity;
+    authentification: AuthentificationEntity;
+    estConnecte: boolean;
+}
+
+export const defaultDependenciesInitPriseRendezVous: InitDependencies = {
+    eligibilites: eligibilitesStub,
+    demande: demandeStub,
+    domaine: domaineStub,
+    pointAccueil: pointAccueilStub,
+    disponibilites: disponibilitesStub,
+    rendezVous: rendezVousStub,
+    authentification: authentificationStub,
+    estConnecte: false,
+};
+
+export function init(dependencies = defaultDependenciesInitPriseRendezVous) {
 
     const domaineRepository = new DomaineRepositoryImpl({
         async getDomaines(): Promise<DomaineEntity> {
-            return domaine;
+            return dependencies.domaine;
         }
     });
     const domaineService = new DomaineServiceImpl(domaineRepository);
 
     const demandeRepository = new DemandeRepositoryImpl({
         async getDemandes(): Promise<DemandeEntity> {
-            return demande;
+            return dependencies.demande;
         }
     });
     const demandeService = new DemandeServiceImpl(demandeRepository);
 
     const canalRepository = new CanalRepositoryImpl({
         async getEligibilites(): Promise<EligibiliteEntity> {
-            return eligibilites;
+            return dependencies.eligibilites;
         }
     });
     const canalService = new CanalServiceImpl(canalRepository);
@@ -69,14 +84,14 @@ export function init(
 
     const pointAccueilRepository = new PointAccueilRepositoryImpl({
         async getPointAccueil(cdBuro: string): Promise<PointAccueilEntity> {
-            return pointAccueil;
+            return dependencies.pointAccueil;
         }
     });
     const pointAccueilService = new PointAccueilServiceImpl(pointAccueilRepository);
 
     const rendezVousRepository = new RendezVousRepositoryImpl({
         async getDisponibilites(request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
-            return disponibilites;
+            return dependencies.disponibilites;
         },
         async creerRendezVous(request: RendezVousRequestEntity): Promise<void> {
             return Promise.resolve();
@@ -86,7 +101,7 @@ export function init(
 
     const authentificationRepository = new AuthentificationRepositoryImpl({
         estConnecte() {
-            return false;
+            return dependencies.estConnecte;
         },
         async initialiseConnexion(urlRedirection: string, uuid: string): Promise<void> {
             return Promise.resolve();
