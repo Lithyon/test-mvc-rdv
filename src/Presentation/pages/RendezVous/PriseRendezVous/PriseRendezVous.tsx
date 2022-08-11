@@ -1,4 +1,4 @@
-import {Alert, Button, Form} from "macif-components";
+import {Alert, Button, Col, Form, Row} from "macif-components";
 import RendezVousSelectionModelView from "../ModelView/RendezVous/RendezVousSelectionModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {TypeDomaine} from "../../../../Domain/Data/Enum/Domaine";
@@ -133,10 +133,16 @@ export default function PriseRendezVous({
                                                     dataSource={choixConnexion} nbSwitchers={2}
                                                     label="Pour confirmer votre rendez-vous, nous avons besoin de vous identifier. Avez-vous un espace client ?"
                                                     id="hasAccount"/>
-                                    {dataSource.choixConnexionSelected.code !== "" && <div className="mcf-d--flex mcf-justify-content--between">
-                                        <Button variant="outline--primary">Annuler</Button>
-                                        <Button className="mcf-mr--3" onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
-                                    </div>}
+                                    {dataSource.choixConnexionSelected.code !== "" &&
+                                        <Row className="mcf-justify-content--between">
+                                            <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="2">
+                                                <Button block onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
+                                            </Col>
+                                            <Col className="mcf-pl--0" sm="6" md="2">
+                                                <Button block href="/" variant="outline--primary">Annuler</Button>
+                                            </Col>
+                                        </Row>
+                                    }
                                 </>
                             }
                         </>

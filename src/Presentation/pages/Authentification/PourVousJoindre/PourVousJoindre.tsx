@@ -2,7 +2,7 @@ import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {PourVousJoindreModelView} from "../ModelView/PourVousJoindre/PourVousJoindreModelView";
 import Input from "../../../components/Input";
 import React from "react";
-import {Button, Form} from "macif-components";
+import {Button, Col, Form, Row} from "macif-components";
 import {AutreChoixCode} from "../../../../Domain/Data/Enum/AutreChoix";
 import FormErrorPourVousJoindreModelView from "../ModelView/FormError/FormErrorPourVousJoindreModelView";
 import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
@@ -63,32 +63,43 @@ export default function PourVousJoindre({
                             dataSource={choiceSelected}
                             label={onChoixLabelSwitcher()}
                             errorMessage={formError.choixContact}/>
-
             {dataSource.choixContact.code === AutreChoixCode.TELEPHONE &&
-                <Input id={AutreChoixCode.TELEPHONE}
-                       label="Numéro de téléphone"
-                       onChange={onTelephonePourVousJoindreChanged}
-                       message="Veuillez renseigner le numéro sur lequel vous souhaitez être joint"
-                       value={dataSource.noTel}
-                       maxLength={10}
-                       errorMessage={formError.numeroTelephone}
-                />}
-
+                <div className="mcf-mr--3 mcf-mb--6">
+                    <Input id={AutreChoixCode.TELEPHONE}
+                           label="Numéro de téléphone"
+                           type="tel"
+                           classNameControl="mcf-w-sm--50 mcf-w-md--25"
+                           onChange={onTelephonePourVousJoindreChanged}
+                           message="Veuillez renseigner le numéro sur lequel vous souhaitez être joint"
+                           value={dataSource.noTel}
+                           maxLength={10}
+                           errorMessage={formError.numeroTelephone}
+                    />
+                </div>
+            }
             {dataSource.choixContact.code === AutreChoixCode.MAIL &&
-                <Input id={AutreChoixCode.MAIL}
-                       label="E-mail"
-                       onChange={onEmailPourVousJoindreChanged}
-                       message="Veuillez renseigner l'adresse e-mail sur laquelle vous souhaitez recevoir ces informations"
-                       value={dataSource.adresseMail}
-                       errorMessage={formError.email}
-                />}
-
-            <div className="mcf-d--flex mcf-justify-content--between">
-                <Button variant="outline--primary">Annuler</Button>
-                <Button variant="primary" onClick={handleValidationRendezVous} disabled={hasError}>
-                    Confirmer mon rendez-vous
-                </Button>
-            </div>
+                <div className="mcf-mr--3 mcf-mb--6">
+                    <Input id={AutreChoixCode.MAIL}
+                           label="E-mail"
+                           type="email"
+                           classNameControl="mcf-w-sm--75 mcf-w-md--50"
+                           onChange={onEmailPourVousJoindreChanged}
+                           message="Veuillez renseigner l'adresse e-mail sur laquelle vous souhaitez recevoir ces informations"
+                           value={dataSource.adresseMail}
+                           errorMessage={formError.email}
+                    />
+                </div>
+            }
+            <Row className="mcf-justify-content--between">
+                <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
+                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={hasError}>
+                        Confirmer mon rendez-vous
+                    </Button>
+                </Col>
+                <Col className="mcf-pl--0" sm="6" md="2">
+                    <Button block href="/" variant="outline--primary">Annuler</Button>
+                </Col>
+            </Row>
         </Form>
     </>;
 }

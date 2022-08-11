@@ -1,6 +1,6 @@
 import {CiviliteModelView} from "../ModelView/Civilite/CiviliteModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
-import {Button, Form} from "macif-components";
+import {Button, Col, Form, Row} from "macif-components";
 import Parrainage from "./Parrainage/Parrainage";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import {DEMANDES_AVEC_PARRAINAGE} from "../../../../Domain/Data/Enum/Demande";
@@ -144,6 +144,7 @@ export default function CreationCompteView({
 
             <Input id="numeroTelephone"
                    label="Numéro de téléphone"
+                   type="tel"
                    onChange={onChangeNumeroTelephone}
                    value={dataSource.numeroTelephone}
                    message="Si besoin, un conseiller pourra vous contacter sur ce numéro à propos de votre rendez-vous."
@@ -154,6 +155,7 @@ export default function CreationCompteView({
 
             <Input id="email"
                    label="E-mail"
+                   type="email"
                    onChange={onChangeEmail}
                    value={dataSource.email}
                    message="Votre e-mail vous servira d'identifiant pour vous connecter à votre espace personnel sur macif.fr. Un mot de passe temporaire vous sera envoyé sur cet e-mail."
@@ -225,13 +227,16 @@ export default function CreationCompteView({
                             id="informationsCommercialesTelephone"
                             errorMessage={formError.informationsCommercialesTelephone}
             />
-
-            <div className="mcf-d--flex mcf-justify-content--between">
-                <Button variant="outline--primary">Annuler</Button>
-                <Button variant="primary" onClick={handleCreationCompte} disabled={hasError}>
-                    Confirmer mon rendez-vous
-                </Button>
-            </div>
+            <Row className="mcf-justify-content--between">
+                <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
+                    <Button block variant="primary" onClick={handleCreationCompte} disabled={hasError}>
+                        Confirmer mon rendez-vous
+                    </Button>
+                </Col>
+                <Col className="mcf-pl--0" sm="6" md="2">
+                    <Button block href="/" variant="outline--primary">Annuler</Button>
+                </Col>
+            </Row>
         </Form>
     </>;
 }

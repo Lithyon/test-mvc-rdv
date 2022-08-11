@@ -11,6 +11,7 @@ export interface InputProps {
     readonly maxLength?: number;
     readonly errorMessage?: string;
     readonly autoComplete?: string;
+    readonly classNameControl?: string;
 }
 
 export default function Input({
@@ -22,7 +23,8 @@ export default function Input({
                                   type = "text",
                                   maxLength,
                                   errorMessage = "",
-                                  autoComplete = "off"
+                                  autoComplete = "off",
+                                  classNameControl = "mcf-col-md-8"
                               }: InputProps) {
     const [inputValue, setInputValue] = useState(value);
 
@@ -40,7 +42,7 @@ export default function Input({
                       onChange={handleChangeValue}
                       value={inputValue}
                       maxLength={maxLength}
-                      className="mcf-col-md-8"
+                      className={classNameControl}
                       isInvalid={errorMessage !== ""}
                       autoComplete={autoComplete}/>
         <Form.Control.Feedback type="invalid">
