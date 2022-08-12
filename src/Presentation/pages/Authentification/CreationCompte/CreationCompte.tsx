@@ -29,21 +29,21 @@ export interface CreationCompteProps {
     readonly communes: Array<CommuneModelView>;
     readonly situationFamiliale: Array<SituationFamilialeModelView>;
     readonly profession: Array<ProfessionModelView>;
-    readonly onCiviliteSelected: Function;
+    readonly onCiviliteSelected: (value: CiviliteModelView) => void;
     readonly onChangeNom: Function;
     readonly onChangePrenom: Function;
     readonly onChangeNumeroTelephone: Function;
     readonly onChangeEmail: Function;
-    readonly onParrainageChoixSelected: Function;
+    readonly onParrainageChoixSelected: (value: BooleanChoiceModelView) => void;
     readonly onCommuneSelected: Function;
     readonly onRechercheCommune: Function;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly onChangeDateNaissance: Function;
     readonly onChangeProfession: Function;
     readonly onChangeSituationFamiliale: Function;
-    readonly onInformationsCommercialesEmailSelected: Function;
-    readonly onInformationsCommercialesSmsSelected: Function;
-    readonly onInformationsCommercialesTelephoneSelected: Function;
+    readonly onInformationsCommercialesEmailSelected: (value: BooleanChoiceModelView) => void;
+    readonly onInformationsCommercialesSmsSelected: (value: BooleanChoiceModelView) => void;
+    readonly onInformationsCommercialesTelephoneSelected: (value: BooleanChoiceModelView) => void;
     readonly onCreationCompte: Function;
     readonly formHasError: Function;
 }

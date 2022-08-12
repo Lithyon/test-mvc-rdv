@@ -9,7 +9,7 @@ export interface ParrainageProps {
     readonly dataSource: BooleanChoiceModelView;
     readonly parrainageChoix: Array<BooleanChoiceModelView>;
     readonly noSocietaireParrain: string;
-    readonly onParrainageChoixSelected: Function;
+    readonly onParrainageChoixSelected: (value: BooleanChoiceModelView) => void;
     readonly onChangeParrainageNumeroSocietaire: Function;
     readonly errorMessageNumeroSocietaire?: string;
 }

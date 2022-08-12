@@ -6,7 +6,7 @@ import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibl
 import CanalModelView from "../ModelView/Canal/CanalModelView";
 
 export interface HeureSwitcherProps {
-    readonly onChoiceSelected: Function;
+    readonly onChoiceSelected: (value: HeureDisponibleModelView) => void;
     readonly choiceSelected: HeureDisponibleModelView;
     readonly jourSelected: Date;
     readonly dataSource: Array<JourDisponibleModelView>;
@@ -54,7 +54,7 @@ export default function HeureSwitcher({
                                 choiceSelected={choiceSelected}
                                 dataSource={disponibilitesApresMidi}
                                 id="heureApresMidi"
-                                label="Après Midi"
+                                label="Après-Midi"
                                 nbSwitchers={6}/>
                 {disponibilitesApresMidi.length === 0 && (
                     <Form.Group>

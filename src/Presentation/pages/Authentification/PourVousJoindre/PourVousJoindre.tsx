@@ -7,11 +7,12 @@ import {AutreChoixCode} from "../../../../Domain/Data/Enum/AutreChoix";
 import FormErrorPourVousJoindreModelView from "../ModelView/FormError/FormErrorPourVousJoindreModelView";
 import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
 import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
+import {ChoixContactModelView} from "../ModelView/PourVousJoindre/ChoixContactModelView";
 
 export interface PourVousJoindreProps {
     readonly dataSource: PourVousJoindreModelView;
     readonly canalSelected: CanalModelView;
-    readonly onChoixPourVousJoindreSelected: Function;
+    readonly onChoixPourVousJoindreSelected: (value: ChoixContactModelView) => void;
     readonly onTelephonePourVousJoindreChanged: Function;
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onValidationRendezVous: Function;

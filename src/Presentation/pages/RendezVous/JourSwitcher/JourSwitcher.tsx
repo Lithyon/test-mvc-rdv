@@ -9,7 +9,7 @@ import DisplayError from "../../../components/DisplayError";
 
 export interface JourSwitcherProps {
     readonly choiceSelected: Date,
-    readonly onChoiceSelected: Function,
+    readonly onChoiceSelected: (value: Date) => void,
     readonly dataSource: DisponibilitesModelView,
     readonly onClick: Function,
     readonly isOver: boolean,
@@ -94,7 +94,7 @@ export default function JourSwitcher({
                     const disabled = value.ferie || (value.disponibilitesMatin.length === 0 && value.disponibilitesApresMidi.length === 0);
                     return (
                         <Form.Switcher ref={tableauRefInput[index]} key={index} value={value.jour} disabled={disabled} aria-disabled={disabled}
-                                       id={value.jour} className="mcf-btn--switcher--outline">
+                                       id={value.jour.toString().replace(/\s+/g, '')} className="mcf-btn--switcher--outline">
                             {value.jour.toLocaleDateString('fr-FR', {
                                 weekday: "short",
                                 day: "numeric",

@@ -7,7 +7,7 @@ export interface Choice {
 }
 
 export interface ChoiceSwitcherProps<T extends Choice> {
-    readonly onChoiceSelected: Function;
+    readonly onChoiceSelected: (value: T) => void;
     readonly choiceSelected: T;
     readonly dataSource: Array<T>;
     readonly label: string;
@@ -47,7 +47,8 @@ export default function ChoiceSwitcher<T extends Choice>({
             >
                 {dataSource.map((value, index) => {
                     return (
-                        <Form.Switcher id={id + value.libelle + value.code + index} key={index} value={value} className="mcf-btn--switcher--outline">
+                        <Form.Switcher id={id + value.libelle + value.code + index} key={index} value={value}
+                                       className="mcf-btn--switcher--outline">
                             {value.isNew && <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}
                         </Form.Switcher>

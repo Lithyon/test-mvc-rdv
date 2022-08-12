@@ -17,23 +17,24 @@ import {useEffect, useRef} from "react";
 import DisplayError from "../../../components/DisplayError";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
+import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibleModelView";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
-    readonly onDomaineSelected: Function;
+    readonly onDomaineSelected: (value: DomaineModelView) => void;
     readonly domaines: Array<DomaineModelView>;
-    readonly onDemandeSelected: Function;
+    readonly onDemandeSelected: (value: DemandeModelView) => void;
     readonly demandes: Array<DemandeModelView>;
-    readonly onCanalSelected: Function;
+    readonly onCanalSelected: (value: CanalModelView) => void;
     readonly canal: Array<CanalModelView>;
     readonly onPrecisionChanged: Function;
     readonly disponibilites: DisponibilitesModelView;
-    readonly onJourSelected: Function;
+    readonly onJourSelected: (value: Date) => void;
     readonly loadDisponibilites: Function;
-    readonly onHeureSelected: Function;
+    readonly onHeureSelected: (value: HeureDisponibleModelView) => void;
     readonly onLoadDisponibilitesObserver: LoadingObservable;
     readonly hasErrorDisponibilitesObserver: ErrorObservable;
-    readonly onChoixConnexionSelected: Function;
+    readonly onChoixConnexionSelected: (value: ChoixConnexionModelView) => void;
     readonly choixConnexion: Array<ChoixConnexionModelView>;
     readonly onValidationFormulaire: Function;
 }
