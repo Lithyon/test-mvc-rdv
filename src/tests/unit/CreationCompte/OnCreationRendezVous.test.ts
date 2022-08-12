@@ -17,7 +17,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
                 done();
             });
 
-            controller.onValidationRendezVous();
+            controller.onCreationRendezVous();
         });
 
         controller.onLoad();
@@ -36,7 +36,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationRendezVous();
+        controller.onCreationRendezVous();
     });
 
     it("doit lever une erreur car l'adresse mail saisie est incorrect", function (done) {
@@ -53,7 +53,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationRendezVous();
+        controller.onCreationRendezVous();
     });
 
     it("doit vérifier qu'il n'y a pas d'erreur de saisie de formulaire dans le cas d'un numéro téléphone", function (done) {
@@ -70,7 +70,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
                 done();
             });
 
-            controller.onValidationRendezVous();
+            controller.onCreationRendezVous();
         });
 
         controller.onLoad();
@@ -90,7 +90,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationRendezVous();
+        controller.onCreationRendezVous();
     });
 
     it("doit lever une erreur dans le cas d'un autre choix et que le téléphone n'est pas renseigné", function (done) {
@@ -106,7 +106,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationRendezVous();
+        controller.onCreationRendezVous();
     });
 
     it("doit lever une erreur si aucun choix de contact est sélectionné - téléphone", function (done) {
@@ -120,7 +120,22 @@ describe("Pour vous joindre - validation du formulaire", function () {
             done();
         });
 
-        controller.onValidationRendezVous();
+        controller.onCreationRendezVous();
     });
+
+    it("doit afficher la modale de confirmation de création de rendez-vous", function (done) {
+        const expected = true;
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.afficherModaleConfirmation).toBe(expected);
+            done();
+        });
+
+        controller.onCreationRendezVous();
+
+    })
 });
 

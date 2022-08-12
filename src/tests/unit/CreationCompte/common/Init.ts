@@ -32,17 +32,28 @@ import RendezVousModelView from "../../../../Presentation/pages/RendezVous/Model
 import IdentiteEntity from "../../../../Domain/Data/API/Entity/IdentiteEntity";
 import {IdentiteRepositoryImpl} from "../../../../Domain/Repository/Identite";
 
-export function init(
-    disponibilites: DisponibilitesEntity = disponibilitesStub,
-    rendezVous: RendezVousEntity = rendezVousStub,
-    creationCompte: CreationCompteEntity = creationCompteStub,
-    situationFamiliale: SituationFamilialeEntity = situationFamilialeStub,
-    profession: ProfessionEntity = professionStub,
-    contact: ContactEntity = contactStub
-) {
+interface InitDependencies {
+    disponibilites: DisponibilitesEntity;
+    rendezVous: RendezVousEntity;
+    creationCompte: CreationCompteEntity;
+    situationFamiliale: SituationFamilialeEntity;
+    profession: ProfessionEntity;
+    contact: ContactEntity;
+}
+
+export const defaultDependencies: InitDependencies = {
+    disponibilites: disponibilitesStub,
+    rendezVous: rendezVousStub,
+    creationCompte: creationCompteStub,
+    situationFamiliale: situationFamilialeStub,
+    profession: professionStub,
+    contact: contactStub
+}
+
+export function init(dependencies = defaultDependencies) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
-            return creationCompte;
+            return dependencies.creationCompte;
         }
     });
 
@@ -60,7 +71,7 @@ export function init(
 
     const rendezVousRepository = new RendezVousRepositoryImpl({
         async getDisponibilites(_request: DisponibilitesRequestEntity): Promise<DisponibilitesEntity> {
-            return disponibilites;
+            return dependencies.disponibilites;
         },
         async creerRendezVous(_request: RendezVousRequestEntity): Promise<void> {
             return Promise.resolve();
@@ -77,21 +88,21 @@ export function init(
 
     const situationFamilialeServiceRepo = new SituationFamilialeRepositoryImpl({
         async getSituationFamiliale(): Promise<SituationFamilialeEntity> {
-            return situationFamiliale;
+            return dependencies.situationFamiliale;
         }
     });
     const situationFamilialeService = new SituationFamilialeServiceImpl(situationFamilialeServiceRepo);
 
     const professionRepo = new ProfessionRepositoryImpl({
         async getProfession(): Promise<ProfessionEntity> {
-            return profession;
+            return dependencies.profession;
         }
     });
     const professionService = new ProfessionServiceImpl(professionRepo);
 
     const contactRepo = new ContactRepositoryImpl({
         async getContact(): Promise<ContactEntity> {
-            return contact;
+            return dependencies.contact;
         }
     });
 

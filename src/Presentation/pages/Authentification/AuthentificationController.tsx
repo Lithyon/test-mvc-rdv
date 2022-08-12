@@ -58,6 +58,7 @@ export interface AuthentificationModelView {
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
     readonly pourVousJoindre: PourVousJoindreModelView,
     readonly infosContact: ContactModelView,
+    readonly afficherModaleConfirmation: boolean
 }
 
 interface AuthentificationControllerDependencies {
@@ -83,7 +84,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.formHasError = this.formHasError.bind(this);
         this.verificationErreursPourVousJoindre = this.verificationErreursPourVousJoindre.bind(this);
         this.onCreationCompte = this.onCreationCompte.bind(this);
-        this.onValidationRendezVous = this.onValidationRendezVous.bind(this);
+        this.onCreationRendezVous = this.onCreationRendezVous.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
         this.onChangeNom = this.onChangeNom.bind(this);
         this.onChangePrenom = this.onChangePrenom.bind(this);
@@ -122,7 +123,8 @@ export default class AuthentificationController extends BaseController<Authentif
             informationsCommercialesTelephone: DefaultBooleanChoice,
             rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
             pourVousJoindre: PourVousJoindreModelViewBuilder.buildEmpty(),
-            infosContact: ContactModelViewBuilder.buildEmpty()
+            infosContact: ContactModelViewBuilder.buildEmpty(),
+            afficherModaleConfirmation: false
         };
     }
 
@@ -522,7 +524,7 @@ export default class AuthentificationController extends BaseController<Authentif
         }
     }
 
-    async onValidationRendezVous() {
+    async onCreationRendezVous() {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
@@ -530,6 +532,7 @@ export default class AuthentificationController extends BaseController<Authentif
 
             this._state = {
                 ...this._state,
+                afficherModaleConfirmation: true,
                 formErrorPourVousJoindre
             };
             this.raiseStateChanged();

@@ -1,12 +1,16 @@
-import BandeauModification from "../BandeauModification/BandeauModification";
-import PourVousJoindre from "../PourVousJoindre/PourVousJoindre";
+import BandeauModification from "../BandeauModification";
+import PourVousJoindre from "../PourVousJoindre";
 import React from "react";
 import AuthentificationController, {AuthentificationModelView} from "../AuthentificationController";
+import {Button, Modal} from "macif-components";
+import CorpsModaleConfirmation from "./CorpsModaleConfirmation";
+import TitreModaleConfirmation from "./TitreModaleConfirmation";
 
 export interface EtapePourVousJoindreProps {
     readonly state: AuthentificationModelView;
     readonly controller: AuthentificationController;
 }
+
 
 export default function EtapePourVousJoindre({state, controller}: EtapePourVousJoindreProps) {
     return <>
@@ -16,40 +20,35 @@ export default function EtapePourVousJoindre({state, controller}: EtapePourVousJ
                          onChoixPourVousJoindreSelected={controller.onChoixContactSelected}
                          onTelephonePourVousJoindreChanged={controller.onTelephonePourVousJoindreChanged}
                          onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
-                         onValidationRendezVous={controller.onValidationRendezVous}
+                         onValidationRendezVous={controller.onCreationRendezVous}
                          infosModale={state.infosModale}
                          formError={state.formErrorPourVousJoindre}
                          formHasError={controller.verificationErreursPourVousJoindre}
         />
-        {/*<Modal*/}
-        {/*    show={showModalConfirmation}*/}
-        {/*    onHide={() => setShow(false)}*/}
-        {/*    centered*/}
-        {/*    backdrop="static"*/}
-        {/*>*/}
-        {/*    <Modal.Header closeButton/>*/}
+        <Modal
+            show={state.afficherModaleConfirmation}
+            centered
+            backdrop="static"
+        >
+            <Modal.Header closeButton/>
 
-        {/*    <Modal.Body>*/}
-        {/*        <>*/}
-        {/*            <span className={`icon ${classIcon} icon-title`}/>*/}
-        {/*            <Modal.Title>{title}</Modal.Title>*/}
-        {/*            <p>{children}</p>*/}
-        {/*        </>*/}
-        {/*    </Modal.Body>*/}
+            <Modal.Body>
+                <>
+                    <span className={`icon icon-macif-mobile-cercle-check mcf-text--success icon-title`}/>
+                    <Modal.Title><TitreModaleConfirmation canalSelected={state.rendezVous.canalSelected}/></Modal.Title>
+                    <CorpsModaleConfirmation canalSelected={state.rendezVous.canalSelected}/>
+                </>
+            </Modal.Body>
 
-        {/*    <Modal.Footer>*/}
-        {/*        {cancelTextButton && onCancel &&*/}
-        {/*            <Button variant="outline--primary" onClick={() => onCancel()}>*/}
-        {/*                {cancelTextButton}*/}
-        {/*            </Button>}*/}
+            <Modal.Footer>
+                <Button
+                    variant="primary"
+                    href="/">
+                    Accéder à mon espace client
+                </Button>
+            </Modal.Footer>
+        </Modal>
 
-        {/*        <Button*/}
-        {/*            variant="primary"*/}
-        {/*            onClick={() => onValidate()}>*/}
-        {/*            {validateTextButton}*/}
-        {/*        </Button>*/}
-        {/*    </Modal.Footer>*/}
-        {/*</Modal>*/}
         {/*<Modal*/}
         {/*    show={showModaComptedejaexistant}*/}
         {/*    onHide={() => setShow(false)}*/}
