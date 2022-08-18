@@ -353,7 +353,7 @@ describe("Creation Compte", function () {
         controller.onCreationCompte();
     });
 
-    it("doit afficher la modale de confirmation de création de prospect", function (done) {
+    it("doit afficher la modale de confirmation d'email", function (done) {
         const expected = true;
 
         const controller = init();
@@ -366,5 +366,38 @@ describe("Creation Compte", function () {
 
         controller.onAfficherModaleModificationEmail(true);
     });
+});
+
+it("doit afficher la modale de confirmation de prise de rendez vous en tant que prospect", function (done) {
+    const expected = true;
+
+    const controller = init();
+    const dateNaissance = new Date(1990, 1, 1);
+
+    controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
+    controller.onChangeNom("Bobby");
+    controller.onChangePrenom("Bobby");
+    controller.onChangeNumeroTelephone("0102030405");
+    controller.onChangeEmail("jesuisunrobot@macif.fr");
+    controller.onChangeDateNaissance(dateNaissance);
+    controller.onChangeSituationFamiliale({libelle: "Célibataire", code: "C"} as SituationFamilialeModelView);
+    controller.onChangeProfession({libelle: "Apprenti", code: "XA"} as ProfessionModelView);
+    controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+    controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+    controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+    controller.onCommuneSelected({
+        nom: "nom_commune",
+        codePostal: "cp_commune",
+        lieuDit: false,
+        nomAcheminement: "",
+        ancienNom: ""
+    } as CommuneModelView);
+    controller.subscribeStateChanged(() => {
+        const actual = controller.state.afficherModaleConfirmation;
+        expect(actual).toBe(expected);
+        done();
+    });
+
+    controller.onCreationCompte();
 });
 

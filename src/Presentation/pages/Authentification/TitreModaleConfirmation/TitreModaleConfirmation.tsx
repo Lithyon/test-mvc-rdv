@@ -1,5 +1,5 @@
-import {CanalCode} from "../../../../../Domain/Data/Enum/Canal";
-import CanalModelView from "../../../RendezVous/ModelView/Canal/CanalModelView";
+import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
+import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
 import React from "react";
 
 export interface TitreModaleConfirmationProps {

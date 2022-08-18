@@ -546,7 +546,8 @@ export default class AuthentificationController extends BaseController<Authentif
             const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
             this._state = {
                 ...this._state,
-                formError
+                formError,
+                afficherModaleConfirmation: !this.formHasError(),
             };
         } catch (e) {
 
@@ -563,11 +564,12 @@ export default class AuthentificationController extends BaseController<Authentif
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
-                this._state.rendezVous, this._state.pourVousJoindre);
+                this._state.rendezVous, this._state.pourVousJoindre
+            );
 
             this._state = {
                 ...this._state,
-                afficherModaleConfirmation: true,
+                afficherModaleConfirmation: !this.verificationErreursPourVousJoindre(),
                 formErrorPourVousJoindre
             };
         } catch (e) {

@@ -72,5 +72,6 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 redirectionMireDeConnexion={controller.redirectionMireDeConnexion}
                                 onAfficherModaleModificationEmail={controller.onAfficherModaleModificationEmail}
                                 afficherModalModificationEmail={state.afficherModalModificationEmail}
+                                afficherModaleConfirmation={state.afficherModaleConfirmation}
     />;
 }

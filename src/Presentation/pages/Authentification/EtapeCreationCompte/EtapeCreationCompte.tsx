@@ -14,6 +14,8 @@ import useErrorObservable from "../../../hooks/useErrorObservable";
 import {Button, Modal} from "macif-components";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
+import TitreModaleConfirmation from "../TitreModaleConfirmation";
+import CorpsModaleConfirmation from "../CorpsModaleConfirmation";
 
 export interface EtapeCreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -48,6 +50,7 @@ export interface EtapeCreationCompteProps {
     readonly redirectionMireDeConnexion: Function;
     readonly onAfficherModaleModificationEmail: Function;
     readonly afficherModalModificationEmail: boolean;
+    readonly afficherModaleConfirmation: boolean;
 }
 
 export default function EtapeCreationCompte({
@@ -82,7 +85,8 @@ export default function EtapeCreationCompte({
                                                 hasErrorDejaUnCompteObserver,
                                                 redirectionMireDeConnexion,
                                                 onAfficherModaleModificationEmail,
-                                                afficherModalModificationEmail
+                                                afficherModalModificationEmail,
+                                                afficherModaleConfirmation
                                             }: EtapeCreationCompteProps) {
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDejaUnCompteObserver);
 
@@ -133,6 +137,7 @@ export default function EtapeCreationCompte({
             onCreationCompte={handleCreationCompte}
             formHasError={formHasError}
         />
+
         <Modal
             show={hasError}
             centered
@@ -189,6 +194,30 @@ export default function EtapeCreationCompte({
                     variant="primary"
                     onClick={() => onCreationCompte()}>
                     Confirmer
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal
+            show={afficherModaleConfirmation}
+            centered
+            backdrop="static"
+        >
+            <Modal.Header closeButton/>
+
+            <Modal.Body>
+                <>
+                    <span className={`icon icon-macif-mobile-cercle-check mcf-text--success icon-title`}/>
+                    <Modal.Title><TitreModaleConfirmation canalSelected={rendezVous.canalSelected}/></Modal.Title>
+                    <CorpsModaleConfirmation canalSelected={rendezVous.canalSelected}/>
+                </>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button
+                    variant="primary"
+                    href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
+                    Accéder à mon espace client
                 </Button>
             </Modal.Footer>
         </Modal>

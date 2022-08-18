@@ -1,6 +1,6 @@
-import {CanalCode} from "../../../../../Domain/Data/Enum/Canal";
+import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
 import React from "react";
-import CanalModelView from "../../../RendezVous/ModelView/Canal/CanalModelView";
+import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
 
 export interface CorpsModaleConfirmationProps {
     canalSelected: CanalModelView;

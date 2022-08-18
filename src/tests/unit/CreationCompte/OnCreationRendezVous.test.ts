@@ -126,16 +126,27 @@ describe("Pour vous joindre - validation du formulaire", function () {
     it("doit afficher la modale de confirmation de création de rendez-vous", function (done) {
         const expected = true;
 
+
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.afficherModaleConfirmation).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+
+            controller.onChoixContactSelected({code: AutreChoixCode.MAIL, libelle: ""} as ChoixContactModelView);
+            controller.onEmailPourVousJoindreChanged("toto@gmail.com");
+
+            controller.subscribeStateChanged(() => {
+                controller.subscribeStateChanged(() => {
+                    const actual = controller.state;
+                    expect(actual.afficherModaleConfirmation).toBe(expected);
+                    done();
+                })
+            });
+
+            controller.onCreationRendezVous();
         });
 
-        controller.onCreationRendezVous();
-
+        controller.onLoad();
     })
 });
 

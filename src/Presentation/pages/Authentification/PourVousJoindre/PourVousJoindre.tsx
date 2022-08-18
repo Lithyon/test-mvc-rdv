@@ -33,10 +33,6 @@ export default function PourVousJoindre({
 
     const hasError = verificationErreursPourVousJoindre();
 
-    function handleValidationRendezVous() {
-        onValidationRendezVous();
-    }
-
     const choiceSelected = canalSelected.code === CanalCode.VISIO
         ? dataSource.listeChoixContacts.listeEmails
         : dataSource.listeChoixContacts.listeNumerosTelephones;
