@@ -89,12 +89,12 @@ export default function PourVousJoindre({
             }
             <Row className="mcf-justify-content--between">
                 <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
-                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={hasError}>
+                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={hasError} data-track-analytics="Rdv_Informations_Confirmer">
                         Confirmer mon rendez-vous
                     </Button>
                 </Col>
                 <Col className="mcf-pl--0" sm="6" md="2">
-                    <Button block href="/" variant="outline--primary">Annuler</Button>
+                    <Button block href="/" variant="outline--primary" data-track-analytics="Rdv_Informations_Annuler">Annuler</Button>
                 </Col>
             </Row>
         </Form>
