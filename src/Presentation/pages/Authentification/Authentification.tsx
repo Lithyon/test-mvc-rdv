@@ -70,5 +70,7 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 formHasError={controller.formHasError}
                                 hasErrorDejaUnCompteObserver={controller.hasErrorDejaUnCompteObserver}
                                 redirectionMireDeConnexion={controller.redirectionMireDeConnexion}
+                                onAfficherModaleModificationEmail={controller.onAfficherModaleModificationEmail}
+                                afficherModalModificationEmail={state.afficherModalModificationEmail}
     />;
 }

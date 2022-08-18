@@ -352,5 +352,19 @@ describe("Creation Compte", function () {
         })
         controller.onCreationCompte();
     });
+
+    it("doit afficher la modale de confirmation de création de prospect", function (done) {
+        const expected = true;
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state.afficherModalModificationEmail;
+            expect(actual).toBe(expected);
+            done();
+        });
+
+        controller.onAfficherModaleModificationEmail(true);
+    });
 });
 

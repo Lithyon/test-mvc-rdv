@@ -63,7 +63,8 @@ export interface AuthentificationModelView {
     readonly informationsCommercialesTelephone: Array<BooleanChoiceModelView>,
     readonly pourVousJoindre: PourVousJoindreModelView,
     readonly infosContact: ContactModelView,
-    readonly afficherModaleConfirmation: boolean
+    readonly afficherModaleConfirmation: boolean,
+    readonly afficherModalModificationEmail: boolean,
 }
 
 interface AuthentificationControllerDependencies {
@@ -117,6 +118,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onEmailPourVousJoindreChanged = this.onEmailPourVousJoindreChanged.bind(this);
         this.onLoadPourVousJoindre = this.onLoadPourVousJoindre.bind(this);
         this.redirectionMireDeConnexion = this.redirectionMireDeConnexion.bind(this);
+        this.onAfficherModaleModificationEmail = this.onAfficherModaleModificationEmail.bind(this);
         this._onLoadAuthentificationObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._hasErrorDejaUnCompteObserver = new ErrorObservableImpl();
@@ -138,7 +140,8 @@ export default class AuthentificationController extends BaseController<Authentif
             rendezVous: this._stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
             pourVousJoindre: PourVousJoindreModelViewBuilder.buildEmpty(),
             infosContact: ContactModelViewBuilder.buildEmpty(),
-            afficherModaleConfirmation: false
+            afficherModaleConfirmation: false,
+            afficherModalModificationEmail: false,
         };
     }
 
@@ -527,10 +530,19 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
+    onAfficherModaleModificationEmail(afficherModalModificationEmail: boolean) {
+        this._state = {
+            ...this._state,
+            afficherModalModificationEmail
+        };
+        this.raiseStateChanged();
+    }
+
     async onCreationCompte() {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
+
             const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
             this._state = {
                 ...this._state,

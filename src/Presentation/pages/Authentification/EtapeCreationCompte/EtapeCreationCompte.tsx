@@ -13,6 +13,7 @@ import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
 import useErrorObservable from "../../../hooks/useErrorObservable";
 import {Button, Modal} from "macif-components";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
+import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
 
 export interface EtapeCreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -45,6 +46,8 @@ export interface EtapeCreationCompteProps {
     readonly formHasError: Function;
     readonly hasErrorDejaUnCompteObserver: ErrorObservable;
     readonly redirectionMireDeConnexion: Function;
+    readonly onAfficherModaleModificationEmail: Function;
+    readonly afficherModalModificationEmail: boolean;
 }
 
 export default function EtapeCreationCompte({
@@ -77,9 +80,26 @@ export default function EtapeCreationCompte({
                                                 onCreationCompte,
                                                 formHasError,
                                                 hasErrorDejaUnCompteObserver,
-                                                redirectionMireDeConnexion
+                                                redirectionMireDeConnexion,
+                                                onAfficherModaleModificationEmail,
+                                                afficherModalModificationEmail
                                             }: EtapeCreationCompteProps) {
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDejaUnCompteObserver);
+
+    function emailAnonymise() {
+        return creationCompte.email.replace(
+            /(\w{3})[\w.-]+@([\w.]+\w)/,
+            "$1***@$2"
+        )
+    }
+
+    function handleCreationCompte() {
+        if (rendezVous.canalSelected.code === CanalCode.VISIO) {
+            onAfficherModaleModificationEmail(true);
+        } else {
+            onCreationCompte();
+        }
+    }
 
     return <>
         <BandeauModification dataSource={rendezVous}/>
@@ -110,7 +130,7 @@ export default function EtapeCreationCompte({
             onInformationsCommercialesEmailSelected={onInformationsCommercialesEmailSelected}
             onInformationsCommercialesSmsSelected={onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={onInformationsCommercialesTelephoneSelected}
-            onCreationCompte={onCreationCompte}
+            onCreationCompte={handleCreationCompte}
             formHasError={formHasError}
         />
         <Modal
@@ -136,6 +156,39 @@ export default function EtapeCreationCompte({
                     variant="primary"
                     onClick={() => redirectionMireDeConnexion()}>
                     Connexion
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal
+            show={afficherModalModificationEmail}
+            centered
+            backdrop="static"
+        >
+            <Modal.Body>
+                <>
+                    <span className="icon icon-macif-mobile-enveloppe icon-title"/>
+                    <Modal.Title className="mcf-text--big-3 mcf-font--bold">Confirmer votre rendez-vous ?</Modal.Title>
+                    <ul className="mcf-pr--7">
+                        <li>Vous recevrez par e-mail {emailAnonymise()} les informations et le lien du rendez-vous en visioconférence.</li>
+                        <li>
+                            Votre espace client sera créé pour gérer votre rendez-vous (un mot de passe temporaire sera envoyé par e-mail)
+                        </li>
+                    </ul>
+                </>
+            </Modal.Body>
+
+            <Modal.Footer className="mcf-justify-content--around">
+                <Button
+                    variant="outline--primary"
+                    onClick={() => onAfficherModaleModificationEmail(false)}>
+                    Modifier mon e-mail
+                </Button>
+
+                <Button
+                    variant="primary"
+                    onClick={() => onCreationCompte()}>
+                    Confirmer
                 </Button>
             </Modal.Footer>
         </Modal>
