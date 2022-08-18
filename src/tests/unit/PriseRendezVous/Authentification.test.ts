@@ -1,8 +1,6 @@
-import {NavigateFunction} from "react-router-dom";
 import {init} from "./common/Init";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import ChoixConnexionModelView from "../../../Presentation/pages/RendezVous/ModelView/ChoixConnexion/ChoixConnexionModelView";
-import {debug} from "util";
 
 describe('Prise de rendez vous - OnChoixConnexionSelected', () => {
 
@@ -25,7 +23,8 @@ describe('Prise de rendez vous - OnChoixConnexionSelected', () => {
         controller.subscribeStateChanged(() => {
             const redirectionMireDeConnexion = jest.spyOn(controller, "redirectionMireDeConnexion");
 
-            controller.onValidationFormulaire(() => {}).then(() => done());
+            controller.onValidationFormulaire(() => {
+            }).then(() => done());
             expect(redirectionMireDeConnexion).toHaveBeenCalled();
         });
 

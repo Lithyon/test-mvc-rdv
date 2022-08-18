@@ -12,26 +12,26 @@ import {ChoixContactModelView} from "../ModelView/PourVousJoindre/ChoixContactMo
 export interface PourVousJoindreProps {
     readonly dataSource: PourVousJoindreModelView;
     readonly canalSelected: CanalModelView;
-    readonly onChoixPourVousJoindreSelected: (value: ChoixContactModelView) => void;
+    readonly onChoixContactSelected: (value: ChoixContactModelView) => void;
     readonly onTelephonePourVousJoindreChanged: Function;
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onValidationRendezVous: Function;
     readonly formError: FormErrorPourVousJoindreModelView;
-    readonly formHasError: Function;
+    readonly verificationErreursPourVousJoindre: Function;
 }
 
 export default function PourVousJoindre({
                                             dataSource,
                                             canalSelected,
-                                            onChoixPourVousJoindreSelected,
+                                            onChoixContactSelected,
                                             onTelephonePourVousJoindreChanged,
                                             onEmailPourVousJoindreChanged,
                                             onValidationRendezVous,
                                             formError,
-                                            formHasError
+                                            verificationErreursPourVousJoindre
                                         }: PourVousJoindreProps) {
 
-    const hasError = formHasError();
+    const hasError = verificationErreursPourVousJoindre();
 
     function handleValidationRendezVous() {
         onValidationRendezVous();
@@ -59,7 +59,7 @@ export default function PourVousJoindre({
             <h1 id="pour-vous-joindre">Pour vous joindre</h1>
 
             <ChoiceSwitcher id="vousJoindre"
-                            onChoiceSelected={onChoixPourVousJoindreSelected}
+                            onChoiceSelected={onChoixContactSelected}
                             choiceSelected={dataSource.choixContact}
                             dataSource={choiceSelected}
                             label={onChoixLabelSwitcher()}

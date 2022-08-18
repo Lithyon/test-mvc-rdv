@@ -1,32 +1,55 @@
 import BandeauModification from "../BandeauModification";
 import PourVousJoindre from "../PourVousJoindre";
 import React from "react";
-import AuthentificationController, {AuthentificationModelView} from "../AuthentificationController";
 import {Button, Modal} from "macif-components";
 import CorpsModaleConfirmation from "./CorpsModaleConfirmation";
 import TitreModaleConfirmation from "./TitreModaleConfirmation";
+import {PourVousJoindreModelView} from "../ModelView/PourVousJoindre/PourVousJoindreModelView";
+import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
+import {ChoixContactModelView} from "../ModelView/PourVousJoindre/ChoixContactModelView";
+import FormErrorPourVousJoindreModelView from "../ModelView/FormError/FormErrorPourVousJoindreModelView";
+import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 
 export interface EtapePourVousJoindreProps {
-    readonly state: AuthentificationModelView;
-    readonly controller: AuthentificationController;
+    readonly rendezVous: RendezVousSelectionModelView;
+    readonly pourVousJoindre: PourVousJoindreModelView;
+    readonly canalSelected: CanalModelView;
+    readonly onChoixContactSelected: (value: ChoixContactModelView) => void;
+    readonly onTelephonePourVousJoindreChanged: Function;
+    readonly onEmailPourVousJoindreChanged: Function;
+    readonly onCreationRendezVous: Function;
+    readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView;
+    readonly verificationErreursPourVousJoindre: Function;
+    readonly afficherModaleConfirmation: boolean;
 }
 
 
-export default function EtapePourVousJoindre({state, controller}: EtapePourVousJoindreProps) {
+export default function EtapePourVousJoindre({
+                                                 rendezVous,
+                                                 pourVousJoindre,
+                                                 canalSelected,
+                                                 onChoixContactSelected,
+                                                 onTelephonePourVousJoindreChanged,
+                                                 onEmailPourVousJoindreChanged,
+                                                 onCreationRendezVous,
+                                                 formErrorPourVousJoindre,
+                                                 verificationErreursPourVousJoindre,
+                                                 afficherModaleConfirmation
+                                             }: EtapePourVousJoindreProps) {
+
     return <>
-        <BandeauModification dataSource={state.rendezVous}/>
-        <PourVousJoindre dataSource={state.pourVousJoindre}
-                         canalSelected={state.rendezVous.canalSelected}
-                         onChoixPourVousJoindreSelected={controller.onChoixContactSelected}
-                         onTelephonePourVousJoindreChanged={controller.onTelephonePourVousJoindreChanged}
-                         onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
-                         onValidationRendezVous={controller.onCreationRendezVous}
-                         infosModale={state.infosModale}
-                         formError={state.formErrorPourVousJoindre}
-                         formHasError={controller.verificationErreursPourVousJoindre}
+        <BandeauModification dataSource={rendezVous}/>
+        <PourVousJoindre dataSource={pourVousJoindre}
+                         canalSelected={canalSelected}
+                         onChoixContactSelected={onChoixContactSelected}
+                         onTelephonePourVousJoindreChanged={onTelephonePourVousJoindreChanged}
+                         onEmailPourVousJoindreChanged={onEmailPourVousJoindreChanged}
+                         onValidationRendezVous={onCreationRendezVous}
+                         formError={formErrorPourVousJoindre}
+                         verificationErreursPourVousJoindre={verificationErreursPourVousJoindre}
         />
         <Modal
-            show={state.afficherModaleConfirmation}
+            show={afficherModaleConfirmation}
             centered
             backdrop="static"
         >
@@ -35,59 +58,18 @@ export default function EtapePourVousJoindre({state, controller}: EtapePourVousJ
             <Modal.Body>
                 <>
                     <span className={`icon icon-macif-mobile-cercle-check mcf-text--success icon-title`}/>
-                    <Modal.Title><TitreModaleConfirmation canalSelected={state.rendezVous.canalSelected}/></Modal.Title>
-                    <CorpsModaleConfirmation canalSelected={state.rendezVous.canalSelected}/>
+                    <Modal.Title><TitreModaleConfirmation canalSelected={canalSelected}/></Modal.Title>
+                    <CorpsModaleConfirmation canalSelected={canalSelected}/>
                 </>
             </Modal.Body>
 
             <Modal.Footer>
                 <Button
                     variant="primary"
-                    href="/">
+                    href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
                     Accéder à mon espace client
                 </Button>
             </Modal.Footer>
         </Modal>
-
-        {/*<Modal*/}
-        {/*    show={showModaComptedejaexistant}*/}
-        {/*    onHide={() => setShow(false)}*/}
-        {/*    centered*/}
-        {/*    backdrop="static"*/}
-        {/*>*/}
-        {/*    <Modal.Header closeButton/>*/}
-
-        {/*    <Modal.Body>*/}
-        {/*        <>*/}
-        {/*            <span className={`icon ${classIcon} icon-title`}/>*/}
-        {/*            <Modal.Title>{title}</Modal.Title>*/}
-        {/*            <p>{children}</p>*/}
-        {/*        </>*/}
-        {/*    </Modal.Body>*/}
-
-        {/*    <Modal.Footer>*/}
-        {/*        {cancelTextButton && onCancel &&*/}
-        {/*            <Button variant="outline--primary" onClick={() => onCancel()}>*/}
-        {/*                {cancelTextButton}*/}
-        {/*            </Button>}*/}
-
-        {/*        <Button*/}
-        {/*            variant="primary"*/}
-        {/*            onClick={() => onValidate()}>*/}
-        {/*            {validateTextButton}*/}
-        {/*        </Button>*/}
-        {/*    </Modal.Footer>*/}
-        {/*</Modal>*/}
-
-        {/*    state.infosModale.showModal && <ModalComponent showModal={state.infosModale.showModal}*/}
-        {/*                                                   classIcon="icon-bonhomme-sourire"*/}
-        {/*                                                   title="Un compte existe déjà avec cet identifiant"*/}
-        {/*                                                   validateTextButton="Connexion"*/}
-        {/*                                                   onValidate={() => window.alert("ALLLOOOO")}>*/}
-        {/*    <>*/}
-        {/*        <p>- Vous recevrez par e-mail A ANONYMISER les informations et le lien du rendez-vous en visioconférence.</p>*/}
-        {/*        <p>- Votre espace client sera créé pour gérer votre rendez-vous (un mot de passe temporaire sera envoyé par e-mail).</p>*/}
-        {/*    </>*/}
-        {/*</ModalComponent>;*/}
     </>;
 }

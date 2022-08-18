@@ -31,6 +31,10 @@ import {AuthentificationRepositoryImpl} from "../../../../Domain/Repository/Auth
 import RendezVousModelView from "../../../../Presentation/pages/RendezVous/ModelView/RendezVous/RendezVousModelView";
 import IdentiteEntity from "../../../../Domain/Data/API/Entity/IdentiteEntity";
 import {IdentiteRepositoryImpl} from "../../../../Domain/Repository/Identite";
+import {CodeMessageApplicatif} from "../../../../Domain/Data/Enum/CodeMessageApplicatif";
+import AuthentificationEntity from "../../../../Domain/Data/API/Entity/AuthentificationEntity";
+import authentificationStub from "../../../../../mocks/AuthentificationStub";
+import {AuthentificationServiceImpl} from "../../../../Domain/Services/Authentification";
 
 interface InitDependencies {
     disponibilites: DisponibilitesEntity;
@@ -39,20 +43,27 @@ interface InitDependencies {
     situationFamiliale: SituationFamilialeEntity;
     profession: ProfessionEntity;
     contact: ContactEntity;
+    erreurCompteDejaExistant: boolean;
+    authentification: AuthentificationEntity;
 }
 
-export const defaultDependencies: InitDependencies = {
+export const defaultDependenciesInitAuthentification: InitDependencies = {
     disponibilites: disponibilitesStub,
     rendezVous: rendezVousStub,
     creationCompte: creationCompteStub,
     situationFamiliale: situationFamilialeStub,
     profession: professionStub,
-    contact: contactStub
+    contact: contactStub,
+    erreurCompteDejaExistant: false,
+    authentification: authentificationStub
 }
 
-export function init(dependencies = defaultDependencies) {
+export function init(dependencies = defaultDependenciesInitAuthentification) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({
         async creationCompte(_request: CreationCompteRequestEntity): Promise<CreationCompteEntity> {
+            if (dependencies.erreurCompteDejaExistant) {
+                throw new Error(CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT);
+            }
             return dependencies.creationCompte;
         }
     });
@@ -119,12 +130,14 @@ export function init(dependencies = defaultDependencies) {
     });
 
     const contactService = new ContactServiceImpl(contactRepo, authentificationRepo);
+    const authentificationService = new AuthentificationServiceImpl(authentificationRepo);
 
     return new AuthentificationController({
         rendezVousService,
         creationCompteService,
         situationFamilialeService,
         professionService,
-        contactService
+        contactService,
+        authentificationService
     });
 }

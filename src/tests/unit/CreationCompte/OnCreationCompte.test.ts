@@ -1,4 +1,4 @@
-import {init} from "./common/Init";
+import {defaultDependenciesInitAuthentification, init} from "./common/Init";
 import {BooleanChoiceModelView} from "../../../Presentation/commons/ModelView/BooleanChoice/BooleanChoiceModelView";
 import {BooleanChoiceCode} from "../../../Domain/Data/Enum/BooleanChoice";
 import {CiviliteModelView} from "../../../Presentation/pages/Authentification/ModelView/Civilite/CiviliteModelView";
@@ -314,6 +314,43 @@ describe("Creation Compte", function () {
         });
 
         controller.onRechercheCommune("96000");
+    });
+
+    it("doit afficher la modale de compte déjà existant", function (done) {
+        const expected = true;
+
+        const controller = init({
+            ...defaultDependenciesInitAuthentification,
+            erreurCompteDejaExistant: true
+        });
+        const dateNaissance = new Date(1990, 1, 1);
+
+        controller.onCiviliteSelected({code: CiviliteCode.MONSIEUR, libelle: "Monsieur"} as CiviliteModelView);
+        controller.onChangeNom("Bobby");
+        controller.onChangePrenom("Bobby");
+        controller.onChangeNumeroTelephone("0102030405");
+        controller.onChangeEmail("jesuisunrobot@macif.fr");
+        controller.onChangeDateNaissance(dateNaissance);
+        controller.onChangeSituationFamiliale({libelle: "Célibataire", code: "C"} as SituationFamilialeModelView);
+        controller.onChangeProfession({libelle: "Apprenti", code: "XA"} as ProfessionModelView);
+        controller.onInformationsCommercialesEmailSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onInformationsCommercialesTelephoneSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onInformationsCommercialesSmsSelected({code: BooleanChoiceCode.OUI, libelle: "Oui"} as BooleanChoiceModelView);
+        controller.onCommuneSelected({
+            nom: "nom_commune",
+            codePostal: "cp_commune",
+            lieuDit: false,
+            nomAcheminement: "",
+            ancienNom: ""
+        } as CommuneModelView);
+
+        controller.hasErrorDejaUnCompteObserver.subscribeHasError(() => {
+            controller.hasErrorDejaUnCompteObserver.subscribeHasError((errorEvent) => {
+                expect(errorEvent.hasError).toBe(expected);
+                done();
+            })
+        })
+        controller.onCreationCompte();
     });
 });
 

@@ -38,6 +38,11 @@ import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
 import {LoadingObservable} from "../../commons/LoadingObservable";
 import ErrorObservableImpl from "../../commons/Impl/ErrorObservableImpl";
 import {ErrorObservable} from "../../commons/ErrorObservable";
+import {InfosModaleModelView} from "../../commons/ModelView/InfosModale/InfosModaleModelView";
+import InfosModaleModelViewBuilder from "../../commons/ModelView/InfosModale/InfosModaleModelViewBuilder";
+import {CodeMessageApplicatif} from "../../../Domain/Data/Enum/CodeMessageApplicatif";
+import {AuthentificationServiceImpl} from "../../../Domain/Services/Authentification";
+import RendezVousModelViewBuilder from "../RendezVous/ModelView/RendezVous/RendezVousModelViewBuilder";
 
 const NUMERO_CODE_POSTAL_MAX = "96000";
 
@@ -66,7 +71,8 @@ interface AuthentificationControllerDependencies {
     readonly creationCompteService: CreationCompteServiceImpl,
     readonly situationFamilialeService: SituationFamilialeServiceImpl,
     readonly professionService: ProfessionServiceImpl,
-    readonly contactService: ContactServiceImpl
+    readonly contactService: ContactServiceImpl,
+    readonly authentificationService: AuthentificationServiceImpl
 }
 
 export default class AuthentificationController extends BaseController<AuthentificationModelView> implements IsLoadable {
@@ -76,11 +82,17 @@ export default class AuthentificationController extends BaseController<Authentif
     private _infosContact?: Contact;
     private readonly _onLoadAuthentificationObserver: LoadingObservableImpl;
     private readonly _hasErrorObserver: ErrorObservableImpl;
+    private readonly _hasErrorDejaUnCompteObserver: ErrorObservableImpl;
+    private readonly _stateForm: RendezVousModelView;
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
-        const stateForm = window.history.state?.usr as RendezVousModelView;
-
+        // FIXME a externaliser dans abstract aussi
+        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
+        this._stateForm = window.history.state?.usr as RendezVousModelView;
+        if (sessionStorageState) {
+            this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));
+        }
         this.formHasError = this.formHasError.bind(this);
         this.verificationErreursPourVousJoindre = this.verificationErreursPourVousJoindre.bind(this);
         this.onCreationCompte = this.onCreationCompte.bind(this);
@@ -104,8 +116,10 @@ export default class AuthentificationController extends BaseController<Authentif
         this.onTelephonePourVousJoindreChanged = this.onTelephonePourVousJoindreChanged.bind(this);
         this.onEmailPourVousJoindreChanged = this.onEmailPourVousJoindreChanged.bind(this);
         this.onLoadPourVousJoindre = this.onLoadPourVousJoindre.bind(this);
+        this.redirectionMireDeConnexion = this.redirectionMireDeConnexion.bind(this);
         this._onLoadAuthentificationObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
+        this._hasErrorDejaUnCompteObserver = new ErrorObservableImpl();
 
         this._state = {
             estConnecte: false,
@@ -121,7 +135,7 @@ export default class AuthentificationController extends BaseController<Authentif
             informationsCommercialesEmail: DefaultBooleanChoice,
             informationsCommercialesSms: DefaultBooleanChoice,
             informationsCommercialesTelephone: DefaultBooleanChoice,
-            rendezVous: stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
+            rendezVous: this._stateForm?.rendezVous || RendezVousSelectionModelViewBuilder.buildEmpty(),
             pourVousJoindre: PourVousJoindreModelViewBuilder.buildEmpty(),
             infosContact: ContactModelViewBuilder.buildEmpty(),
             afficherModaleConfirmation: false
@@ -140,6 +154,10 @@ export default class AuthentificationController extends BaseController<Authentif
 
     get hasErrorObserver(): ErrorObservable {
         return this._hasErrorObserver;
+    }
+
+    get hasErrorDejaUnCompteObserver(): ErrorObservable {
+        return this._hasErrorDejaUnCompteObserver;
     }
 
     formHasError() {
@@ -512,16 +530,21 @@ export default class AuthentificationController extends BaseController<Authentif
     async onCreationCompte() {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
             const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
-
             this._state = {
                 ...this._state,
                 formError
             };
-            this.raiseStateChanged();
         } catch (e) {
-            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+
+            if (e instanceof Error && e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT) {
+                this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: true});
+            } else {
+                this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+            }
         }
+        this.raiseStateChanged();
     }
 
     async onCreationRendezVous() {
@@ -535,7 +558,20 @@ export default class AuthentificationController extends BaseController<Authentif
                 afficherModaleConfirmation: true,
                 formErrorPourVousJoindre
             };
-            this.raiseStateChanged();
+        } catch (e) {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
+        }
+        this.raiseStateChanged();
+    }
+
+    //FIXME: faire une classe abstraite qui portera ca, renommer en finalisationController
+    async redirectionMireDeConnexion() {
+        try {
+            this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+            await this.dependencies.authentificationService.authentificationUtilisateur(
+                this._stateForm,
+                window.location.origin + window.location.pathname
+            );
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }

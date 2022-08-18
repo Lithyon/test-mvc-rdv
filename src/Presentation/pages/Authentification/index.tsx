@@ -5,6 +5,7 @@ import SituationFamilialeService from "../../../Domain/Services/SituationFamilia
 import ProfessionService from "../../../Domain/Services/Profession";
 import ContactService from "../../../Domain/Services/Contact";
 import RendezVousService from "../../../Domain/Services/RendezVous";
+import AuthentificationService from "../../../Domain/Services/Authentification";
 
 export default function Authentification() {
 
@@ -13,7 +14,8 @@ export default function Authentification() {
         creationCompteService: CreationCompteService,
         situationFamilialeService: SituationFamilialeService,
         professionService: ProfessionService,
-        contactService: ContactService
+        contactService: ContactService,
+        authentificationService: AuthentificationService
     });
 
     return <AuthentificationView controller={controller}/>;
