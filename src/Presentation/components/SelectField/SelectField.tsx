@@ -1,5 +1,5 @@
 import {Form} from "macif-components";
-import {ChangeEvent} from "react";
+import {ChangeEvent, useRef} from "react";
 
 interface SelectFieldProps {
     readonly id: string;
@@ -28,6 +28,7 @@ export default function SelectField({
                                         labelDefaultChoice = "Sélectionnez"
                                     }: SelectFieldProps
 ) {
+    const selectFieldRef = useRef<HTMLDivElement>(null);
 
     function onChangeText(event: ChangeEvent<HTMLSelectElement>) {
         dataSource
@@ -36,7 +37,8 @@ export default function SelectField({
     }
 
     return dataSource.length > 0 ? (
-        <Form.Group controlId={id}>
+        <Form.Group controlId={id}
+                    ref={selectFieldRef}>
             <Form.Label as="h3" id={id} optionalText={optionalText} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
                 {label}
             </Form.Label>
@@ -45,6 +47,7 @@ export default function SelectField({
                 onChange={onChangeText}
                 defaultValue={defaultValue}
                 className="mcf-col-md-8"
+                onFocus={() => selectFieldRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}
             >
                 <option disabled value="">{labelDefaultChoice}</option>
                 {

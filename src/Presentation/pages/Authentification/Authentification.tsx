@@ -1,7 +1,7 @@
 import AuthentificationController from "./AuthentificationController";
 import useAttachController from "../../hooks/useAttachController";
 import useInitContexte from "../../hooks/useInitContexte";
-import React from "react";
+import React, {useEffect} from "react";
 import LoadWaitingIsOver from "../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../hooks/useLoaderObservable";
 import ErrorIsTriggered from "../../commons/ErrorEvent/ErrorIsTriggered";
@@ -16,17 +16,27 @@ interface AuthentificationProps {
 }
 
 export default function Authentification({controller}: AuthentificationProps) {
-
     const state = useAttachController(controller);
+
     useInitContexte(controller);
+
     const {hasError}: ErrorIsTriggered = useErrorObservable(controller.hasErrorObserver);
     const {isOver}: LoadWaitingIsOver = useLoaderObservable(controller.onLoadAuthentificationObserver);
+
+    useEffect(() => {
+        if (isOver) {
+            window.scroll({top: 0, behavior: "smooth"});
+        }
+    }, [isOver]);
+
     if (hasError) {
         return <DisplayError/>;
     }
+
     if (!isOver) {
         return <Loader ball className="mcf-mx--auto"/>;
     }
+
     if (isOver && state.estConnecte) {
         return <EtapePourVousJoindre rendezVous={state.rendezVous}
                                      pourVousJoindre={state.pourVousJoindre}

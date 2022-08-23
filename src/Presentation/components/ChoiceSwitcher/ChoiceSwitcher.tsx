@@ -1,4 +1,5 @@
 import {Badge, Form} from "macif-components";
+import {useRef} from "react";
 
 export interface Choice {
     readonly libelle: string;
@@ -29,8 +30,10 @@ export default function ChoiceSwitcher<T extends Choice>({
                                                              nbSwitchers = 3,
                                                              errorMessage = ""
                                                          }: ChoiceSwitcherProps<T>) {
+    const choiceSwitcherGroupRef = useRef<HTMLDivElement>(null);
+
     return show && dataSource.length > 0 ? (
-        <Form.Group controlId={id}>
+        <Form.Group controlId={id} ref={choiceSwitcherGroupRef}>
             <Form.Label as="h3" id={id} optionalText={optionalText} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
                 {label}
             </Form.Label>
@@ -44,6 +47,7 @@ export default function ChoiceSwitcher<T extends Choice>({
                 value={choiceSelected}
                 onChange={onChoiceSelected}
                 isInvalid={errorMessage !== ""}
+                onFocus={() => choiceSwitcherGroupRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}
             >
                 {dataSource.map((value, index) => {
                     return (

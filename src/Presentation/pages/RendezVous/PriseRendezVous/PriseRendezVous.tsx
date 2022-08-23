@@ -68,7 +68,6 @@ export default function PriseRendezVous({
 
     useEffect(() => {
         if (titreRendezVousRef?.current && location.hash !== "") {
-            // scrollIntoView est expérimental, trouver une autre solution ?
             titreRendezVousRef.current.scrollIntoView({behavior: "smooth"});
             titreRendezVousRef.current.focus();
             titreRendezVousRef.current.setAttribute("tabIndex", "-1");
@@ -100,9 +99,10 @@ export default function PriseRendezVous({
                     meilleures solutions d’assurance
                     pour votre activité.
                 </p>
-                <Button variant="light"
-                        href="/assurance/professionnels-et-entreprises/demande-de-rendez-vous-pour-les-professionnels-et-les-entreprises">Demander
-                    mon rendez-vous Pro</Button>
+                <Button href="/assurance/professionnels-et-entreprises/demande-de-rendez-vous-pour-les-professionnels-et-les-entreprises"
+                        variant="light">
+                    Demander mon rendez-vous Pro
+                </Button>
             </Alert>}
             <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
                             choiceSelected={dataSource.canalSelected}

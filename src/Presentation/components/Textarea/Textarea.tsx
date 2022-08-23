@@ -1,5 +1,5 @@
 import {Form} from "macif-components";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
 
 export interface TextareaProps {
     readonly label: string;
@@ -10,6 +10,7 @@ export interface TextareaProps {
 }
 
 export default function Textarea({label, id, maxLength, onChange, value}: TextareaProps) {
+    const textAreaRef = useRef<HTMLDivElement>(null);
     const [count, setCount] = useState(maxLength - value.length);
     const [inputValue, setInputValue] = useState(value);
     const infoCounter = count <= 1 ? `${count} caractère restant` : `${count} caractères restants`;
@@ -23,11 +24,12 @@ export default function Textarea({label, id, maxLength, onChange, value}: Textar
 
     useEffect(() => onChange(inputValue), [inputValue, onChange]);
 
-    return <Form.Group controlId={id}>
+    return <Form.Group controlId={id} ref={textAreaRef}>
         <Form.Label as="h3" className="mcf-text--small-1">{label}<span className="mcf-sr-only">{infoCounter}</span></Form.Label>
         <Form.Control as="textarea" rows={3}
                       onChange={recalculateCounter}
-                      maxLength={maxLength} value={inputValue}/>
+                      maxLength={maxLength} value={inputValue}
+                      onFocus={() => textAreaRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}/>
         <Form.Text className="mcf-text--small-1" muted aria-live={ariaLiveValue} aria-atomic="true">{infoCounter}</Form.Text>
     </Form.Group>;
 }

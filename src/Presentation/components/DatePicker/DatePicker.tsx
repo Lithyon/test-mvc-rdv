@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useEffect, useRef, useState} from "react";
 import {Button, Form, InputGroup} from "macif-components";
 import Day from "./Day";
 import {keyboardKeysEnum} from "./Enum/KeyboardKeysEnum";
@@ -50,19 +50,8 @@ export default function DatePicker({
                                        md,
                                        xs,
                                        onChangeDate
-                                   }: DatePickerProps
-) {
-
-    function getCols() {
-        let colsClass = "";
-        if (md) {
-            colsClass += `mcf-col-md-${md} `;
-        }
-        if (xs) {
-            colsClass += `mcf-col-xs-${xs} `;
-        }
-        return colsClass;
-    }
+                                   }: DatePickerProps) {
+    const datePickerRef = useRef<HTMLDivElement>(null);
 
     const [selectedMonthYear, setSelectedMonthYear] = useState(minDate);
     const [selectedDate, setSelectedDate] = useState("");
@@ -245,10 +234,22 @@ export default function DatePicker({
         }
     };
 
+    function getCols() {
+        let colsClass = "";
+        if (md) {
+            colsClass += `mcf-col-md-${md} `;
+        }
+        if (xs) {
+            colsClass += `mcf-col-xs-${xs} `;
+        }
+        return colsClass;
+    }
+
     return (
         <Form.Group
             controlId={id}
-            className="mcf-p--0">
+            className="mcf-p--0"
+            ref={datePickerRef}>
             <Form.Label as="h3" id={id} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
                 {label}
             </Form.Label>
@@ -264,6 +265,7 @@ export default function DatePicker({
                     onChange={onChangeText}
                     maxLength={10}
                     className={`${getCols()} mcf-rounded`}
+                    onFocus={() => datePickerRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}
                 />
                 <InputGroup.Append>
                     <span

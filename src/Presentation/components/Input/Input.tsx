@@ -1,5 +1,5 @@
 import {Form} from "macif-components";
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 
 export interface InputProps {
     readonly id: string;
@@ -26,15 +26,16 @@ export default function Input({
                                   autoComplete = "off",
                                   classNameControl = "mcf-col-md-8"
                               }: InputProps) {
+    const inputRef = useRef<HTMLDivElement>(null);
     const [inputValue, setInputValue] = useState(value);
 
     useEffect(() => onChange(inputValue), [inputValue, onChange]);
 
-    const handleChangeValue = (event: any) => {
+    const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     };
 
-    return <Form.Group controlId={id}>
+    return <Form.Group controlId={id} ref={inputRef}>
         <Form.Label as="h3" className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">{label}</Form.Label>
         {message && <Form.Text className="mcf-text--small-1" muted>{message}</Form.Text>}
         <Form.Control as="input"
@@ -44,7 +45,8 @@ export default function Input({
                       maxLength={maxLength}
                       className={classNameControl}
                       isInvalid={errorMessage !== ""}
-                      autoComplete={autoComplete}/>
+                      autoComplete={autoComplete}
+                      onFocus={() => inputRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}/>
         <Form.Control.Feedback type="invalid">
             <span className="icon icon-erreur"></span>
             {errorMessage}

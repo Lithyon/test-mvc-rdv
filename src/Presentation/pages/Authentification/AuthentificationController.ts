@@ -173,7 +173,7 @@ export default class AuthentificationController extends BaseController<Authentif
         return this.dependencies.creationCompteService.formHasError(formError);
     }
 
-    verificationErreursPourVousJoindre(formPourVousJoindre: FormErrorPourVousJoindreModelView) {
+    verifierErreursPourVousJoindre(formPourVousJoindre: FormErrorPourVousJoindreModelView) {
         return this.dependencies.rendezVousService.formHasError(formPourVousJoindre);
     }
 
@@ -601,7 +601,7 @@ export default class AuthentificationController extends BaseController<Authentif
             const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
                 this._state.rendezVous, this._state.pourVousJoindre
             );
-            const formPourVousJoindreHasError = this.verificationErreursPourVousJoindre(formErrorPourVousJoindre);
+            const formPourVousJoindreHasError = this.verifierErreursPourVousJoindre(formErrorPourVousJoindre);
             this._state = {
                 ...this._state,
                 afficherModaleConfirmation: !formPourVousJoindreHasError,

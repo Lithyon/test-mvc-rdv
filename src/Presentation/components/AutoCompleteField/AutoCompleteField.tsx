@@ -1,4 +1,4 @@
-import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useEffect, useRef, useState} from "react";
 import {Dropdown, Form} from "macif-components";
 import Highlight from "./Highlight";
 import useManagedState from "../../hooks/useManagedState";
@@ -41,6 +41,7 @@ export default function AutoCompleteField<T>({
                                                  autoComplete = "off",
                                                  labelFormat
                                              }: AutoCompleteFieldProps<T>) {
+    const autoCompleteFieldRef = useRef<HTMLDivElement>(null);
     const [firstItem] = dataSource;
 
     const [isFocus, setFocus] = useState(false);
@@ -120,7 +121,7 @@ export default function AutoCompleteField<T>({
     const show = dataSource.length > 0 && !selectedItem && isFocus;
 
     return (
-        <Form.Group controlId={id}>
+        <Form.Group controlId={id} ref={autoCompleteFieldRef}>
             <Form.Label as="h3"
                         optionalText={optionalText}
                         className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
@@ -133,7 +134,10 @@ export default function AutoCompleteField<T>({
                           isInvalid={errorMessage !== ""}
                           placeholder={placeholder}
                           value={selectedItem ? labelFormat(selectedItem) : recherche}
-                          onFocus={() => setFocus(true)}
+                          onFocus={() => {
+                              setFocus(true);
+                              autoCompleteFieldRef.current?.scrollIntoView({behavior: "smooth", block: "center"});
+                          }}
                           onChange={onTextChange}
                           onKeyDown={handleKeyDown}
                           autoComplete={autoComplete}
