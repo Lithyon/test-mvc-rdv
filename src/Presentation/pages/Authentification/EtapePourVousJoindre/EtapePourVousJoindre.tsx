@@ -53,7 +53,7 @@ export default function EtapePourVousJoindre({
             centered
             backdrop="static"
         >
-            <Modal.Header closeButton/>
+            <Modal.Header/>
 
             <Modal.Body>
                 <>
@@ -67,7 +67,7 @@ export default function EtapePourVousJoindre({
                 <Button
                     variant="primary"
                     href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
-                    Accéder à mon espace client
+                    Accéder à mon espace personnel
                 </Button>
             </Modal.Footer>
         </Modal>

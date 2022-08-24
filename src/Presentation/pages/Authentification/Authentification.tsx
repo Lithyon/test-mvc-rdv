@@ -69,6 +69,7 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 onCreationCompte={controller.onCreationCompte}
                                 formHasError={controller.formHasError}
                                 hasErrorDejaUnCompteObserver={controller.hasErrorDejaUnCompteObserver}
+                                fermerCompteDejaExistantModale={controller.fermerCompteDejaExistantModale}
                                 redirectionMireDeConnexion={controller.redirectionMireDeConnexion}
                                 onAfficherModaleModificationEmail={controller.onAfficherModaleModificationEmail}
                                 afficherModalModificationEmail={state.afficherModalModificationEmail}

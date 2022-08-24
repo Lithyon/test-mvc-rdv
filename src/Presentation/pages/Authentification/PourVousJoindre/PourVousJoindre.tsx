@@ -32,7 +32,7 @@ export default function PourVousJoindre({
                                         }: PourVousJoindreProps) {
 
     const hasError = verificationErreursPourVousJoindre();
-
+    const handleValidationRendezVous = () => onValidationRendezVous();
     const choiceSelected = canalSelected.code === CanalCode.VISIO
         ? dataSource.listeChoixContacts.listeEmails
         : dataSource.listeChoixContacts.listeNumerosTelephones;
@@ -89,7 +89,8 @@ export default function PourVousJoindre({
             }
             <Row className="mcf-justify-content--between">
                 <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
-                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={hasError} data-track-analytics="Rdv_Informations_Confirmer">
+                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={hasError}
+                            data-track-analytics="Rdv_Informations_Confirmer">
                         Confirmer mon rendez-vous
                     </Button>
                 </Col>

@@ -10,11 +10,11 @@ export default function CorpsModaleConfirmation({canalSelected}: CorpsModaleConf
     switch (canalSelected.code) {
         case CanalCode.AGENCE:
         case CanalCode.TELEPHONE:
-            return <p>Retrouvez la confirmation du rendez-vous dans la messagerie de votre espace perso</p>;
+            return <p>Retrouvez votre rendez-vous dans votre espace personnel.</p>;
         case CanalCode.VISIO:
             return <p>
-                Vous allez recevoir un e-mail <span className="mcf-font-weight--bold"> lien de connexion à votre visioconférence.</span>
-                Vous pouvez consulter et modifier votre rendez-vous depuis votre espace client.
+                Vous allez recevoir un e-mail avec le <span className="mcf-font-weight--bold">lien de connexion à votre visioconférence.</span>
+                Vous pouvez consulter et modifier votre rendez-vous depuis votre espace personnel.
             </p>;
         default:
             return <></>;

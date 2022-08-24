@@ -47,6 +47,7 @@ export interface EtapeCreationCompteProps {
     readonly onCreationCompte: Function;
     readonly formHasError: Function;
     readonly hasErrorDejaUnCompteObserver: ErrorObservable;
+    readonly fermerCompteDejaExistantModale: Function;
     readonly redirectionMireDeConnexion: Function;
     readonly onAfficherModaleModificationEmail: Function;
     readonly afficherModalModificationEmail: boolean;
@@ -83,12 +84,15 @@ export default function EtapeCreationCompte({
                                                 onCreationCompte,
                                                 formHasError,
                                                 hasErrorDejaUnCompteObserver,
+                                                fermerCompteDejaExistantModale,
                                                 redirectionMireDeConnexion,
                                                 onAfficherModaleModificationEmail,
                                                 afficherModalModificationEmail,
                                                 afficherModaleConfirmation
                                             }: EtapeCreationCompteProps) {
     const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDejaUnCompteObserver);
+    const gestionFermetureCompteExistant = () => fermerCompteDejaExistantModale();
+    const gestionFermetureConfirmationEmail = () => onAfficherModaleModificationEmail(false);
 
     function emailAnonymise() {
         return creationCompte.email.replace(
@@ -141,7 +145,7 @@ export default function EtapeCreationCompte({
         <Modal
             show={hasError}
             centered
-            backdrop="static"
+            onHide={gestionFermetureCompteExistant}
         >
             <Modal.Header closeButton/>
 
@@ -150,8 +154,8 @@ export default function EtapeCreationCompte({
                     <span className="icon icon-bonhomme-sourire icon-title"/>
                     <Modal.Title className="mcf-text--big-3 mcf-font--bold">Un compte existe déjà avec cet identifiant</Modal.Title>
                     <p>
-                        Veuillez vous connecter ou choisir un autre email
-                        pour créer un nouveau compte
+                        Veuillez vous connecter ou choisir un autre e-mail
+                        pour créer un nouveau compte.
                     </p>
                 </>
             </Modal.Body>
@@ -159,7 +163,7 @@ export default function EtapeCreationCompte({
             <Modal.Footer>
                 <Button
                     variant="primary"
-                    onClick={() => redirectionMireDeConnexion()}>
+                    onClick={() => redirectionMireDeConnexion("/assurance/particuliers/demande-de-rendez-vous")}>
                     Connexion
                 </Button>
             </Modal.Footer>
@@ -168,31 +172,33 @@ export default function EtapeCreationCompte({
         <Modal
             show={afficherModalModificationEmail}
             centered
-            backdrop="static"
+            onHide={gestionFermetureConfirmationEmail}
         >
+            <Modal.Header closeButton/>
             <Modal.Body>
                 <>
                     <span className="icon icon-macif-mobile-enveloppe icon-title"/>
                     <Modal.Title className="mcf-text--big-3 mcf-font--bold">Confirmer votre rendez-vous ?</Modal.Title>
-                    <ul className="mcf-pr--7">
-                        <li>Vous recevrez par e-mail {emailAnonymise()} les informations et le lien du rendez-vous en visioconférence.</li>
-                        <li>
-                            Votre espace client sera créé pour gérer votre rendez-vous (un mot de passe temporaire sera envoyé par e-mail)
-                        </li>
-                    </ul>
+                    <p>Vous recevrez les informations et le lien du rendez-vous en visioconférence à l'adresse mail {emailAnonymise()}.</p>
+                    <p>
+                        Votre espace client sera créé pour gérer votre rendez-vous (votre mot de passe temporaire sera envoyé par e-mail).
+                    </p>
                 </>
             </Modal.Body>
 
             <Modal.Footer className="mcf-justify-content--around">
                 <Button
                     variant="outline--primary"
-                    onClick={() => onAfficherModaleModificationEmail(false)}>
+                    onClick={gestionFermetureConfirmationEmail}>
                     Modifier mon e-mail
                 </Button>
 
                 <Button
                     variant="primary"
-                    onClick={() => onCreationCompte()}>
+                    onClick={() => {
+                        onCreationCompte();
+                        onAfficherModaleModificationEmail(false);
+                    }}>
                     Confirmer
                 </Button>
             </Modal.Footer>
@@ -203,7 +209,7 @@ export default function EtapeCreationCompte({
             centered
             backdrop="static"
         >
-            <Modal.Header closeButton/>
+            <Modal.Header/>
 
             <Modal.Body>
                 <>
@@ -217,7 +223,7 @@ export default function EtapeCreationCompte({
                 <Button
                     variant="primary"
                     href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
-                    Accéder à mon espace client
+                    Accéder à mon espace personnel
                 </Button>
             </Modal.Footer>
         </Modal>

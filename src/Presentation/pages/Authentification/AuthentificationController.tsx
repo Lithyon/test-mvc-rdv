@@ -38,8 +38,6 @@ import LoadingObservableImpl from "../../commons/Impl/LoadingObservableImpl";
 import {LoadingObservable} from "../../commons/LoadingObservable";
 import ErrorObservableImpl from "../../commons/Impl/ErrorObservableImpl";
 import {ErrorObservable} from "../../commons/ErrorObservable";
-import {InfosModaleModelView} from "../../commons/ModelView/InfosModale/InfosModaleModelView";
-import InfosModaleModelViewBuilder from "../../commons/ModelView/InfosModale/InfosModaleModelViewBuilder";
 import {CodeMessageApplicatif} from "../../../Domain/Data/Enum/CodeMessageApplicatif";
 import {AuthentificationServiceImpl} from "../../../Domain/Services/Authentification";
 import RendezVousModelViewBuilder from "../RendezVous/ModelView/RendezVous/RendezVousModelViewBuilder";
@@ -122,6 +120,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this._onLoadAuthentificationObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._hasErrorDejaUnCompteObserver = new ErrorObservableImpl();
+        this.fermerCompteDejaExistantModale = this.fermerCompteDejaExistantModale.bind(this);
 
         this._state = {
             estConnecte: false,
@@ -550,14 +549,17 @@ export default class AuthentificationController extends BaseController<Authentif
                 afficherModaleConfirmation: !this.formHasError(),
             };
         } catch (e) {
-
-            if (e instanceof Error && e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT) {
+            if (e instanceof Error && (e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT || e.message === CodeMessageApplicatif.PERSONNE_DEJA_EXISTANT)) {
                 this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: true});
             } else {
                 this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
             }
         }
         this.raiseStateChanged();
+    }
+
+    fermerCompteDejaExistantModale() {
+        this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
     }
 
     async onCreationRendezVous() {
@@ -579,12 +581,12 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     //FIXME: faire une classe abstraite qui portera ca, renommer en finalisationController
-    async redirectionMireDeConnexion() {
+    async redirectionMireDeConnexion(urlRedirection?: string) {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             await this.dependencies.authentificationService.authentificationUtilisateur(
                 this._stateForm,
-                window.location.origin + window.location.pathname
+                urlRedirection ? window.location.origin + urlRedirection : window.location.origin + window.location.pathname
             );
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});

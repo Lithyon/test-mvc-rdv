@@ -140,7 +140,8 @@ export default function PriseRendezVous({
                                                 <Button block onClick={() => onValidationFormulaire(navigate)}>Suivant</Button>
                                             </Col>
                                             <Col className="mcf-pl--0" sm="6" md="2">
-                                                <Button block href="/" data-track-analytics="Rdv_Informations_Annuler" variant="outline--primary">Annuler</Button>
+                                                <Button block href="/" data-track-analytics="Rdv_Informations_Annuler"
+                                                        variant="outline--primary">Annuler</Button>
                                             </Col>
                                         </Row>
                                     }
