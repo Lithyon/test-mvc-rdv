@@ -3,7 +3,7 @@ import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
 import React from "react";
 
 export interface TitreModaleConfirmationProps {
-    canalSelected: CanalModelView
+    readonly canalSelected: CanalModelView
 }
 
 export default function TitreModaleConfirmation({canalSelected}: TitreModaleConfirmationProps) {

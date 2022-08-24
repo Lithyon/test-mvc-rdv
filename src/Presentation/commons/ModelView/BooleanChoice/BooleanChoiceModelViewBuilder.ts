@@ -4,5 +4,5 @@ export default class BooleanChoiceModelViewBuilder {
             code: "",
             libelle: ""
         }
-    }
+    };
 }

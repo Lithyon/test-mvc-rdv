@@ -86,7 +86,7 @@ export default class AuthentificationController extends BaseController<Authentif
 
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
-        // FIXME a externaliser dans abstract aussi
+        // TODO a externaliser dans abstract aussi
         const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
         this._stateForm = window.history.state?.usr as RendezVousModelView;
         if (sessionStorageState) {
@@ -580,7 +580,7 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
-    //FIXME: faire une classe abstraite qui portera ca, renommer en finalisationController
+    //TODO: faire une classe abstraite qui portera ca, renommer en finalisationController
     async redirectionMireDeConnexion(urlRedirection?: string) {
         try {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});

@@ -9,13 +9,11 @@ import {BooleanChoiceModelView} from "../../../commons/ModelView/BooleanChoice/B
 import {CommuneModelView} from "../ModelView/Commune/CommuneModelView";
 import {SituationFamilialeModelView} from "../ModelView/SituationFamiliale/SituationFamilialeModelView";
 import {ProfessionModelView} from "../ModelView/Profession/ProfessionModelView";
-import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
-import useErrorObservable from "../../../hooks/useErrorObservable";
-import {Button, Modal} from "macif-components";
 import {ErrorObservable} from "../../../commons/ErrorObservable";
 import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
-import TitreModaleConfirmation from "../TitreModaleConfirmation";
-import CorpsModaleConfirmation from "../CorpsModaleConfirmation";
+import ModaleConfirmation from "../ModaleConfirmation";
+import ModaleModificationEmail from "../ModaleModificationEmail";
+import ModaleCompteExistant from "../ModaleCompteExistant";
 
 export interface EtapeCreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -90,18 +88,8 @@ export default function EtapeCreationCompte({
                                                 afficherModalModificationEmail,
                                                 afficherModaleConfirmation
                                             }: EtapeCreationCompteProps) {
-    const {hasError}: ErrorIsTriggered = useErrorObservable(hasErrorDejaUnCompteObserver);
-    const gestionFermetureCompteExistant = () => fermerCompteDejaExistantModale();
-    const gestionFermetureConfirmationEmail = () => onAfficherModaleModificationEmail(false);
 
-    function emailAnonymise() {
-        return creationCompte.email.replace(
-            /(\w{3})[\w.-]+@([\w.]+\w)/,
-            "$1***@$2"
-        )
-    }
-
-    function handleCreationCompte() {
+    function gestionCreationCompte() {
         if (rendezVous.canalSelected.code === CanalCode.VISIO) {
             onAfficherModaleModificationEmail(true);
         } else {
@@ -138,94 +126,20 @@ export default function EtapeCreationCompte({
             onInformationsCommercialesEmailSelected={onInformationsCommercialesEmailSelected}
             onInformationsCommercialesSmsSelected={onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={onInformationsCommercialesTelephoneSelected}
-            onCreationCompte={handleCreationCompte}
+            onCreationCompte={gestionCreationCompte}
             formHasError={formHasError}
         />
 
-        <Modal
-            show={hasError}
-            centered
-            onHide={gestionFermetureCompteExistant}
-        >
-            <Modal.Header closeButton/>
+        <ModaleCompteExistant hasErrorDejaUnCompteObserver={hasErrorDejaUnCompteObserver}
+                              fermerCompteDejaExistantModale={fermerCompteDejaExistantModale}
+                              redirectionMireDeConnexion={redirectionMireDeConnexion}
+        />
 
-            <Modal.Body>
-                <>
-                    <span className="icon icon-bonhomme-sourire icon-title"/>
-                    <Modal.Title className="mcf-text--big-3 mcf-font--bold">Un compte existe déjà avec cet identifiant</Modal.Title>
-                    <p>
-                        Veuillez vous connecter ou choisir un autre e-mail
-                        pour créer un nouveau compte.
-                    </p>
-                </>
-            </Modal.Body>
+        <ModaleModificationEmail show={afficherModalModificationEmail}
+                                 onAfficherModaleModificationEmail={onAfficherModaleModificationEmail}
+                                 onCreationCompte={onCreationCompte}
+                                 email={creationCompte.email}/>
 
-            <Modal.Footer>
-                <Button
-                    variant="primary"
-                    onClick={() => redirectionMireDeConnexion("/assurance/particuliers/demande-de-rendez-vous")}>
-                    Connexion
-                </Button>
-            </Modal.Footer>
-        </Modal>
-
-        <Modal
-            show={afficherModalModificationEmail}
-            centered
-            onHide={gestionFermetureConfirmationEmail}
-        >
-            <Modal.Header closeButton/>
-            <Modal.Body>
-                <>
-                    <span className="icon icon-macif-mobile-enveloppe icon-title"/>
-                    <Modal.Title className="mcf-text--big-3 mcf-font--bold">Confirmer votre rendez-vous ?</Modal.Title>
-                    <p>Vous recevrez les informations et le lien du rendez-vous en visioconférence à l'adresse mail {emailAnonymise()}.</p>
-                    <p>
-                        Votre espace client sera créé pour gérer votre rendez-vous (votre mot de passe temporaire sera envoyé par e-mail).
-                    </p>
-                </>
-            </Modal.Body>
-
-            <Modal.Footer className="mcf-justify-content--around">
-                <Button
-                    variant="outline--primary"
-                    onClick={gestionFermetureConfirmationEmail}>
-                    Modifier mon e-mail
-                </Button>
-
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        onCreationCompte();
-                        onAfficherModaleModificationEmail(false);
-                    }}>
-                    Confirmer
-                </Button>
-            </Modal.Footer>
-        </Modal>
-
-        <Modal
-            show={afficherModaleConfirmation}
-            centered
-            backdrop="static"
-        >
-            <Modal.Header/>
-
-            <Modal.Body>
-                <>
-                    <span className={`icon icon-macif-mobile-cercle-check mcf-text--success icon-title`}/>
-                    <Modal.Title><TitreModaleConfirmation canalSelected={rendezVous.canalSelected}/></Modal.Title>
-                    <CorpsModaleConfirmation canalSelected={rendezVous.canalSelected}/>
-                </>
-            </Modal.Body>
-
-            <Modal.Footer>
-                <Button
-                    variant="primary"
-                    href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
-                    Accéder à mon espace personnel
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <ModaleConfirmation show={afficherModaleConfirmation} canalSelected={rendezVous.canalSelected}/>
     </>;
 }

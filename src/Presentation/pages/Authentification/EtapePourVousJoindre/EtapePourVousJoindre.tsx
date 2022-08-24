@@ -1,14 +1,12 @@
 import BandeauModification from "../BandeauModification";
 import PourVousJoindre from "../PourVousJoindre";
 import React from "react";
-import {Button, Modal} from "macif-components";
-import CorpsModaleConfirmation from "../CorpsModaleConfirmation";
-import TitreModaleConfirmation from "../TitreModaleConfirmation";
 import {PourVousJoindreModelView} from "../ModelView/PourVousJoindre/PourVousJoindreModelView";
 import CanalModelView from "../../RendezVous/ModelView/Canal/CanalModelView";
 import {ChoixContactModelView} from "../ModelView/PourVousJoindre/ChoixContactModelView";
 import FormErrorPourVousJoindreModelView from "../ModelView/FormError/FormErrorPourVousJoindreModelView";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
+import ModaleConfirmation from "../ModaleConfirmation";
 
 export interface EtapePourVousJoindreProps {
     readonly rendezVous: RendezVousSelectionModelView;
@@ -48,28 +46,6 @@ export default function EtapePourVousJoindre({
                          formError={formErrorPourVousJoindre}
                          verificationErreursPourVousJoindre={verificationErreursPourVousJoindre}
         />
-        <Modal
-            show={afficherModaleConfirmation}
-            centered
-            backdrop="static"
-        >
-            <Modal.Header/>
-
-            <Modal.Body>
-                <>
-                    <span className={`icon icon-macif-mobile-cercle-check mcf-text--success icon-title`}/>
-                    <Modal.Title><TitreModaleConfirmation canalSelected={canalSelected}/></Modal.Title>
-                    <CorpsModaleConfirmation canalSelected={canalSelected}/>
-                </>
-            </Modal.Body>
-
-            <Modal.Footer>
-                <Button
-                    variant="primary"
-                    href="/assurance/particuliers/vos-espaces-macif/espace-assurance">
-                    Accéder à mon espace personnel
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <ModaleConfirmation show={afficherModaleConfirmation} canalSelected={canalSelected}/>
     </>;
 }
