@@ -56,7 +56,7 @@ export const defaultDependenciesInitAuthentification: InitDependencies = {
     contact: contactStub,
     erreurCompteDejaExistant: false,
     authentification: authentificationStub
-}
+};
 
 export function init(dependencies = defaultDependenciesInitAuthentification) {
     const creationCompteRepository = new CreationCompteRepositoryImpl({

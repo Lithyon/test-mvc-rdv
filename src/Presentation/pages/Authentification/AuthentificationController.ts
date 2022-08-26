@@ -87,7 +87,7 @@ export default class AuthentificationController extends BaseController<Authentif
     constructor(readonly dependencies: AuthentificationControllerDependencies) {
         super();
         // TODO a externaliser dans abstract aussi
-        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
+        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv");
         this._stateForm = window.history.state?.usr as RendezVousModelView;
         if (sessionStorageState) {
             this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));

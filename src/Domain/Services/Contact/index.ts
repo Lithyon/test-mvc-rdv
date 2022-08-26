@@ -3,6 +3,6 @@ import AuthentificationServiceImpl from "../Authentification/AuthentificationSer
 import ContactRepository from "../../Repository/Contact";
 import AuthentificationRepository from "../../Repository/Authentification";
 
-export {ContactServiceImpl, AuthentificationServiceImpl}
+export {ContactServiceImpl, AuthentificationServiceImpl};
 
 export default new ContactServiceImpl(ContactRepository, AuthentificationRepository);

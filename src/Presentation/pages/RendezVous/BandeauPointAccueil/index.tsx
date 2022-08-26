@@ -1,5 +1,5 @@
-import {BandeauPointAccueilProps, default as BandeauPointAccueilView} from './BandeauPointAccueil';
+import {BandeauPointAccueilProps, default as BandeauPointAccueilView} from "./BandeauPointAccueil";
 
 export default function BandeauPointAccueil(props: BandeauPointAccueilProps) {
-    return <BandeauPointAccueilView {...props} />
+    return <BandeauPointAccueilView {...props} />;
 }

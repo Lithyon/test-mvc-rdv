@@ -1,5 +1,5 @@
 interface ImageProps {
-    readonly srcImage?: string | undefined;
+    readonly srcImage: string | undefined;
     readonly alt?: string;
 }
 

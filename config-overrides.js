@@ -1,5 +1,5 @@
 module.exports = {
-    webpack: (config, env) => {
+    webpack: config => {
         config.optimization.runtimeChunk = false;
         config.optimization.splitChunks = {
             cacheGroups: {

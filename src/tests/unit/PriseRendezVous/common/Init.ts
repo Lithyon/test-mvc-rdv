@@ -81,7 +81,7 @@ export function init(
         async creerRendezVous(request: RendezVousRequestEntity): Promise<void> {
             return Promise.resolve();
         }
-    })
+    });
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const authentificationRepository = new AuthentificationRepositoryImpl({

@@ -1,5 +1,5 @@
-import {PourVousJoindreProps, default as VousJoindreView} from "./PourVousJoindre";
+import {default as VousJoindreView, PourVousJoindreProps} from "./PourVousJoindre";
 
 export default function VousJoindre(props: PourVousJoindreProps) {
-    return <VousJoindreView {...props} />
+    return <VousJoindreView {...props} />;
 }

@@ -1,1 +1,1 @@
-export { default } from './ChoiceSwitcher';
+export {default} from "./ChoiceSwitcher";

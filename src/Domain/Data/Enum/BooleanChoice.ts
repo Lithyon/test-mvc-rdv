@@ -8,4 +8,4 @@ export enum BooleanChoiceCode {
 export const DefaultBooleanChoice: Array<BooleanChoiceModelView> = [
     {code: BooleanChoiceCode.OUI, libelle: "Oui"},
     {code: BooleanChoiceCode.NON, libelle: "Non"}
-]
+];

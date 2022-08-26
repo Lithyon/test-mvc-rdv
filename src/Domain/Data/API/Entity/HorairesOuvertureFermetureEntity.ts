@@ -1,8 +1,8 @@
 export default interface HorairesOuvertureFermetureEntity {
-    cdJj: string;
-    hrFermMatin: string;
-    hrFermSoir: string;
-    hrOuvMatin: string;
-    hrOuvSoir: string;
-    liJj: string;
+    readonly cdJj: string;
+    readonly hrFermMatin: string;
+    readonly hrFermSoir: string;
+    readonly hrOuvMatin: string;
+    readonly hrOuvSoir: string;
+    readonly liJj: string;
 }

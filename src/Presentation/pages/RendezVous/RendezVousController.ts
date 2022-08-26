@@ -61,7 +61,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
-        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv")
+        const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv");
         this._stateForm = window.history.state?.usr as RendezVousModelView;
         if (sessionStorageState) {
             this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));

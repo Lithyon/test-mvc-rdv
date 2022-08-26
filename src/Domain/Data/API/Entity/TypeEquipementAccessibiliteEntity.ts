@@ -1,7 +1,7 @@
 import EquipementAccessibiliteEntity from "./EquipementAccessibiliteEntity";
 
 export default interface TypeEquipementAccessibiliteEntity {
-    cdTyHandi: string;
-    equipementAccessibilites: EquipementAccessibiliteEntity[];
-    liTyHandi: string;
+    readonly cdTyHandi: string;
+    readonly equipementAccessibilites: EquipementAccessibiliteEntity[];
+    readonly liTyHandi: string;
 }

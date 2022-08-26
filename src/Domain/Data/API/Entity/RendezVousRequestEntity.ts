@@ -1,16 +1,16 @@
 import {CanalCode} from "../../Enum/Canal";
 
 export default interface RendezVousRequestEntity {
-    adresseMail: string;
-    canalRendezVous: CanalCode | string;
-    cdBuro: string;
-    cdDemande: string;
-    cdDomaine: string;
-    estFilleul: boolean;
-    heure: number;
-    jour: string;
-    nmCommu: string;
-    noSocietaireParrain: string;
-    noTel: string;
-    precision: string;
+    readonly adresseMail: string;
+    readonly canalRendezVous: CanalCode | string;
+    readonly cdBuro: string;
+    readonly cdDemande: string;
+    readonly cdDomaine: string;
+    readonly estFilleul: boolean;
+    readonly heure: number;
+    readonly jour: string;
+    readonly nmCommu: string;
+    readonly noSocietaireParrain: string;
+    readonly noTel: string;
+    readonly precision: string;
 }

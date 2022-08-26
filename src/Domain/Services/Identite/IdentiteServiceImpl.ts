@@ -46,7 +46,7 @@ export default class IdentiteServiceImpl {
             setCookie(CookieKeysEnum.CODE_LOCALISATION_SANTE, identite.identiteSanteIndividuelle.codeLocalisation, {
                 path: "/",
                 expires
-            })
+            });
         }
     }
 }

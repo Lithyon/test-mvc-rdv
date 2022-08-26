@@ -3,7 +3,7 @@ import CommunesRequest from "../../Model/Commune/CommunesRequest";
 import Commune from "../../Model/Commune/Commune";
 
 export class CommunesRepositoryImpl {
-    private _dataSource: CommunesDAO;
+    private readonly _dataSource: CommunesDAO;
 
     constructor(datasource: CommunesDAO) {
         this._dataSource = datasource;

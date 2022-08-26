@@ -3,6 +3,6 @@ export default class BooleanChoiceModelViewBuilder {
         return {
             code: "",
             libelle: ""
-        }
-    };
+        };
+    }
 }

@@ -10,7 +10,7 @@ export const DEMANDES_AVEC_PARRAINAGE = [
     TypeDemande.AUTRE,
     TypeDemande.DEVIS,
     TypeDemande.SOUSCRIPTION
-]
+];
 
 export const DEMANDES_HORS_SINISTRE = [
     TypeDemande.AUTRE,

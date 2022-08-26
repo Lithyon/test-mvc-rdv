@@ -1,3 +1,3 @@
 export default interface RendezVousEntity {
-    listeRejets: Array<string>
+    readonly listeRejets: Array<string>
 }

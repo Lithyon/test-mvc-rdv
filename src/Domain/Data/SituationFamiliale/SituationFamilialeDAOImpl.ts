@@ -8,7 +8,8 @@ const BASE_URL = `${window.servicesRestBaseUrl || ""}/fwk-codification-rest`;
 export default class SituationFamilialeDAOImpl implements SituationFamilialeDAO {
     async getSituationFamiliale(): Promise<SituationFamilialeEntity> {
         const {data, messages} = await RequestBuilder
-            .get<ResponseEntity<SituationFamilialeEntity>>(`${BASE_URL}/codifications/nom/CD_SITUAT_FAMIL?code_cible=5&numero_structures=324&code_langue=fra&code_application=1880`)
+            .get<ResponseEntity<SituationFamilialeEntity>>(
+                `${BASE_URL}/codifications/nom/CD_SITUAT_FAMIL?code_cible=5&numero_structures=324&code_langue=fra&code_application=1880`)
             .fetchJson();
 
         if (messages) {
