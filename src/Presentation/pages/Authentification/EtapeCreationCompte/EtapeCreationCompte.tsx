@@ -43,7 +43,7 @@ export interface EtapeCreationCompteProps {
     readonly onInformationsCommercialesSmsSelected: (value: BooleanChoiceModelView) => void;
     readonly onInformationsCommercialesTelephoneSelected: (value: BooleanChoiceModelView) => void;
     readonly onCreationCompte: Function;
-    readonly formHasError: Function;
+    readonly formHasError: boolean;
     readonly hasErrorDejaUnCompteObserver: ErrorObservable;
     readonly fermerCompteDejaExistantModale: Function;
     readonly redirectionMireDeConnexion: Function;

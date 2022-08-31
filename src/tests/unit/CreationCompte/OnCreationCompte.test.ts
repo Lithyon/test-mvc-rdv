@@ -35,7 +35,7 @@ describe("Creation Compte", function () {
         } as CommuneModelView);
 
         controller.subscribeStateChanged(() => {
-            expect(controller.formHasError()).toBeFalsy();
+            expect(controller.state.formHasError).toBeFalsy();
             done();
         });
 

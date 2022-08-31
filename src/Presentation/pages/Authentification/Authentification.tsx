@@ -67,7 +67,7 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
                                 onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
                                 onCreationCompte={controller.onCreationCompte}
-                                formHasError={controller.formHasError}
+                                formHasError={state.formHasError}
                                 hasErrorDejaUnCompteObserver={controller.hasErrorDejaUnCompteObserver}
                                 fermerCompteDejaExistantModale={controller.fermerCompteDejaExistantModale}
                                 redirectionMireDeConnexion={controller.redirectionMireDeConnexion}

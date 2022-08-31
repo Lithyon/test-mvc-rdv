@@ -63,6 +63,7 @@ export interface AuthentificationModelView {
     readonly infosContact: ContactModelView,
     readonly afficherModaleConfirmation: boolean,
     readonly afficherModalModificationEmail: boolean,
+    readonly formHasError: boolean,
 }
 
 interface AuthentificationControllerDependencies {
@@ -141,6 +142,7 @@ export default class AuthentificationController extends BaseController<Authentif
             infosContact: ContactModelViewBuilder.buildEmpty(),
             afficherModaleConfirmation: false,
             afficherModalModificationEmail: false,
+            formHasError: false,
         };
     }
 
@@ -162,8 +164,8 @@ export default class AuthentificationController extends BaseController<Authentif
         return this._hasErrorDejaUnCompteObserver;
     }
 
-    formHasError() {
-        return this.dependencies.creationCompteService.formHasError(this._state.formError);
+    formHasError(formError: FormErrorModelView) {
+        return this.dependencies.creationCompteService.formHasError(formError);
     }
 
     verificationErreursPourVousJoindre() {
@@ -543,10 +545,12 @@ export default class AuthentificationController extends BaseController<Authentif
             this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
 
             const formError = await this.dependencies.creationCompteService.creationCompte(this._state.creationCompte, this._state.rendezVous);
+            const formHasError = this.formHasError(formError);
             this._state = {
                 ...this._state,
                 formError,
-                afficherModaleConfirmation: !this.formHasError(),
+                formHasError,
+                afficherModaleConfirmation: !formHasError,
             };
         } catch (e) {
             if (e instanceof Error && (e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT || e.message === CodeMessageApplicatif.PERSONNE_DEJA_EXISTANT)) {

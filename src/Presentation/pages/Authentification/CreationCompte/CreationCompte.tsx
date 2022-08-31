@@ -45,7 +45,7 @@ export interface CreationCompteProps {
     readonly onInformationsCommercialesSmsSelected: (value: BooleanChoiceModelView) => void;
     readonly onInformationsCommercialesTelephoneSelected: (value: BooleanChoiceModelView) => void;
     readonly onCreationCompte: Function;
-    readonly formHasError: Function;
+    readonly formHasError: boolean;
 }
 
 export default function CreationCompteView({
@@ -82,7 +82,6 @@ export default function CreationCompteView({
         onCreationCompte();
     }
 
-    const hasError = formHasError();
 
     function labelCommune(commune: CommuneModelView) {
         if (commune.codePostal === "") {
@@ -230,7 +229,7 @@ export default function CreationCompteView({
             <Row className="mcf-justify-content--between">
                 <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
                     <Button block variant="primary" onClick={handleCreationCompte}
-                            disabled={hasError} data-track-analytics="Rdv_Informations_Confirmer">
+                            disabled={formHasError} data-track-analytics="Rdv_Informations_Confirmer">
                         Confirmer mon rendez-vous
                     </Button>
                 </Col>

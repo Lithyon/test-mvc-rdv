@@ -13,7 +13,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
 
             controller.subscribeStateChanged(() => {
                 controller.unsubscribeStateChanged();
-                expect(controller.formHasError()).toBeFalsy();
+                expect(controller.state.formHasError).toBeFalsy();
                 done();
             });
 
@@ -66,7 +66,7 @@ describe("Pour vous joindre - validation du formulaire", function () {
 
             controller.subscribeStateChanged(() => {
                 controller.unsubscribeStateChanged();
-                expect(controller.formHasError()).toBeFalsy();
+                expect(controller.state.formHasError).toBeFalsy();
                 done();
             });
 
