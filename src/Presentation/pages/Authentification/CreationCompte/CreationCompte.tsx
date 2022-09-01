@@ -82,7 +82,6 @@ export default function CreationCompteView({
         onCreationCompte();
     }
 
-
     function labelCommune(commune: CommuneModelView) {
         if (commune.codePostal === "") {
             return "";

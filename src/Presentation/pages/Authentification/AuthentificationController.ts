@@ -65,6 +65,8 @@ export interface AuthentificationModelView {
     readonly afficherModalModificationEmail: boolean,
     readonly formHasError: boolean,
     readonly formPourVousJoindreHasError: boolean,
+    readonly chargementCreationRendezVousConnecte: boolean,
+    readonly chargementCreationRendezVousNonConnecte: boolean,
 }
 
 interface AuthentificationControllerDependencies {
@@ -144,6 +146,8 @@ export default class AuthentificationController extends BaseController<Authentif
             afficherModalModificationEmail: false,
             formHasError: false,
             formPourVousJoindreHasError: false,
+            chargementCreationRendezVousConnecte: false,
+            chargementCreationRendezVousNonConnecte: false,
         };
     }
 
@@ -540,8 +544,17 @@ export default class AuthentificationController extends BaseController<Authentif
         this.raiseStateChanged();
     }
 
+    declenchementModaleChargementNonConnecte() {
+        this._state = {
+            ...this._state,
+            chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte,
+        };
+        this.raiseStateChanged();
+    }
+
     async onCreationCompte() {
         try {
+            this.declenchementModaleChargementNonConnecte();
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
 
@@ -552,9 +565,15 @@ export default class AuthentificationController extends BaseController<Authentif
                 formError,
                 formHasError,
                 afficherModaleConfirmation: !formHasError,
+                chargementCreationRendezVousNonConnecte: false,
             };
         } catch (e) {
-            if (e instanceof Error && (e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT || e.message === CodeMessageApplicatif.PERSONNE_DEJA_EXISTANT)) {
+            this._state = {
+                ...this._state,
+                chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte,
+            };
+            if (e instanceof Error && (e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT
+                || e.message === CodeMessageApplicatif.PERSONNE_DEJA_EXISTANT)) {
                 this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: true});
             } else {
                 this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
@@ -567,8 +586,17 @@ export default class AuthentificationController extends BaseController<Authentif
         this._hasErrorDejaUnCompteObserver.raiseAdvancementEvent({hasError: false});
     }
 
+    declenchementModaleChargementConnecte() {
+        this._state = {
+            ...this._state,
+            chargementCreationRendezVousConnecte: !this._state.chargementCreationRendezVousConnecte,
+        };
+        this.raiseStateChanged();
+    }
+
     async onCreationRendezVous() {
         try {
+            this.declenchementModaleChargementConnecte();
             this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
             const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
                 this._state.rendezVous, this._state.pourVousJoindre
@@ -578,9 +606,14 @@ export default class AuthentificationController extends BaseController<Authentif
                 ...this._state,
                 afficherModaleConfirmation: !formPourVousJoindreHasError,
                 formPourVousJoindreHasError,
-                formErrorPourVousJoindre
+                formErrorPourVousJoindre,
+                chargementCreationRendezVousConnecte: false,
             };
         } catch (e) {
+            this._state = {
+                ...this._state,
+                chargementCreationRendezVousConnecte: false
+            };
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
         this.raiseStateChanged();

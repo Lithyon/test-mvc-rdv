@@ -7,6 +7,7 @@ import {ChoixContactModelView} from "../ModelView/PourVousJoindre/ChoixContactMo
 import FormErrorPourVousJoindreModelView from "../ModelView/FormError/FormErrorPourVousJoindreModelView";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
 import ModaleConfirmation from "../ModaleConfirmation";
+import ModaleChargement from "../ModaleChargement/ModaleChargement";
 
 export interface EtapePourVousJoindreProps {
     readonly rendezVous: RendezVousSelectionModelView;
@@ -19,6 +20,7 @@ export interface EtapePourVousJoindreProps {
     readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView;
     readonly formPourVousJoindreHasError: boolean;
     readonly afficherModaleConfirmation: boolean;
+    readonly chargementCreationRendezVousConnecte: boolean;
 }
 
 
@@ -32,7 +34,8 @@ export default function EtapePourVousJoindre({
                                                  onCreationRendezVous,
                                                  formErrorPourVousJoindre,
                                                  afficherModaleConfirmation,
-                                                 formPourVousJoindreHasError
+                                                 formPourVousJoindreHasError,
+                                                 chargementCreationRendezVousConnecte
                                              }: EtapePourVousJoindreProps) {
 
     return <>
@@ -46,6 +49,7 @@ export default function EtapePourVousJoindre({
                          formError={formErrorPourVousJoindre}
                          formPourVousJoindreHasError={formPourVousJoindreHasError}
         />
+        <ModaleChargement show={chargementCreationRendezVousConnecte}/>
         <ModaleConfirmation show={afficherModaleConfirmation} canalSelected={canalSelected}/>
     </>;
 }

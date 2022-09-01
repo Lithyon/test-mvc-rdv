@@ -21,7 +21,7 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
                 Je souhaite un rendez-vous {dataSource.canalSelected.libelle.toLowerCase()} le
                 {" "}<span className="mcf-font-weight--bold">{dataSource.jour.toLocaleDateString("fr-FR", {
                 day: "numeric",
-                month: "short",
+                month: "long",
                 year: "numeric"
             })}</span>
                 {" "}à {dataSource.heure.libelle} à l'agence de {dataSource.nmCommu}.

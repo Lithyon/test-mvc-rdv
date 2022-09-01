@@ -38,6 +38,7 @@ export default function Authentification({controller}: AuthentificationProps) {
                                      formErrorPourVousJoindre={state.formErrorPourVousJoindre}
                                      formPourVousJoindreHasError={state.formPourVousJoindreHasError}
                                      afficherModaleConfirmation={state.afficherModaleConfirmation}
+                                     chargementCreationRendezVousConnecte={state.chargementCreationRendezVousConnecte}
         />;
     }
     return <EtapeCreationCompte rendezVous={state.rendezVous}
@@ -74,5 +75,6 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 onAfficherModaleModificationEmail={controller.onAfficherModaleModificationEmail}
                                 afficherModalModificationEmail={state.afficherModalModificationEmail}
                                 afficherModaleConfirmation={state.afficherModaleConfirmation}
+                                chargementCreationRendezVousNonConnecte={state.chargementCreationRendezVousNonConnecte}
     />;
 }

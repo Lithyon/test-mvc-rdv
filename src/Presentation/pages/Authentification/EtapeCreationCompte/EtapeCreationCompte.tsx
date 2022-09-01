@@ -14,6 +14,7 @@ import {CanalCode} from "../../../../Domain/Data/Enum/Canal";
 import ModaleConfirmation from "../ModaleConfirmation";
 import ModaleModificationEmail from "../ModaleModificationEmail";
 import ModaleCompteExistant from "../ModaleCompteExistant";
+import ModaleChargement from "../ModaleChargement/ModaleChargement";
 
 export interface EtapeCreationCompteProps {
     readonly formError: FormErrorModelView;
@@ -50,6 +51,7 @@ export interface EtapeCreationCompteProps {
     readonly onAfficherModaleModificationEmail: Function;
     readonly afficherModalModificationEmail: boolean;
     readonly afficherModaleConfirmation: boolean;
+    readonly chargementCreationRendezVousNonConnecte: boolean;
 }
 
 export default function EtapeCreationCompte({
@@ -86,7 +88,8 @@ export default function EtapeCreationCompte({
                                                 redirectionMireDeConnexion,
                                                 onAfficherModaleModificationEmail,
                                                 afficherModalModificationEmail,
-                                                afficherModaleConfirmation
+                                                afficherModaleConfirmation,
+                                                chargementCreationRendezVousNonConnecte
                                             }: EtapeCreationCompteProps) {
 
     function gestionCreationCompte() {
@@ -129,7 +132,7 @@ export default function EtapeCreationCompte({
             onCreationCompte={gestionCreationCompte}
             formHasError={formHasError}
         />
-
+        <ModaleChargement show={chargementCreationRendezVousNonConnecte}/>
         <ModaleCompteExistant hasErrorDejaUnCompteObserver={hasErrorDejaUnCompteObserver}
                               fermerCompteDejaExistantModale={fermerCompteDejaExistantModale}
                               redirectionMireDeConnexion={redirectionMireDeConnexion}

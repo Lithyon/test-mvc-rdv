@@ -48,11 +48,16 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
+            controller.unsubscribeStateChanged();
             controller.subscribeStateChanged(() => {
+                controller.unsubscribeStateChanged();
                 controller.subscribeStateChanged(() => {
-                    const actual = controller.state;
-                    expect(actual.formError.noSocietaireParrain).toBe(expected);
-                    done();
+                    controller.unsubscribeStateChanged();
+                    controller.subscribeStateChanged(() => {
+                        const actual = controller.state;
+                        expect(actual.formError.noSocietaireParrain).toBe(expected);
+                        done();
+                    });
                 });
                 controller.onCreationCompte();
             });
@@ -68,9 +73,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.civilite).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.civilite).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -82,9 +90,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.nom).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.nom).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -98,9 +109,12 @@ describe("Creation Compte", function () {
         controller.onChangeNom("*/*/");
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.nom).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.nom).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -112,9 +126,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.prenom).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.prenom).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -128,9 +145,12 @@ describe("Creation Compte", function () {
         controller.onChangePrenom("*/*/");
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.prenom).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.prenom).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -142,9 +162,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.numeroTelephone).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.numeroTelephone).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -156,9 +179,12 @@ describe("Creation Compte", function () {
         const controller = init();
         controller.onChangeNumeroTelephone("o102030405");
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.numeroTelephone).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.numeroTelephone).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -169,9 +195,12 @@ describe("Creation Compte", function () {
 
         const controller = init();
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.email).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.email).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -183,9 +212,12 @@ describe("Creation Compte", function () {
         const controller = init();
         controller.onChangeEmail("dfdfdfdsfs@gtgt");
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.email).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.email).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -196,9 +228,12 @@ describe("Creation Compte", function () {
 
         const controller = init();
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.dateNaissance).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.dateNaissance).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -212,9 +247,12 @@ describe("Creation Compte", function () {
         const controller = init();
         controller.onChangeDateNaissance(dateNaissance)
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.dateNaissance).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.dateNaissance).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -225,9 +263,12 @@ describe("Creation Compte", function () {
 
         const controller = init();
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.situationFamiliale).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.situationFamiliale).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -238,9 +279,12 @@ describe("Creation Compte", function () {
 
         const controller = init();
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.profession).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.profession).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -252,9 +296,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.informationsCommercialesEmail).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.informationsCommercialesEmail).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -266,9 +313,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.informationsCommercialesSms).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.informationsCommercialesSms).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -280,9 +330,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.informationsCommercialesTelephone).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.informationsCommercialesTelephone).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -294,9 +347,12 @@ describe("Creation Compte", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formError.commune).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formError.commune).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationCompte();
@@ -393,9 +449,12 @@ it("doit afficher la modale de confirmation de prise de rendez vous en tant que 
         ancienNom: ""
     } as CommuneModelView);
     controller.subscribeStateChanged(() => {
-        const actual = controller.state.afficherModaleConfirmation;
-        expect(actual).toBe(expected);
-        done();
+        controller.unsubscribeStateChanged();
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state.afficherModaleConfirmation;
+            expect(actual).toBe(expected);
+            done();
+        });
     });
 
     controller.onCreationCompte();

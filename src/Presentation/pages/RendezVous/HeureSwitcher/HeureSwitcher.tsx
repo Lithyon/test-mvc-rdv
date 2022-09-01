@@ -54,7 +54,7 @@ export default function HeureSwitcher({
                                 choiceSelected={choiceSelected}
                                 dataSource={disponibilitesApresMidi}
                                 id="heureApresMidi"
-                                label="Après-Midi"
+                                label="Après-midi"
                                 nbSwitchers={6}/>
                 {disponibilitesApresMidi.length === 0 && (
                     <Form.Group>

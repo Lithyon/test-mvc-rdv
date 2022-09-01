@@ -31,9 +31,12 @@ describe("Pour vous joindre - validation du formulaire", function () {
         controller.onChoixContactSelected({code: AutreChoixCode.MAIL, libelle: ""} as ChoixContactModelView);
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formErrorPourVousJoindre.email).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formErrorPourVousJoindre.email).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationRendezVous();
@@ -48,9 +51,12 @@ describe("Pour vous joindre - validation du formulaire", function () {
         controller.onEmailPourVousJoindreChanged("greopgjigjerio");
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formErrorPourVousJoindre.email).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formErrorPourVousJoindre.email).toBe(expected);
+                done();
+            })
         });
 
         controller.onCreationRendezVous();
@@ -85,9 +91,12 @@ describe("Pour vous joindre - validation du formulaire", function () {
         controller.onTelephonePourVousJoindreChanged("greopgjigjerio");
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formErrorPourVousJoindre.numeroTelephone).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formErrorPourVousJoindre.numeroTelephone).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationRendezVous();
@@ -101,9 +110,12 @@ describe("Pour vous joindre - validation du formulaire", function () {
         controller.onChoixContactSelected({code: AutreChoixCode.TELEPHONE, libelle: ""} as ChoixContactModelView);
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formErrorPourVousJoindre.numeroTelephone).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formErrorPourVousJoindre.numeroTelephone).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationRendezVous();
@@ -115,9 +127,12 @@ describe("Pour vous joindre - validation du formulaire", function () {
         const controller = init();
 
         controller.subscribeStateChanged(() => {
-            const actual = controller.state;
-            expect(actual.formErrorPourVousJoindre.choixContact).toBe(expected);
-            done();
+            controller.unsubscribeStateChanged();
+            controller.subscribeStateChanged(() => {
+                const actual = controller.state;
+                expect(actual.formErrorPourVousJoindre.choixContact).toBe(expected);
+                done();
+            });
         });
 
         controller.onCreationRendezVous();
