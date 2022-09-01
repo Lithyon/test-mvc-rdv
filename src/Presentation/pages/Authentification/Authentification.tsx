@@ -36,7 +36,7 @@ export default function Authentification({controller}: AuthentificationProps) {
                                      onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
                                      onCreationRendezVous={controller.onCreationRendezVous}
                                      formErrorPourVousJoindre={state.formErrorPourVousJoindre}
-                                     verificationErreursPourVousJoindre={controller.verificationErreursPourVousJoindre}
+                                     formPourVousJoindreHasError={state.formPourVousJoindreHasError}
                                      afficherModaleConfirmation={state.afficherModaleConfirmation}
         />;
     }

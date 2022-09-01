@@ -64,6 +64,7 @@ export interface AuthentificationModelView {
     readonly afficherModaleConfirmation: boolean,
     readonly afficherModalModificationEmail: boolean,
     readonly formHasError: boolean,
+    readonly formPourVousJoindreHasError: boolean,
 }
 
 interface AuthentificationControllerDependencies {
@@ -94,7 +95,6 @@ export default class AuthentificationController extends BaseController<Authentif
             this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));
         }
         this.formHasError = this.formHasError.bind(this);
-        this.verificationErreursPourVousJoindre = this.verificationErreursPourVousJoindre.bind(this);
         this.onCreationCompte = this.onCreationCompte.bind(this);
         this.onCreationRendezVous = this.onCreationRendezVous.bind(this);
         this.onCiviliteSelected = this.onCiviliteSelected.bind(this);
@@ -143,6 +143,7 @@ export default class AuthentificationController extends BaseController<Authentif
             afficherModaleConfirmation: false,
             afficherModalModificationEmail: false,
             formHasError: false,
+            formPourVousJoindreHasError: false,
         };
     }
 
@@ -168,8 +169,8 @@ export default class AuthentificationController extends BaseController<Authentif
         return this.dependencies.creationCompteService.formHasError(formError);
     }
 
-    verificationErreursPourVousJoindre() {
-        return this.dependencies.rendezVousService.formHasError(this._state.formErrorPourVousJoindre);
+    verificationErreursPourVousJoindre(formPourVousJoindre: FormErrorPourVousJoindreModelView) {
+        return this.dependencies.rendezVousService.formHasError(formPourVousJoindre);
     }
 
     async onLoad() {
@@ -572,10 +573,11 @@ export default class AuthentificationController extends BaseController<Authentif
             const formErrorPourVousJoindre = await this.dependencies.rendezVousService.creerRendezVous(
                 this._state.rendezVous, this._state.pourVousJoindre
             );
-
+            const formPourVousJoindreHasError = this.verificationErreursPourVousJoindre(formErrorPourVousJoindre);
             this._state = {
                 ...this._state,
-                afficherModaleConfirmation: !this.verificationErreursPourVousJoindre(),
+                afficherModaleConfirmation: !formPourVousJoindreHasError,
+                formPourVousJoindreHasError,
                 formErrorPourVousJoindre
             };
         } catch (e) {

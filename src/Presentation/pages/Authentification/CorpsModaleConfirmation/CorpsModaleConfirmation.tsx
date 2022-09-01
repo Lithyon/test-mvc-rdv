@@ -13,7 +13,7 @@ export default function CorpsModaleConfirmation({canalSelected}: CorpsModaleConf
             return <p>Retrouvez votre rendez-vous dans votre espace personnel.</p>;
         case CanalCode.VISIO:
             return <p>
-                Vous allez recevoir un e-mail avec le <span className="mcf-font-weight--bold">lien de connexion à votre visioconférence.</span>
+                Vous allez recevoir un e-mail avec le <span className="mcf-font-weight--bold">lien de connexion à votre visioconférence. </span>
                 Vous pouvez consulter et modifier votre rendez-vous depuis votre espace personnel.
             </p>;
         default:

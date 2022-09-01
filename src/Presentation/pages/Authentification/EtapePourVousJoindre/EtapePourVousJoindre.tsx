@@ -17,7 +17,7 @@ export interface EtapePourVousJoindreProps {
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onCreationRendezVous: Function;
     readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView;
-    readonly verificationErreursPourVousJoindre: Function;
+    readonly formPourVousJoindreHasError: boolean;
     readonly afficherModaleConfirmation: boolean;
 }
 
@@ -31,8 +31,8 @@ export default function EtapePourVousJoindre({
                                                  onEmailPourVousJoindreChanged,
                                                  onCreationRendezVous,
                                                  formErrorPourVousJoindre,
-                                                 verificationErreursPourVousJoindre,
-                                                 afficherModaleConfirmation
+                                                 afficherModaleConfirmation,
+                                                 formPourVousJoindreHasError
                                              }: EtapePourVousJoindreProps) {
 
     return <>
@@ -44,7 +44,7 @@ export default function EtapePourVousJoindre({
                          onEmailPourVousJoindreChanged={onEmailPourVousJoindreChanged}
                          onValidationRendezVous={onCreationRendezVous}
                          formError={formErrorPourVousJoindre}
-                         verificationErreursPourVousJoindre={verificationErreursPourVousJoindre}
+                         formPourVousJoindreHasError={formPourVousJoindreHasError}
         />
         <ModaleConfirmation show={afficherModaleConfirmation} canalSelected={canalSelected}/>
     </>;
