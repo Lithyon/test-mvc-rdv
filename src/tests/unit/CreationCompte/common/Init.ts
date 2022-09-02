@@ -35,6 +35,7 @@ import AuthentificationEntity from "../../../../Domain/Data/API/Entity/Authentif
 import authentificationStub from "../../../../../mocks/AuthentificationStub";
 import {AuthentificationServiceImpl} from "../../../../Domain/Services/Authentification";
 import {CodeMessageApplicatif} from "../../../../Domain/Data/Enum/CodeMessageApplicatif";
+import {AuthentificationJahiaRepositoryImpl} from "../../../../Domain/Repository/AuthentificationJahia";
 
 interface InitDependencies {
     disponibilites: DisponibilitesEntity;
@@ -88,13 +89,21 @@ export function init(dependencies = defaultDependenciesInitAuthentification) {
             return Promise.resolve();
         }
     });
+
+    const authentificationJahiaRepository = new AuthentificationJahiaRepositoryImpl({
+        async finalisationConnexion(mfsid: string): Promise<void> {
+            return Promise.resolve();
+        }
+    });
+
     const rendezVousService = new RendezVousServiceImpl(rendezVousRepository);
 
     const creationCompteService = new CreationCompteServiceImpl(
         creationCompteRepository,
         rendezVousRepository,
         communesRepository,
-        identiteRepository
+        identiteRepository,
+        authentificationJahiaRepository
     );
 
     const situationFamilialeServiceRepo = new SituationFamilialeRepositoryImpl({

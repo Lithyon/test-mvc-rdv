@@ -11,19 +11,22 @@ import {format, isAfter, isBefore, isEqual, subYears} from "date-fns";
 import CreationCompteRequest from "../../Model/CreationCompte/CreationCompteRequest";
 import RendezVousRequest from "../../Model/RendezVous/RendezVousRequest";
 import {IdentiteRepositoryImpl} from "../../Repository/Identite";
+import {AuthentificationJahiaRepositoryImpl} from "../../Repository/AuthentificationJahia";
 
 export default class CreationCompteServiceImpl {
     private readonly _creationCompteRepo: CreationCompteRepositoryImpl;
     private readonly _rendezVousRepo: RendezVousRepositoryImpl;
     private readonly _communesRepo: CommunesRepositoryImpl;
     private readonly _identiteRepo: IdentiteRepositoryImpl;
+    private readonly _authentificationJahiaRepo: AuthentificationJahiaRepositoryImpl;
 
     constructor(creationCompteRepo: CreationCompteRepositoryImpl, rendezVousRepo: RendezVousRepositoryImpl, communesRepo: CommunesRepositoryImpl,
-                identiteRepo: IdentiteRepositoryImpl) {
+                identiteRepo: IdentiteRepositoryImpl, authentificationJahiaRepo: AuthentificationJahiaRepositoryImpl) {
         this._creationCompteRepo = creationCompteRepo;
         this._rendezVousRepo = rendezVousRepo;
         this._communesRepo = communesRepo;
         this._identiteRepo = identiteRepo;
+        this._authentificationJahiaRepo = authentificationJahiaRepo;
     }
 
     private static verifierContenuNomEtPrenom(value: string): boolean {
@@ -158,6 +161,8 @@ export default class CreationCompteServiceImpl {
             }));
 
             if (creationCompteResult.state.idCreationCompte) {
+                await this._authentificationJahiaRepo.finalisationConnexion(creationCompteResult.state.idCreationCompte);
+
                 await this._identiteRepo.getIdentite();
 
                 await this._rendezVousRepo.creerRendezVous(new RendezVousRequest({
