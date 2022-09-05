@@ -152,8 +152,7 @@ export default function DatePicker({
         setShowCalendar(false);
     }
 
-    const calendarKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        let number, period;
+    function handleCalendarKeyboardEvent(event: KeyboardEvent<HTMLInputElement>) {
         switch (event.key) {
             case keyboardKeysEnum.KEY_TAB:
                 if (!event.shiftKey) {
@@ -166,71 +165,99 @@ export default function DatePicker({
                 event.preventDefault();
                 setSelectedDay(focusDate);
                 return;
+            case keyboardKeysEnum.KEY_ARROW_LEFT:
+            case keyboardKeysEnum.KEY_ARROW_RIGHT:
+            case keyboardKeysEnum.KEY_ARROW_UP:
+            case keyboardKeysEnum.KEY_ARROW_DOWN:
+                handleCalendarKeyboardArrowEvent(event);
+                break;
+            case keyboardKeysEnum.KEY_PAGE_UP:
+            case keyboardKeysEnum.KEY_PAGE_DOWN:
+                handleCalendarKeyboardPageEvent(event);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function handleCalendarKeyboardPageEvent(event: KeyboardEvent<HTMLInputElement>) {
+        const period = event.shiftKey ? "YEARS" : "MONTHS";
+
+        switch (event.key) {
             case keyboardKeysEnum.KEY_PAGE_UP:
                 if (!(isEqual(selectedMonthYear.getMonth(), minDate.getMonth()) && isEqual(selectedMonthYear.getFullYear(), minDate.getFullYear()))) {
-                    number = -1;
-                    period = event.shiftKey ? "YEARS" : "MONTHS";
+                    updateDateAfterKeyboardEvent(event, period, -1);
                 }
                 break;
             case keyboardKeysEnum.KEY_PAGE_DOWN:
                 if (!(isEqual(selectedMonthYear.getMonth(), maxDate.getMonth()) && isEqual(selectedMonthYear.getFullYear(), maxDate.getFullYear()))) {
-                    number = 1;
-                    period = event.shiftKey ? "YEARS" : "MONTHS";
-                }
-                break;
-            case keyboardKeysEnum.KEY_ARROW_LEFT:
-                if (!isEqual(selectedMonthYear, minDate)) {
-                    number = -1;
-                    period = "DAYS";
-                }
-                break;
-            case keyboardKeysEnum.KEY_ARROW_RIGHT:
-                if (selectedMonthYear.toLocaleDateString() !== maxDate.toLocaleDateString()) {
-                    number = 1;
-                    period = "DAYS";
-                }
-                break;
-            case keyboardKeysEnum.KEY_ARROW_UP:
-                if (isAfter(selectedMonthYear, addDays(minDate, 6))) {
-                    number = -7;
-                    period = "DAYS";
-                }
-                break;
-            case keyboardKeysEnum.KEY_ARROW_DOWN:
-                if (isBefore(selectedMonthYear, subDays(maxDate, 7))) {
-                    number = 7;
-                    period = "DAYS";
+                    updateDateAfterKeyboardEvent(event, period, 1);
                 }
                 break;
             default:
                 break;
         }
+    }
 
-        if (period && number) {
-            event.preventDefault();
-            const newFocusDate = focusDate ? parse(focusDate, "dd/MM/yyyy", new Date()) : selectedMonthYear;
-            let updateDate = new Date();
-            switch (period) {
-                case "DAYS":
-                    updateDate = addDays(newFocusDate, number);
-                    break;
-                case "MONTHS":
-                    updateDate = addMonths(newFocusDate, number);
-                    break;
-                case "YEARS":
-                    updateDate = addYears(newFocusDate, number);
-                    break;
-                default:
-                    break;
-            }
-            const newFocusDateString = format(updateDate, "dd/MM/yyyy");
+    function handleCalendarKeyboardArrowEvent(event: KeyboardEvent<HTMLInputElement>) {
+        const period = "DAYS";
 
-            if (focusDate !== newFocusDateString) {
-                setSelectedMonthYear(updateDate);
-                setFocusDate(newFocusDateString);
-            }
+        switch (event.key) {
+            case keyboardKeysEnum.KEY_ARROW_LEFT:
+                if (!isEqual(selectedMonthYear, minDate)) {
+                    updateDateAfterKeyboardEvent(event, period, -1);
+                }
+                break;
+            case keyboardKeysEnum.KEY_ARROW_RIGHT:
+                if (selectedMonthYear.toLocaleDateString() !== maxDate.toLocaleDateString()) {
+                    updateDateAfterKeyboardEvent(event, period, 1);
+                }
+                break;
+            case keyboardKeysEnum.KEY_ARROW_UP:
+                if (isAfter(selectedMonthYear, addDays(minDate, 6))) {
+                    updateDateAfterKeyboardEvent(event, period, -7);
+                }
+                break;
+            case keyboardKeysEnum.KEY_ARROW_DOWN:
+                if (isBefore(selectedMonthYear, subDays(maxDate, 7))) {
+                    updateDateAfterKeyboardEvent(event, period, 7);
+                }
+                break;
+            default:
+                break;
         }
-    };
+    }
+
+    function updateDateAfterKeyboardEvent(event: KeyboardEvent<HTMLInputElement>, period: string, quantiteJourMoisAnneeAAjouter: number) {
+        event.preventDefault();
+
+        const newFocusDate = focusDate
+            ? parse(focusDate, "dd/MM/yyyy", new Date())
+            : selectedMonthYear;
+
+        let updateDate = new Date();
+
+        switch (period) {
+            case "DAYS":
+                updateDate = addDays(newFocusDate, quantiteJourMoisAnneeAAjouter);
+                break;
+            case "MONTHS":
+                updateDate = addMonths(newFocusDate, quantiteJourMoisAnneeAAjouter);
+                break;
+            case "YEARS":
+                updateDate = addYears(newFocusDate, quantiteJourMoisAnneeAAjouter);
+                break;
+            default:
+                break;
+        }
+
+        const newFocusDateString = format(updateDate, "dd/MM/yyyy");
+
+        if (focusDate !== newFocusDateString) {
+            setSelectedMonthYear(updateDate);
+            setFocusDate(newFocusDateString);
+        }
+    }
 
     const calendarIconKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
         if (event.key === keyboardKeysEnum.KEY_SPACE || event.key === keyboardKeysEnum.KEY_ENTER) {
@@ -353,7 +380,7 @@ export default function DatePicker({
                             tabIndex={0}
                             onFocus={() => setFocusChoiceDate(true)}
                             onBlur={() => setFocusChoiceDate(false)}
-                            onKeyDown={calendarKeyDown}>
+                            onKeyDown={handleCalendarKeyboardEvent}>
                             {NOMBRE_SEMAINES_MAX_PAR_MOIS.map((semaine) => (
                                 <div key={`s-${semaine}`} className="mcf-d--flex mcf-justify-content--around mcf-pb--2">
                                     {LISTE_JOURS_PAR_SEMAINE.map((joursSemaine) => {
