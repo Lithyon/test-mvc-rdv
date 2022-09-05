@@ -42,7 +42,9 @@ const LISTE_JOURS_PAR_SEMAINE = [1, 2, 3, 4, 5, 6, 7];
 const TAILLE_TEXTE_MOIS = 2;
 const TAILLE_TEXTE_ANNEE = 4;
 const TAILLE_TEXTE_DATE = 8;
+const TAILLE_TEXTE_DATE_AVEC_SLASH = 10;
 const shortDays = getShortDays();
+
 export default function DatePicker({
                                        id,
                                        label,
@@ -67,32 +69,41 @@ export default function DatePicker({
     const [disabledArrowLeft, setDisabledArrowLeft] = useState(false);
     const [disabledArrowRight, setDisabledArrowRight] = useState(false);
 
-
     useEffect(() => {
-        setListeAnneesDisponible(range(minDate.getFullYear(), maxDate.getFullYear()));
-    }, [minDate, maxDate]);
+        if (selectedDate === "") {
+            const newDate = new Date(0);
+            setSelectedMonthYear(newDate);
+            onChangeDate(newDate);
+        } else {
+            const parseDate = parse(selectedDate, "dd/MM/yyyy", new Date());
+
+            if (selectedDate.length === TAILLE_TEXTE_DATE_AVEC_SLASH && parseDate.toDateString() === "Invalid Date") {
+                setSelectedDate("");
+            } else {
+                onChangeDate(parseDate);
+            }
+        }
+    }, [selectedDate, onChangeDate]);
+
     useEffect(
         () => {
-            setFirstDayOfMonth(startOfMonth(selectedMonthYear).getDay());
+            setDisabledArrowRight(true);
+            setDisabledArrowLeft(true);
 
-            if (minDate.getFullYear() === selectedMonthYear.getFullYear() && minDate.getMonth() === selectedMonthYear.getMonth()) {
-                setDisabledArrowLeft(true);
-            } else {
-                setDisabledArrowLeft(false);
-            }
+            if (selectedMonthYear.toDateString() !== "Invalid Date") {
+                setDaysOfMonth(range(1, lastDayOfMonth(selectedMonthYear).getDate()));
 
-            if (maxDate.getFullYear() === selectedMonthYear.getFullYear() && maxDate.getMonth() <= selectedMonthYear.getMonth()) {
-                setDisabledArrowRight(true);
-            } else {
-                setDisabledArrowRight(false);
+                setFirstDayOfMonth(startOfMonth(selectedMonthYear).getDay());
+
+                const disableArrowLeft = minDate.getFullYear() === selectedMonthYear.getFullYear() && minDate.getMonth() === selectedMonthYear.getMonth();
+                setDisabledArrowLeft(disableArrowLeft);
+
+                const disableArrowRight = maxDate.getFullYear() === selectedMonthYear.getFullYear() && maxDate.getMonth() <= selectedMonthYear.getMonth();
+                setDisabledArrowRight(disableArrowRight);
             }
         },
-        [maxDate, minDate, selectedMonthYear]
+        [selectedMonthYear, minDate, maxDate]
     );
-
-    useEffect(() => {
-        setDaysOfMonth(range(1, lastDayOfMonth(selectedMonthYear).getDate()));
-    }, [selectedMonthYear]);
 
     let i = 0;
     let after = 0;
@@ -100,7 +111,6 @@ export default function DatePicker({
     function keyPressed(event: KeyboardEvent<HTMLInputElement>) {
         if (event.key === keyboardKeysEnum.KEY_BACKSPACE || event.key === keyboardKeysEnum.KEY_DEL) {
             setSelectedDate("");
-            onChangeDate(new Date(0));
         }
         if (event.key === keyboardKeysEnum.KEY_SPACE) {
             setShowCalendar(true);
@@ -125,14 +135,15 @@ export default function DatePicker({
         setSelectedDate(dateSlashee);
         const dateComplete = parse(dateSlashee, "dd/MM/yyyy", new Date());
 
-        if (dateStrippee.length >= TAILLE_TEXTE_DATE) {
-            setSelectedMonthYear(dateComplete);
-        }
+        if (dateComplete.toDateString() !== "Invalid Date") {
+            if (dateStrippee.length >= TAILLE_TEXTE_DATE) {
+                setSelectedMonthYear(dateComplete);
+            }
 
-        if (isBefore(dateComplete, minDate) || isAfter(dateComplete, maxDate)) {
-            setSelectedMonthYear(new Date(1900, 0, 1));
+            if (isBefore(dateComplete, minDate) || isAfter(dateComplete, maxDate)) {
+                setSelectedMonthYear(new Date(1900, 0, 1));
+            }
         }
-        onChangeDate(dateComplete);
     }
 
     function hideShowCalendar() {
@@ -143,7 +154,6 @@ export default function DatePicker({
 
     function setSelectedDay(day: string) {
         setSelectedDate(day);
-        onChangeDate(parse(day, "dd/MM/yyyy", new Date()));
         hideShowCalendar();
     }
 
