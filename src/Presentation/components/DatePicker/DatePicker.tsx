@@ -37,6 +37,12 @@ function range(start: number, end: number): number[] {
     return Array.from({length: end - start + 1}, (_, i) => i + start);
 }
 
+const NOMBRE_SEMAINES_MAX_PAR_MOIS = [1, 2, 3, 4, 5, 6];
+const LISTE_JOURS_PAR_SEMAINE = [1, 2, 3, 4, 5, 6, 7];
+const TAILLE_TEXTE_MOIS = 2;
+const TAILLE_TEXTE_ANNEE = 4;
+const TAILLE_TEXTE_DATE = 8;
+const shortDays = getShortDays();
 export default function DatePicker({
                                        id,
                                        label,
@@ -49,7 +55,9 @@ export default function DatePicker({
                                        onChangeDate
                                    }: DatePickerProps) {
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const listeAnneesDisponible = range(minDate.getFullYear(), maxDate.getFullYear());
 
+    const [daysOfMonth, setDaysOfMonth] = useState<number[]>([]);
     const [selectedMonthYear, setSelectedMonthYear] = useState(minDate);
     const [selectedDate, setSelectedDate] = useState("");
     const [focusDate, setFocusDate] = useState(selectedDate);
@@ -59,6 +67,10 @@ export default function DatePicker({
     const [disabledArrowLeft, setDisabledArrowLeft] = useState(false);
     const [disabledArrowRight, setDisabledArrowRight] = useState(false);
 
+
+    useEffect(() => {
+        setListeAnneesDisponible(range(minDate.getFullYear(), maxDate.getFullYear()));
+    }, [minDate, maxDate]);
     useEffect(
         () => {
             setFirstDayOfMonth(startOfMonth(selectedMonthYear).getDay());
@@ -78,15 +90,10 @@ export default function DatePicker({
         [maxDate, minDate, selectedMonthYear]
     );
 
-    const annees = range(minDate.getFullYear(), maxDate.getFullYear());
-    const daysOfMonth = range(1, lastDayOfMonth(selectedMonthYear).getDate());
-    const semaines = range(1, 6);
-    const joursDeSemaine = range(1, 7);
-    const shortDays = getShortDays();
+    useEffect(() => {
+        setDaysOfMonth(range(1, lastDayOfMonth(selectedMonthYear).getDate()));
+    }, [selectedMonthYear]);
 
-    const nbCaractereJoursMois = 2;
-    const nbCaractereAnnee = 4;
-    const longueurDateMax = 8;
     let i = 0;
     let after = 0;
 
@@ -104,12 +111,12 @@ export default function DatePicker({
         const dateStrippee = event.target.value.replace(/\D/g, "");
         let dateSlashee = "";
 
-        if (dateStrippee.length >= nbCaractereJoursMois) {
-            dateSlashee += `${dateStrippee.substring(0, nbCaractereJoursMois)}/`;
-            if (dateStrippee.length >= nbCaractereAnnee) {
-                dateSlashee += `${dateStrippee.substring(nbCaractereJoursMois, 4)}/${dateStrippee.substring(nbCaractereAnnee)}`;
+        if (dateStrippee.length >= TAILLE_TEXTE_MOIS) {
+            dateSlashee += `${dateStrippee.substring(0, TAILLE_TEXTE_MOIS)}/`;
+            if (dateStrippee.length >= TAILLE_TEXTE_ANNEE) {
+                dateSlashee += `${dateStrippee.substring(TAILLE_TEXTE_MOIS, 4)}/${dateStrippee.substring(TAILLE_TEXTE_ANNEE)}`;
             } else {
-                dateSlashee += dateStrippee.substring(nbCaractereJoursMois, 5);
+                dateSlashee += dateStrippee.substring(TAILLE_TEXTE_MOIS, 5);
             }
         } else {
             dateSlashee += dateStrippee;
@@ -117,7 +124,8 @@ export default function DatePicker({
 
         setSelectedDate(dateSlashee);
         const dateComplete = parse(dateSlashee, "dd/MM/yyyy", new Date());
-        if (dateStrippee.length >= longueurDateMax) {
+
+        if (dateStrippee.length >= TAILLE_TEXTE_DATE) {
             setSelectedMonthYear(dateComplete);
         }
 
@@ -243,11 +251,12 @@ export default function DatePicker({
     }
 
     return (
-        <Form.Group
-            controlId={id}
-            className="mcf-p--0"
-            ref={datePickerRef}>
-            <Form.Label as="h3" id={id} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
+        <Form.Group controlId={id} className="mcf-p--0" ref={datePickerRef}>
+            <Form.Label
+                as="h3"
+                id={id}
+                className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold"
+            >
                 {label}
             </Form.Label>
 
@@ -273,7 +282,6 @@ export default function DatePicker({
                         className="mcf-d--none mcf-d-md--block mcf-btn mcf-btn--link ">
                         <span className="icon icon-macif-mobile-calendrier mcf-text--black mcf-icon--2"/>
                     </span>
-
                 </InputGroup.Append>
                 <Form.Control.Feedback type="invalid">
                     <span className="icon icon-erreur"></span>
@@ -322,7 +330,7 @@ export default function DatePicker({
                                     (event: ChangeEvent<HTMLInputElement>) =>
                                         setSelectedMonthYear(setYear(selectedMonthYear, Number(event.target.value)))
                                 }>
-                                {annees.map((annee, index) => (
+                                {listeAnneesDisponible.map((annee, index) => (
                                     <option key={`annee_${index}`} value={annee}>
                                         {annee}
                                     </option>
@@ -346,9 +354,9 @@ export default function DatePicker({
                             onFocus={() => setFocusChoiceDate(true)}
                             onBlur={() => setFocusChoiceDate(false)}
                             onKeyDown={calendarKeyDown}>
-                            {semaines.map(semaine => (
+                            {NOMBRE_SEMAINES_MAX_PAR_MOIS.map((semaine) => (
                                 <div key={`s-${semaine}`} className="mcf-d--flex mcf-justify-content--around mcf-pb--2">
-                                    {joursDeSemaine.map(joursSemaine => {
+                                    {LISTE_JOURS_PAR_SEMAINE.map((joursSemaine) => {
                                         const premierJoursDuMois = new Date(selectedMonthYear.getFullYear(), selectedMonthYear.getMonth(), 1);
                                         const keyJoursdeSemaine = `s-${semaine}_j-${joursSemaine}`;
                                         /* NOTE: Jours grisés avant le début du mois */
@@ -364,13 +372,11 @@ export default function DatePicker({
                                                     {subDays(premierJoursDuMois, firstDayOfMonth - joursSemaine).getDate().toString()
                                                     }
                                                 </Day>
-                                            )
-                                                ;
+                                            );
                                         }
 
                                         /* NOTE: Jours grisés après la fin du mois */
-                                        const nbSemaineMaxDansMois = 4;
-                                        if (semaine > nbSemaineMaxDansMois && daysOfMonth[i] === undefined) {
+                                        if (semaine > 4 && daysOfMonth[i] === undefined) {
                                             const dayAfterMonth = (
                                                 <Day
                                                     key={keyJoursdeSemaine}
