@@ -34,10 +34,7 @@ export interface DatePickerProps {
 }
 
 function range(start: number, end: number): number[] {
-    if (start === end) {
-        return [start];
-    }
-    return [start, ...range(start + 1, end)];
+    return Array.from({length: end - start + 1}, (_, i) => i + start);
 }
 
 export default function DatePicker({
