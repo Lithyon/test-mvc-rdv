@@ -1,6 +1,6 @@
 import {Button, Form, Loader} from "macif-components";
 import {DisponibilitesModelView} from "../ModelView/Disponibilites/DisponibilitesModelView";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {add, isAfter, isBefore, sub} from "date-fns";
 import ErrorIsTriggered from "../../../commons/ErrorEvent/ErrorIsTriggered";
 import useErrorObservable from "../../../hooks/useErrorObservable";
@@ -24,6 +24,7 @@ export default function JourSwitcher({
                                          isOver,
                                          hasErrorDisponibilitesObserver
                                      }: JourSwitcherProps) {
+    const jourSwitcherRef = useRef<HTMLDivElement>(null);
     const {disponibilites} = dataSource;
 
     const [datePrev, setDatePrev] = useState(new Date());
@@ -37,6 +38,10 @@ export default function JourSwitcher({
     const tableauRefInput: Array<React.RefObject<HTMLLabelElement>> = useMemo(() => disponibilites.map(
         () => React.createRef<HTMLLabelElement>()), [disponibilites]
     );
+
+    useEffect(() => {
+        jourSwitcherRef.current?.scrollIntoView({behavior: "smooth", block: "center"});
+    }, [choiceSelected]);
 
     useEffect(() => {
         if (disponibilites.length > 0) {
@@ -73,7 +78,7 @@ export default function JourSwitcher({
         return <DisplayError/>;
     }
 
-    return <Form.Group controlId="jour">
+    return <Form.Group controlId="jour" ref={jourSwitcherRef}>
         <Form.Label as="h3" id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</Form.Label>
         <div className="mcf-d--flex mcf-align-items--center mcf-mt--2">
             <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickPrev}
