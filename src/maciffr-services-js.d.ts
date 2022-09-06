@@ -1,1 +1,0 @@
-declare module 'maciffr-services-js';
