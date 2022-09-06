@@ -64,7 +64,6 @@ export interface AuthentificationModelView {
     readonly afficherModaleConfirmation: boolean,
     readonly afficherModalModificationEmail: boolean,
     readonly formHasError: boolean,
-    readonly formPourVousJoindreHasError: boolean,
     readonly chargementCreationRendezVousConnecte: boolean,
     readonly chargementCreationRendezVousNonConnecte: boolean,
 }
@@ -145,7 +144,6 @@ export default class AuthentificationController extends BaseController<Authentif
             afficherModaleConfirmation: false,
             afficherModalModificationEmail: false,
             formHasError: false,
-            formPourVousJoindreHasError: false,
             chargementCreationRendezVousConnecte: false,
             chargementCreationRendezVousNonConnecte: false,
         };
@@ -605,7 +603,6 @@ export default class AuthentificationController extends BaseController<Authentif
             this._state = {
                 ...this._state,
                 afficherModaleConfirmation: !formPourVousJoindreHasError,
-                formPourVousJoindreHasError,
                 formErrorPourVousJoindre,
                 chargementCreationRendezVousConnecte: false,
             };

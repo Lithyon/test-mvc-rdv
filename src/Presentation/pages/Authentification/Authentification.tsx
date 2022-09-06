@@ -46,7 +46,6 @@ export default function Authentification({controller}: AuthentificationProps) {
                                      onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
                                      onCreationRendezVous={controller.onCreationRendezVous}
                                      formErrorPourVousJoindre={state.formErrorPourVousJoindre}
-                                     formPourVousJoindreHasError={state.formPourVousJoindreHasError}
                                      afficherModaleConfirmation={state.afficherModaleConfirmation}
                                      chargementCreationRendezVousConnecte={state.chargementCreationRendezVousConnecte}
         />;
@@ -78,7 +77,6 @@ export default function Authentification({controller}: AuthentificationProps) {
                                 onInformationsCommercialesSmsSelected={controller.onInformationsCommercialesSmsSelected}
                                 onInformationsCommercialesTelephoneSelected={controller.onInformationsCommercialesTelephoneSelected}
                                 onCreationCompte={controller.onCreationCompte}
-                                formHasError={state.formHasError}
                                 hasErrorDejaUnCompteObserver={controller.hasErrorDejaUnCompteObserver}
                                 fermerCompteDejaExistantModale={controller.fermerCompteDejaExistantModale}
                                 redirectionMireDeConnexion={controller.redirectionMireDeConnexion}

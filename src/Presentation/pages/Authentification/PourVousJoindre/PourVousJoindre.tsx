@@ -17,7 +17,6 @@ export interface PourVousJoindreProps {
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onValidationRendezVous: Function;
     readonly formError: FormErrorPourVousJoindreModelView;
-    readonly formPourVousJoindreHasError: boolean;
 }
 
 export default function PourVousJoindre({
@@ -28,7 +27,6 @@ export default function PourVousJoindre({
                                             onEmailPourVousJoindreChanged,
                                             onValidationRendezVous,
                                             formError,
-                                            formPourVousJoindreHasError
                                         }: PourVousJoindreProps) {
 
     const handleValidationRendezVous = () => onValidationRendezVous();
@@ -88,7 +86,7 @@ export default function PourVousJoindre({
             }
             <Row className="mcf-justify-content--between">
                 <Col className="mcf-pl--0 mcf-order-sm-1 mcf-mb--4" sm="6" md="3">
-                    <Button block variant="primary" onClick={handleValidationRendezVous} disabled={formPourVousJoindreHasError}
+                    <Button block variant="primary" onClick={handleValidationRendezVous}
                             data-track-analytics="Rdv_Informations_Confirmer">
                         Confirmer mon rendez-vous
                     </Button>

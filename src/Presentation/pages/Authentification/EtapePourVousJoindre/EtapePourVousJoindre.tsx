@@ -18,7 +18,6 @@ export interface EtapePourVousJoindreProps {
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onCreationRendezVous: Function;
     readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView;
-    readonly formPourVousJoindreHasError: boolean;
     readonly afficherModaleConfirmation: boolean;
     readonly chargementCreationRendezVousConnecte: boolean;
 }
@@ -34,7 +33,6 @@ export default function EtapePourVousJoindre({
                                                  onCreationRendezVous,
                                                  formErrorPourVousJoindre,
                                                  afficherModaleConfirmation,
-                                                 formPourVousJoindreHasError,
                                                  chargementCreationRendezVousConnecte
                                              }: EtapePourVousJoindreProps) {
 
@@ -47,7 +45,6 @@ export default function EtapePourVousJoindre({
                          onEmailPourVousJoindreChanged={onEmailPourVousJoindreChanged}
                          onValidationRendezVous={onCreationRendezVous}
                          formError={formErrorPourVousJoindre}
-                         formPourVousJoindreHasError={formPourVousJoindreHasError}
         />
         <ModaleChargement show={chargementCreationRendezVousConnecte}/>
         <ModaleConfirmation show={afficherModaleConfirmation} canalSelected={canalSelected}/>

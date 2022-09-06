@@ -44,7 +44,6 @@ export interface EtapeCreationCompteProps {
     readonly onInformationsCommercialesSmsSelected: (value: BooleanChoiceModelView) => void;
     readonly onInformationsCommercialesTelephoneSelected: (value: BooleanChoiceModelView) => void;
     readonly onCreationCompte: Function;
-    readonly formHasError: boolean;
     readonly hasErrorDejaUnCompteObserver: ErrorObservable;
     readonly fermerCompteDejaExistantModale: Function;
     readonly redirectionMireDeConnexion: Function;
@@ -82,7 +81,6 @@ export default function EtapeCreationCompte({
                                                 onInformationsCommercialesSmsSelected,
                                                 onInformationsCommercialesTelephoneSelected,
                                                 onCreationCompte,
-                                                formHasError,
                                                 hasErrorDejaUnCompteObserver,
                                                 fermerCompteDejaExistantModale,
                                                 redirectionMireDeConnexion,
@@ -130,7 +128,6 @@ export default function EtapeCreationCompte({
             onInformationsCommercialesSmsSelected={onInformationsCommercialesSmsSelected}
             onInformationsCommercialesTelephoneSelected={onInformationsCommercialesTelephoneSelected}
             onCreationCompte={gestionCreationCompte}
-            formHasError={formHasError}
         />
         <ModaleChargement show={chargementCreationRendezVousNonConnecte}/>
         <ModaleCompteExistant hasErrorDejaUnCompteObserver={hasErrorDejaUnCompteObserver}
