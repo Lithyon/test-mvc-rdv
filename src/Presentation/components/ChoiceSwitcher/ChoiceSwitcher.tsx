@@ -42,6 +42,7 @@ export default function ChoiceSwitcher<T extends Choice>({
                 type="radio"
                 role="radiogroup"
                 aria-labelledby={id}
+                aria-required={true}
                 nbSwitchers={nbSwitchers}
                 name={id}
                 value={choiceSelected}
@@ -51,8 +52,8 @@ export default function ChoiceSwitcher<T extends Choice>({
             >
                 {dataSource.map((value, index) => {
                     return (
-                        <Form.Switcher id={id + value.libelle + value.code + index} key={index} value={value}
-                                       className="mcf-btn--switcher--outline">
+                        <Form.Switcher id={(id + value.libelle + value.code + index).replace(/\s+/g, '')}
+                                       key={index} value={value} className="mcf-btn--switcher--outline">
                             {value.isNew && <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}
                         </Form.Switcher>

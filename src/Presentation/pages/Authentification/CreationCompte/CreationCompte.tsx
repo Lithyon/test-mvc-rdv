@@ -74,7 +74,7 @@ export default function CreationCompteView({
                                                onInformationsCommercialesEmailSelected,
                                                onInformationsCommercialesSmsSelected,
                                                onInformationsCommercialesTelephoneSelected,
-                                               onCreationCompte,
+                                               onCreationCompte
                                            }: CreationCompteProps) {
     function handleCreationCompte() {
         onCreationCompte();

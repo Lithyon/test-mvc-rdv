@@ -81,9 +81,8 @@ export default function JourSwitcher({
     return <Form.Group controlId="jour" ref={jourSwitcherRef}>
         <Form.Label as="h3" id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</Form.Label>
         <div className="mcf-d--flex mcf-align-items--center mcf-mt--2">
-            <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickPrev}
-                    disabled={disabledPrev} aria-disabled={disabledPrev} aria-label="Jours précédents">
-                <i className="icon-fleche_gauche"/>
+            <Button icon="icon-fleche_gauche" variant="outline--primary" onClick={handleClickPrev}
+                    disabled={disabledPrev} aria-disabled={disabledPrev} aria-label="Semaine précédente">
             </Button>
             {isOver ? <Form.SwitcherGroup
                 type="radio"
@@ -109,9 +108,8 @@ export default function JourSwitcher({
                     );
                 })}
             </Form.SwitcherGroup> : <Loader ball className="mcf-mx--auto"/>}
-            <Button className="mcf-btn--icon" variant="outline--primary" onClick={handleClickNext}
-                    disabled={disabledNext} aria-disabled={disabledNext} aria-label="Jours suivants">
-                <i className="icon-fleche-droite"/>
+            <Button icon="icon-fleche-droite" variant="outline--primary" onClick={handleClickNext}
+                    disabled={disabledNext} aria-disabled={disabledNext} aria-label="Semaine suivante">
             </Button>
         </div>
     </Form.Group>;

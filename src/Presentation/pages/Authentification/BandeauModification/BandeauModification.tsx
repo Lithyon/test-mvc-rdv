@@ -17,7 +17,7 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
         <Card.Body className="mcf-grid mcf-align-items--center">
             <span className="icon icon-calendrier-check mcf-icon--6 mcf-d--none mcf-d-md--flex mcf-g-col-1" aria-hidden={true}/>
 
-            <div className="mcf-g-col-12 mcf-g-col-md-10">
+            <p className="mcf-g-col-12 mcf-g-col-md-10 mcf-mb--0">
                 Je souhaite un rendez-vous {dataSource.canalSelected.libelle.toLowerCase()} le
                 {" "}<span className="mcf-font-weight--bold">{dataSource.jour.toLocaleDateString("fr-FR", {
                 day: "numeric",
@@ -27,7 +27,7 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
                 {" "}à {dataSource.heure.libelle} à l'agence de {dataSource.nmCommu}.
                 {" "}Ma demande concerne {dataSource.demandeSelected.libelle.toLowerCase()} pour le
                 domaine {dataSource.domaineSelected.libelle.toLowerCase()}.
-            </div>
+            </p>
 
             <div className="mcf-g-col-12 mcf-g-col-md-1">
                 <Button variant="outline--primary" className="mcf-d--flex mcf-justify-content--center" block
