@@ -145,7 +145,7 @@ export default class AuthentificationController extends BaseController<Authentif
             afficherModalModificationEmail: false,
             formHasError: false,
             chargementCreationRendezVousConnecte: false,
-            chargementCreationRendezVousNonConnecte: false,
+            chargementCreationRendezVousNonConnecte: false
         };
     }
 
@@ -535,9 +535,15 @@ export default class AuthentificationController extends BaseController<Authentif
     }
 
     onAfficherModaleModificationEmail(afficherModalModificationEmail: boolean) {
+        const formError = this.dependencies.creationCompteService.validationFormulaireCreationCompte(this._state.creationCompte,
+            this._state.rendezVous.noSocietaireParrain);
+        const formHasError = this.formHasError(formError);
+        
         this._state = {
             ...this._state,
-            afficherModalModificationEmail
+            formError,
+            formHasError,
+            afficherModalModificationEmail: afficherModalModificationEmail && !formHasError
         };
         this.raiseStateChanged();
     }
@@ -545,7 +551,7 @@ export default class AuthentificationController extends BaseController<Authentif
     declenchementModaleChargementNonConnecte() {
         this._state = {
             ...this._state,
-            chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte,
+            chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte
         };
         this.raiseStateChanged();
     }
@@ -563,12 +569,12 @@ export default class AuthentificationController extends BaseController<Authentif
                 formError,
                 formHasError,
                 afficherModaleConfirmation: !formHasError,
-                chargementCreationRendezVousNonConnecte: false,
+                chargementCreationRendezVousNonConnecte: false
             };
         } catch (e) {
             this._state = {
                 ...this._state,
-                chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte,
+                chargementCreationRendezVousNonConnecte: !this._state.chargementCreationRendezVousNonConnecte
             };
             if (e instanceof Error && (e.message === CodeMessageApplicatif.IDENTIFIANT_DEJA_EXISTANT
                 || e.message === CodeMessageApplicatif.PERSONNE_DEJA_EXISTANT)) {
@@ -587,7 +593,7 @@ export default class AuthentificationController extends BaseController<Authentif
     declenchementModaleChargementConnecte() {
         this._state = {
             ...this._state,
-            chargementCreationRendezVousConnecte: !this._state.chargementCreationRendezVousConnecte,
+            chargementCreationRendezVousConnecte: !this._state.chargementCreationRendezVousConnecte
         };
         this.raiseStateChanged();
     }
@@ -604,7 +610,7 @@ export default class AuthentificationController extends BaseController<Authentif
                 ...this._state,
                 afficherModaleConfirmation: !formPourVousJoindreHasError,
                 formErrorPourVousJoindre,
-                chargementCreationRendezVousConnecte: false,
+                chargementCreationRendezVousConnecte: false
             };
         } catch (e) {
             this._state = {
