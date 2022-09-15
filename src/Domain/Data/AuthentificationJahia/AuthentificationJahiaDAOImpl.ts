@@ -6,9 +6,9 @@ export default class AuthentificationJahiaDAOImpl implements AuthentificationJah
     async finalisationConnexion(mfsid: string): Promise<void> {
         await RequestBuilder
             .post<ResponseEntity<string>>(
-                `${window.servicesRestBaseUrl || ""}/cms/ajax/token?state=${mfsid}`
+                `/cms/ajax/token?state=${mfsid}`
             )
-            .appendHeader("Content-Type", "application/JSON")
+            .appendHeader("Content-Type", "application/x-www-form-urlencoded")
             .body({})
             .onlyFetch();
     }
