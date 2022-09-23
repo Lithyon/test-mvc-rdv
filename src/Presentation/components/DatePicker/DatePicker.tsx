@@ -292,7 +292,6 @@ export default function DatePicker({
             <Form.Label
                 as="h3"
                 id={id}
-                className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold"
             >
                 {label}
             </Form.Label>

@@ -79,7 +79,7 @@ export default function JourSwitcher({
     }
 
     return <Form.Group controlId="jour" ref={jourSwitcherRef}>
-        <Form.Label as="h3" id="carouselDate" className="mcf-text--small-1">Choisissez la date de votre rendez-vous</Form.Label>
+        <Form.Label as="h3" id="carouselDate">Choisissez la date de votre rendez-vous</Form.Label>
         <div className="mcf-d--flex mcf-align-items--center mcf-mt--2">
             <Button icon="icon-fleche_gauche" variant="outline--primary" onClick={handleClickPrev}
                     disabled={disabledPrev} aria-disabled={disabledPrev} aria-label="Semaine précédente">

@@ -124,7 +124,7 @@ export default function AutoCompleteField<T>({
         <Form.Group controlId={id} ref={autoCompleteFieldRef}>
             <Form.Label as="h3"
                         optionalText={optionalText}
-                        className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
+            >
                 {label}
             </Form.Label>
 

@@ -39,7 +39,7 @@ export default function SelectField({
     return dataSource.length > 0 ? (
         <Form.Group controlId={id}
                     ref={selectFieldRef}>
-            <Form.Label as="h3" id={id} optionalText={optionalText} className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
+            <Form.Label as="h3" id={id} optionalText={optionalText}>
                 {label}
             </Form.Label>
             <Form.Select

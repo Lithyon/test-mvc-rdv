@@ -197,7 +197,7 @@ export default function CreationCompteView({
                 />
             }
 
-            <Form.Label as="h2" className="mcf-text--small-1 mcf-font--base mcf-font-weight--bold">
+            <Form.Label as="h2">
                 La Macif et des entités de son groupe (Aéma Groupe) peuvent être amenées à vous informer sur leurs produits, services et
                 avantages pour être au plus proche de vos besoins et vous apporter des conseils personnalisés.
             </Form.Label>

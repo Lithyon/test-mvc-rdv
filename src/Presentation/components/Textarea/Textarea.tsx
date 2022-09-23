@@ -25,7 +25,7 @@ export default function Textarea({label, id, maxLength, onChange, value}: Textar
     useEffect(() => onChange(inputValue), [inputValue, onChange]);
 
     return <Form.Group controlId={id} ref={textAreaRef}>
-        <Form.Label as="h3" className="mcf-text--small-1">{label}<span className="mcf-sr-only">{infoCounter}</span></Form.Label>
+        <Form.Label as="h3">{label}<span className="mcf-sr-only">{infoCounter}</span></Form.Label>
         <Form.Control as="textarea" rows={3}
                       onChange={recalculateCounter}
                       maxLength={maxLength} value={inputValue}
