@@ -97,7 +97,8 @@ export default function JourSwitcher({
                 {disponibilites.map((value, index) => {
                     const disabled = value.ferie || (value.disponibilitesMatin.length === 0 && value.disponibilitesApresMidi.length === 0);
                     return (
-                        <Form.Switcher ref={tableauRefInput[index]} key={index} value={value.jour} disabled={disabled} aria-disabled={disabled}
+                        <Form.Switcher ref={tableauRefInput[index]} key={value.jour.toString().replace(/\s+/g, "")} value={value.jour}
+                                       disabled={disabled} aria-disabled={disabled}
                                        id={value.jour.toString().replace(/\s+/g, "")} className="mcf-btn--switcher--outline">
                             {value.jour.toLocaleDateString("fr-FR", {
                                 weekday: "short",

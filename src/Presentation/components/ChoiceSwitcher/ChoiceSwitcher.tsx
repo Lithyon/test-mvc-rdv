@@ -50,10 +50,10 @@ export default function ChoiceSwitcher<T extends Choice>({
                 isInvalid={errorMessage !== ""}
                 onFocus={() => choiceSwitcherGroupRef.current?.scrollIntoView({behavior: "smooth", block: "center"})}
             >
-                {dataSource.map((value, index) => {
+                {dataSource.map(value => {
                     return (
-                        <Form.Switcher id={(id + value.libelle + value.code + index).replace(/\s+/g, '')}
-                                       key={index} value={value} className="mcf-btn--switcher--outline">
+                        <Form.Switcher id={`${id}${value.code}`}
+                                       key={`${id}${value.code}`} value={value} className="mcf-btn--switcher--outline">
                             {value.isNew && <Badge variant="info" className="mcf-badge--new-switcher" pill>Nouveau</Badge>}
                             {value.libelle}
                         </Form.Switcher>
