@@ -35,6 +35,7 @@ import PagesDetails from "../PagesDetails";
 import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {NavigateFunction} from "react-router-dom";
 import RendezVousModelViewBuilder from "./ModelView/RendezVous/RendezVousModelViewBuilder";
+import {ParametresUrl} from "../../../Domain/Data/Enum/ParametresUrl";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -61,11 +62,14 @@ export default class RendezVousController extends BaseController<RendezVousModel
         readonly dependencies: RendezVousControllerDependencies
     ) {
         super();
+
         const sessionStorageState = sessionStorage.getItem("formulaire_creation_rdv");
         this._stateForm = window.history.state?.usr as RendezVousModelView;
+
         if (sessionStorageState) {
             this._stateForm = RendezVousModelViewBuilder.buildFromSessionStorage(JSON.parse(sessionStorageState));
         }
+
         this.onDomaineSelected = this.onDomaineSelected.bind(this);
         this.onDemandeSelected = this.onDemandeSelected.bind(this);
         this.onCanalSelected = this.onCanalSelected.bind(this);
@@ -75,9 +79,11 @@ export default class RendezVousController extends BaseController<RendezVousModel
         this.onHeureSelected = this.onHeureSelected.bind(this);
         this.onChoixConnexionSelected = this.onChoixConnexionSelected.bind(this);
         this.onValidationFormulaire = this.onValidationFormulaire.bind(this);
+
         this._onLoadDisponibilitesObserver = new LoadingObservableImpl();
         this._hasErrorObserver = new ErrorObservableImpl();
         this._hasErrorDisponibilitesObserver = new ErrorObservableImpl();
+
         this._state = this._stateForm || {
             domaines: [],
             demandes: [],
@@ -109,13 +115,15 @@ export default class RendezVousController extends BaseController<RendezVousModel
     }
 
     async onLoad() {
-        const cdBuro = new URLSearchParams(window.location.search).get("b") || "";
+        const cdBuro = new URLSearchParams(window.location.search).get(ParametresUrl.BUREAU) || "";
+
         try {
             if (!this._stateForm) {
-                this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
                 this._hasErrorObserver.raiseAdvancementEvent({hasError: false});
+                this._pointAccueil = await this.dependencies.pointAccueilService.getPointAccueil(cdBuro);
                 this._domaines = await this.dependencies.domaineService.getDomaines();
                 this._canal = await this.dependencies.canalService.getCanaux(cdBuro);
+
                 this._state = {
                     ...this._state,
                     canal: this._canal.map(CanalModelViewBuilder.buildFromCanal),
@@ -126,7 +134,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
                     rendezVous: {
                         ...this._state.rendezVous,
                         cdBuro: this._pointAccueil.state.cdBuro,
-                        nmCommu: this._pointAccueil.state.nmCommu,
+                        nmCommu: this._pointAccueil.state.nmCommu
                     }
                 };
             }
@@ -135,6 +143,17 @@ export default class RendezVousController extends BaseController<RendezVousModel
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
         this.raiseStateChanged();
+
+    ajoutParametresUrl(name: string, value: string, suppressionParam: boolean = false) {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set(name, value);
+        window.history.pushState("", "", `?${searchParams.toString()}`);
+    }
+
+    suppressionParametresUrl(name: string) {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.delete(name);
+        window.history.pushState("", "", `?${searchParams.toString()}`);
     }
 
     async onDomaineSelected(domaineSelected: DomaineModelView) {
@@ -160,6 +179,10 @@ export default class RendezVousController extends BaseController<RendezVousModel
         } catch (error) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
+
+        this.ajoutParametresUrl(ParametresUrl.DOMAINE, domaineSelected.code);
+        this.suppressionParametresUrl(ParametresUrl.DEMANDE);
+
         this.raiseStateChanged();
     }
 
@@ -175,9 +198,11 @@ export default class RendezVousController extends BaseController<RendezVousModel
                 afficherChoixConnexion: false,
                 afficherChoixCanaux: true,
                 precision: "",
-                demandeSelected,
-            },
+                demandeSelected
+            }
         };
+
+        this.ajoutParametresUrl(ParametresUrl.DEMANDE, demandeSelected.code);
         this.raiseStateChanged();
     }
 
@@ -191,9 +216,10 @@ export default class RendezVousController extends BaseController<RendezVousModel
                 jour: new Date(),
                 afficherChoixConnexion: false,
                 precision: "",
-                canalSelected,
-            },
+                canalSelected
+            }
         };
+
         this.raiseStateChanged();
         await this.loadDisponibilites();
     }
@@ -213,7 +239,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
                 cdBuro: this._state.rendezVous.cdBuro,
                 cdDemande: this._state.rendezVous.demandeSelected.code,
                 cdDomaine: this._state.rendezVous.domaineSelected.code,
-                dtDebut,
+                dtDebut
             }));
 
             this._state = {
@@ -238,7 +264,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                precision,
+                precision
             }
         };
         this.raiseStateChanged();
@@ -286,7 +312,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
             ...this._state,
             rendezVous: {
                 ...this._state.rendezVous,
-                choixConnexionSelected,
+                choixConnexionSelected
             }
         };
         this.raiseStateChanged();
