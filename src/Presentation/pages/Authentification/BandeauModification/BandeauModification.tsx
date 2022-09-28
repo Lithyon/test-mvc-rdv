@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import PagesDetails from "../../PagesDetails";
 import RendezVousModelView from "../../RendezVous/ModelView/RendezVous/RendezVousModelView";
 import RendezVousSelectionModelView from "../../RendezVous/ModelView/RendezVous/RendezVousSelectionModelView";
+import {ParametresUrl} from "../../../../Domain/Data/Enum/ParametresUrl";
 
 export interface BandeauModificationProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -31,7 +32,14 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
 
             <div className="mcf-g-col-12 mcf-g-col-md-1">
                 <Button variant="outline--primary" className="mcf-d--flex mcf-justify-content--center" block
-                        onClick={() => navigate(PagesDetails.RendezVous.link + `?b=${dataSource.cdBuro}#titre-rendez-vous`, {state})}>
+                        onClick={() => {
+                            const searchParams = new URLSearchParams(window.location.search);
+                            searchParams.set(ParametresUrl.BUREAU, dataSource.cdBuro);
+                            searchParams.set(ParametresUrl.DOMAINE, dataSource.domaineSelected.code);
+                            searchParams.set(ParametresUrl.DEMANDE, dataSource.demandeSelected.code);
+
+                            navigate(PagesDetails.RendezVous.link + `?${searchParams.toString()}${ParametresUrl.TAG_MODIFICATION}`, {state});
+                        }}>
                     <span className="icon icon-macif-mobile-crayon mcf-icon--left mcf-pr--2" aria-hidden={true}/>
                     Modifier
                 </Button>

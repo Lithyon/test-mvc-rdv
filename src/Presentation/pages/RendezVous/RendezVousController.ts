@@ -142,18 +142,49 @@ export default class RendezVousController extends BaseController<RendezVousModel
         } catch (e) {
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
+
         this.raiseStateChanged();
 
-    ajoutParametresUrl(name: string, value: string, suppressionParam: boolean = false) {
-        const searchParams = new URLSearchParams(window.location.search);
-        searchParams.set(name, value);
-        window.history.pushState("", "", `?${searchParams.toString()}`);
+        if (!window.location.toString().endsWith(ParametresUrl.TAG_MODIFICATION)) {
+            await this.onLoadWithQueryParams();
+        }
     }
 
-    suppressionParametresUrl(name: string) {
+    async onLoadWithQueryParams() {
+        const cdDomaine = new URLSearchParams(window.location.search).get(ParametresUrl.DOMAINE) || "";
+
+        if (cdDomaine !== "") {
+            const domaineSelected = this._state.domaines.find(domaine => domaine.code === cdDomaine) || DomaineModelViewBuilder.buildEmpty();
+
+            if (domaineSelected.code !== "") {
+                const cdDemande = new URLSearchParams(window.location.search).get(ParametresUrl.DEMANDE) || "";
+
+                await this.onDomaineSelected(domaineSelected);
+                const demandeSelected = this._state.demandes.find(demande => demande.code === cdDemande) || DemandeModelViewBuilder.buildEmpty();
+
+                if (demandeSelected.code !== "") {
+                    this.onDemandeSelected(demandeSelected);
+                }
+            }
+        }
+    }
+
+    ajouterParametresUrl(name: string, value: string) {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set(name, value);
+
+        const tagModification = window.location.toString().endsWith(ParametresUrl.TAG_MODIFICATION) ? ParametresUrl.TAG_MODIFICATION : "";
+
+        window.history.pushState("", "", `?${searchParams.toString()}${tagModification}`);
+    }
+
+    supprimerParametresUrl(name: string) {
         const searchParams = new URLSearchParams(window.location.search);
         searchParams.delete(name);
-        window.history.pushState("", "", `?${searchParams.toString()}`);
+
+        const tagModification = window.location.toString().endsWith(ParametresUrl.TAG_MODIFICATION) ? ParametresUrl.TAG_MODIFICATION : "";
+
+        window.history.pushState("", "", `?${searchParams.toString()}${tagModification}`);
     }
 
     async onDomaineSelected(domaineSelected: DomaineModelView) {
@@ -180,8 +211,8 @@ export default class RendezVousController extends BaseController<RendezVousModel
             this._hasErrorObserver.raiseAdvancementEvent({hasError: true});
         }
 
-        this.ajoutParametresUrl(ParametresUrl.DOMAINE, domaineSelected.code);
-        this.suppressionParametresUrl(ParametresUrl.DEMANDE);
+        this.ajouterParametresUrl(ParametresUrl.DOMAINE, domaineSelected.code);
+        this.supprimerParametresUrl(ParametresUrl.DEMANDE);
 
         this.raiseStateChanged();
     }
@@ -202,7 +233,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
             }
         };
 
-        this.ajoutParametresUrl(ParametresUrl.DEMANDE, demandeSelected.code);
+        this.ajouterParametresUrl(ParametresUrl.DEMANDE, demandeSelected.code);
         this.raiseStateChanged();
     }
 

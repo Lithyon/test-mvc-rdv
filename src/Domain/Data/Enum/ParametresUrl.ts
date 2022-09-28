@@ -1,5 +1,6 @@
 export enum ParametresUrl {
     BUREAU = "b",
     DOMAINE = "do",
-    DEMANDE = "de"
+    DEMANDE = "de",
+    TAG_MODIFICATION = "#titre-rendez-vous"
 }
