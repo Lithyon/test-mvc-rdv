@@ -20,7 +20,8 @@ const pointAccueilStub: PointAccueilEntity = {
     typeEquipementAccessibilites: [],
     horairesOuvertureFermetures: [],
     cdNoVoie: "",
-    liNoVoie: ""
+    liNoVoie: "",
+    isAgenceVirtuelle: true,
 };
 
 export default pointAccueilStub;

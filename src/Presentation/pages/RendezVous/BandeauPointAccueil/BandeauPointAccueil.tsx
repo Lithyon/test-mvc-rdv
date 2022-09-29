@@ -17,7 +17,12 @@ export default function BandeauPointAccueil({dataSource}: BandeauPointAccueilPro
         telPointAccueil,
         urlPointAccueil,
         srcImgPointAccueil,
+        isAgenceVirtuelle
     } = dataSource;
+
+    if (isAgenceVirtuelle) {
+        return <></>;
+    }
 
     return (
         <Card bg="gris-clair-de-lune" className="mcf-d--none mcf-d-md--flex mcf-flex--row">

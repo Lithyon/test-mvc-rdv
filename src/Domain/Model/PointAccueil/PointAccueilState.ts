@@ -22,4 +22,5 @@ export default interface PointAccueilState {
     noVoie: string;
     typeEquipementAccessibilites: Array<TypeEquipementAccessibiliteState>;
     znLocalisSite: string;
+    isAgenceVirtuelle: boolean;
 }

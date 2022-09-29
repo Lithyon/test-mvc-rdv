@@ -183,6 +183,20 @@ describe('Prise de rendez vous - OnLoad', function () {
         controller.onLoad();
     });
 
+    it("doit fournir l'information que c'est une agence virtuelle", (done) => {
+        const expected = true;
+
+        const controller = init();
+
+        controller.subscribeStateChanged(() => {
+            const actual = controller.state;
+            expect(actual.pointAccueil.isAgenceVirtuelle).toBe(expected);
+            done()
+        })
+
+        controller.onLoad();
+    });
+
     it("doit fournir une liste de choix de domaines", (done) => {
         const expected = domaineStub.codes;
 

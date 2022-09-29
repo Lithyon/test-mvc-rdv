@@ -22,4 +22,5 @@ export default interface PointAccueilEntity {
     readonly noVoie: string;
     readonly typeEquipementAccessibilites: TypeEquipementAccessibiliteEntity[];
     readonly znLocalisSite: string;
+    readonly isAgenceVirtuelle: boolean;
 }

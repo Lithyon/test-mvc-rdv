@@ -23,7 +23,8 @@ function clonePointAccueilState(): PointAccueilState {
         noTeleLigne: that.noTeleLigne,
         noVoie: that.noVoie,
         typeEquipementAccessibilites: that.typeEquipementAccessibilites,
-        znLocalisSite: that.znLocalisSite
+        znLocalisSite: that.znLocalisSite,
+        isAgenceVirtuelle: that.isAgenceVirtuelle,
     };
 }
 

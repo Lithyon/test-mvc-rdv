@@ -11,5 +11,6 @@ export default interface BandeauPointAccueilModelView {
     readonly commune: string;
     readonly srcImgPointAccueil: string;
     readonly urlPointAccueil: string;
+    readonly isAgenceVirtuelle: boolean;
     readonly horairesOuvertureFermetures: Array<HorairesOuvertureFermetureModelView>;
 }

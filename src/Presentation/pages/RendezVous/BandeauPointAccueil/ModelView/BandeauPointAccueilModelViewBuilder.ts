@@ -14,6 +14,7 @@ export default class BandeauPointAccueilModelViewBuilder {
             nomVoie: pointAccueil.state.nmVoie,
             codePostal: pointAccueil.state.cdPost,
             commune: pointAccueil.state.nmCommu,
+            isAgenceVirtuelle: pointAccueil.state.isAgenceVirtuelle,
             srcImgPointAccueil: `https://www.macif.fr/files/live/sites/maciffr/files/maciffr/NousContacter/pa_${pointAccueil.state.cdBuro}.jpg`,
             urlPointAccueil: `https://agence.macif.fr/assurance/proxy.asp?agenceid=${pointAccueil.state.cdBuro}`,
             horairesOuvertureFermetures: pointAccueil.state.horairesOuvertureFermetures,
@@ -32,6 +33,7 @@ export default class BandeauPointAccueilModelViewBuilder {
             commune: "",
             srcImgPointAccueil: "",
             urlPointAccueil: "",
+            isAgenceVirtuelle: false,
             horairesOuvertureFermetures: [],
         };
     }

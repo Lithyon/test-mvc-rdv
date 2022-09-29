@@ -18,6 +18,7 @@ import DisplayError from "../../../components/DisplayError";
 import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibleModelView";
+import BandeauPointAccueilModelView from "../BandeauPointAccueil/ModelView/BandeauPointAccueilModelView";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -27,6 +28,7 @@ export interface PriseRendezVousProps {
     readonly demandes: Array<DemandeModelView>;
     readonly onCanalSelected: (value: CanalModelView) => void;
     readonly canal: Array<CanalModelView>;
+    readonly pointAccueil: BandeauPointAccueilModelView;
     readonly onPrecisionChanged: Function;
     readonly disponibilites: DisponibilitesModelView;
     readonly onJourSelected: (value: Date) => void;
@@ -48,6 +50,7 @@ export default function PriseRendezVous({
                                             demandes,
                                             onCanalSelected,
                                             canal,
+                                            pointAccueil,
                                             onPrecisionChanged,
                                             disponibilites,
                                             onJourSelected,
@@ -76,7 +79,9 @@ export default function PriseRendezVous({
 
     return (
         <Form className="mcf-mt--5">
-            <h1 id="titre-rendez-vous" ref={titreRendezVousRef}>Votre rendez-vous</h1>
+            <h1 id="titre-rendez-vous" ref={titreRendezVousRef}>
+                Votre rendez-vous {pointAccueil.isAgenceVirtuelle && " par visioconférence"}
+            </h1>
             <p className="mcf-mb--6 mcf-ml--1">
                 Sauf mention contraire, tous les champs sont requis.
             </p>

@@ -41,6 +41,7 @@ export default function RendezVous({controller}: RendezVousProps) {
                              demandes={state.demandes}
                              domaines={state.domaines}
                              canal={state.canal}
+                             pointAccueil={state.pointAccueil}
                              onDomaineSelected={controller.onDomaineSelected}
                              onDemandeSelected={controller.onDemandeSelected}
                              onCanalSelected={controller.onCanalSelected}
