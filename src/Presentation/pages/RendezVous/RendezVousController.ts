@@ -36,6 +36,7 @@ import {ChoixConnexionCode} from "../../../Domain/Data/Enum/ChoixConnexion";
 import {NavigateFunction} from "react-router-dom";
 import RendezVousModelViewBuilder from "./ModelView/RendezVous/RendezVousModelViewBuilder";
 import {ParametresUrl} from "../../../Domain/Data/Enum/ParametresUrl";
+import {CanalCode} from "../../../Domain/Data/Enum/Canal";
 
 interface RendezVousControllerDependencies {
     readonly domaineService: DomaineServiceImpl,
@@ -163,7 +164,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
                 const demandeSelected = this._state.demandes.find(demande => demande.code === cdDemande) || DemandeModelViewBuilder.buildEmpty();
 
                 if (demandeSelected.code !== "") {
-                    this.onDemandeSelected(demandeSelected);
+                    await this.onDemandeSelected(demandeSelected);
                 }
             }
         }
@@ -217,7 +218,7 @@ export default class RendezVousController extends BaseController<RendezVousModel
         this.raiseStateChanged();
     }
 
-    onDemandeSelected(demandeSelected: DemandeModelView) {
+    async onDemandeSelected(demandeSelected: DemandeModelView) {
         this._state = {
             ...this._state,
             rendezVous: {
@@ -235,6 +236,11 @@ export default class RendezVousController extends BaseController<RendezVousModel
 
         this.ajouterParametresUrl(ParametresUrl.DEMANDE, demandeSelected.code);
         this.raiseStateChanged();
+
+        if (this._state.pointAccueil.isAgenceVirtuelle) {
+            const canalVisio = this._state.canal.find(canal => canal.code === CanalCode.VISIO) || CanalModelViewBuilder.buildEmpty();
+            await this.onCanalSelected(canalVisio);
+        }
     }
 
     async onCanalSelected(canalSelected: CanalModelView) {

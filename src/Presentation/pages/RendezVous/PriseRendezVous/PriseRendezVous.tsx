@@ -109,11 +109,11 @@ export default function PriseRendezVous({
                     Demander mon rendez-vous Pro
                 </Button>
             </Alert>}
-            <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
-                            choiceSelected={dataSource.canalSelected}
-                            dataSource={canal}
-                            id="canal"
-                            label="Vous souhaitez un rendez-vous"/>
+            {!pointAccueil.isAgenceVirtuelle && <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
+                                                                choiceSelected={dataSource.canalSelected}
+                                                                dataSource={canal}
+                                                                id="canal"
+                                                                label="Vous souhaitez un rendez-vous"/>}
             {dataSource.canalSelected.code !== "" &&
                 <>
                     <Textarea label="Apportez une précision, si nécessaire :"
