@@ -18,10 +18,10 @@ export interface EtapePourVousJoindreProps {
     readonly onEmailPourVousJoindreChanged: Function;
     readonly onCreationRendezVous: Function;
     readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView;
+    readonly isAgenceVirtuelle: boolean;
     readonly afficherModaleConfirmation: boolean;
     readonly chargementCreationRendezVousConnecte: boolean;
 }
-
 
 export default function EtapePourVousJoindre({
                                                  rendezVous,
@@ -32,12 +32,13 @@ export default function EtapePourVousJoindre({
                                                  onEmailPourVousJoindreChanged,
                                                  onCreationRendezVous,
                                                  formErrorPourVousJoindre,
+                                                 isAgenceVirtuelle,
                                                  afficherModaleConfirmation,
                                                  chargementCreationRendezVousConnecte
                                              }: EtapePourVousJoindreProps) {
 
     return <>
-        <BandeauModification dataSource={rendezVous}/>
+        <BandeauModification dataSource={rendezVous} isAgenceVirtuelle={isAgenceVirtuelle}/>
         <PourVousJoindre dataSource={pourVousJoindre}
                          canalSelected={canalSelected}
                          onChoixContactSelected={onChoixContactSelected}

@@ -46,6 +46,7 @@ const NUMERO_CODE_POSTAL_MAX = "96000";
 
 export interface AuthentificationModelView {
     readonly estConnecte: boolean,
+    readonly isAgenceVirtuelle: boolean,
     readonly formError: FormErrorModelView,
     readonly formErrorPourVousJoindre: FormErrorPourVousJoindreModelView,
     readonly creationCompte: CreationCompteModelView,
@@ -126,6 +127,7 @@ export default class AuthentificationController extends BaseController<Authentif
 
         this._state = {
             estConnecte: false,
+            isAgenceVirtuelle: this._stateForm?.pointAccueil.isAgenceVirtuelle,
             formError: FormErrorModelViewBuilder.buildEmpty(),
             formErrorPourVousJoindre: FormErrorPourVousJoindreModelViewBuilder.buildEmpty(),
             creationCompte: CreationCompteModelViewBuilder.buildEmpty(),
@@ -538,7 +540,7 @@ export default class AuthentificationController extends BaseController<Authentif
         const formError = this.dependencies.creationCompteService.validationFormulaireCreationCompte(this._state.creationCompte,
             this._state.rendezVous.noSocietaireParrain);
         const formHasError = this.formHasError(formError);
-        
+
         this._state = {
             ...this._state,
             formError,

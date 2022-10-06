@@ -41,6 +41,7 @@ export default function Authentification({controller}: AuthentificationProps) {
         return <EtapePourVousJoindre rendezVous={state.rendezVous}
                                      pourVousJoindre={state.pourVousJoindre}
                                      canalSelected={state.rendezVous.canalSelected}
+                                     isAgenceVirtuelle={state.isAgenceVirtuelle}
                                      onChoixContactSelected={controller.onChoixContactSelected}
                                      onTelephonePourVousJoindreChanged={controller.onTelephonePourVousJoindreChanged}
                                      onEmailPourVousJoindreChanged={controller.onEmailPourVousJoindreChanged}
@@ -51,6 +52,7 @@ export default function Authentification({controller}: AuthentificationProps) {
         />;
     }
     return <EtapeCreationCompte rendezVous={state.rendezVous}
+                                isAgenceVirtuelle={state.isAgenceVirtuelle}
                                 formError={state.formError}
                                 creationCompte={state.creationCompte}
                                 civilite={state.civilite}

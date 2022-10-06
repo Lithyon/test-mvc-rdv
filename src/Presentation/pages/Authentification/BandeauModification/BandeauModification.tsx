@@ -7,9 +7,10 @@ import {ParametresUrl} from "../../../../Domain/Data/Enum/ParametresUrl";
 
 export interface BandeauModificationProps {
     readonly dataSource: RendezVousSelectionModelView;
+    readonly isAgenceVirtuelle: boolean;
 }
 
-export default function BandeauModification({dataSource}: BandeauModificationProps) {
+export default function BandeauModification({dataSource, isAgenceVirtuelle}: BandeauModificationProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const state = location.state as RendezVousModelView;
@@ -25,7 +26,7 @@ export default function BandeauModification({dataSource}: BandeauModificationPro
                 month: "long",
                 year: "numeric"
             })}</span>
-                {" "}à {dataSource.heure.libelle} à l'agence de {dataSource.nmCommu}.
+                {" "}à {dataSource.heure.libelle}{!isAgenceVirtuelle && ` à l'agence de ${dataSource.nmCommu}`}.
                 {" "}Ma demande concerne {dataSource.demandeSelected.libelle.toLowerCase()} pour le
                 domaine {dataSource.domaineSelected.libelle.toLowerCase()}.
             </p>

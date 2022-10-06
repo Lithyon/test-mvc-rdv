@@ -48,6 +48,7 @@ export interface EtapeCreationCompteProps {
     readonly fermerCompteDejaExistantModale: Function;
     readonly redirectionMireDeConnexion: Function;
     readonly onAfficherModaleModificationEmail: Function;
+    readonly isAgenceVirtuelle: boolean;
     readonly afficherModalModificationEmail: boolean;
     readonly afficherModaleConfirmation: boolean;
     readonly chargementCreationRendezVousNonConnecte: boolean;
@@ -84,6 +85,7 @@ export default function EtapeCreationCompte({
                                                 hasErrorDejaUnCompteObserver,
                                                 fermerCompteDejaExistantModale,
                                                 redirectionMireDeConnexion,
+                                                isAgenceVirtuelle,
                                                 onAfficherModaleModificationEmail,
                                                 afficherModalModificationEmail,
                                                 afficherModaleConfirmation,
@@ -99,7 +101,7 @@ export default function EtapeCreationCompte({
     }
 
     return <>
-        <BandeauModification dataSource={rendezVous}/>
+        <BandeauModification dataSource={rendezVous} isAgenceVirtuelle={isAgenceVirtuelle}/>
         <CreationCompte
             formError={formError}
             dataSource={creationCompte}
