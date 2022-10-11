@@ -1,4 +1,4 @@
-import {Alert, Button, Col, Form, Row} from "macif-components";
+import {Button, Col, Form, Row} from "macif-components";
 import RendezVousSelectionModelView from "../ModelView/RendezVous/RendezVousSelectionModelView";
 import ChoiceSwitcher from "../../../components/ChoiceSwitcher";
 import {TypeDomaine} from "../../../../Domain/Data/Enum/Domaine";
@@ -19,6 +19,9 @@ import LoadWaitingIsOver from "../../../commons/LoadingEvent/LoadWaitingIsOver";
 import useLoaderObservable from "../../../hooks/useLoaderObservable";
 import HeureDisponibleModelView from "../ModelView/Disponibilites/HeureDisponibleModelView";
 import BandeauPointAccueilModelView from "../BandeauPointAccueil/ModelView/BandeauPointAccueilModelView";
+import {TypeDemande} from "../../../../Domain/Data/Enum/Demande";
+import Sinistre from "../Sinistre/Sinistre";
+import AssurancePro from "../AssurancePro";
 
 export interface PriseRendezVousProps {
     readonly dataSource: RendezVousSelectionModelView;
@@ -95,25 +98,16 @@ export default function PriseRendezVous({
                             dataSource={demandes}
                             id="demande"
                             label="Votre demande concerne ?"/>
-            {dataSource.domaineSelected.code === TypeDomaine.PRO && <Alert variant="primary">
-                <span className="icon icon-macif-mobile-info-plein mcf-icon--3 mcf-float--left"></span>
-                <p>
-                    Ce cas nécessite une prise en charge particulière. Aussi, nous vous invitons à remplir un nouveau
-                    formulaire. Un chargé
-                    de clientèle spécialisé se déplacera sur votre lieu de travail afin d’évaluer avec vous les
-                    meilleures solutions d’assurance
-                    pour votre activité.
-                </p>
-                <Button href="/assurance/professionnels-et-entreprises/demande-de-rendez-vous-pour-les-professionnels-et-les-entreprises"
-                        variant="light">
-                    Demander mon rendez-vous Pro
-                </Button>
-            </Alert>}
-            {!pointAccueil.isAgenceVirtuelle && <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
-                                                                choiceSelected={dataSource.canalSelected}
-                                                                dataSource={canal}
-                                                                id="canal"
-                                                                label="Vous souhaitez un rendez-vous"/>}
+
+            {dataSource.domaineSelected.code === TypeDomaine.PRO && <AssurancePro/>}
+            {dataSource.demandeSelected.code === TypeDemande.SINISTRE && <Sinistre/>}
+
+            {!pointAccueil.isAgenceVirtuelle && dataSource.demandeSelected.code !== TypeDemande.SINISTRE &&
+                <ChoiceSwitcher onChoiceSelected={onCanalSelected} show={dataSource.afficherChoixCanaux}
+                                choiceSelected={dataSource.canalSelected}
+                                dataSource={canal}
+                                id="canal"
+                                label="Vous souhaitez un rendez-vous"/>}
             {dataSource.canalSelected.code !== "" &&
                 <>
                     <Textarea label="Apportez une précision, si nécessaire :"
