@@ -23,7 +23,7 @@ export default class CanalRepositoryImpl {
             code: CanalCode.TELEPHONE
         }));
         eligibilites.eligibleRdvVisio && listeCanauxEligibles.push(new Canal({
-            libelle: "En visioconférence",
+            libelle: "Par visioconférence",
             code: CanalCode.VISIO,
             isNew: true
         }));
